@@ -1,0 +1,62 @@
+data assimilation 
+----------------------------------------------------------------------------
+    February 6, 2015
+----------------------------------------------------------------------------
+
+     1. run ROMS-DART in /t1/scratch/bjchoi/DART/Run/
+
+
+        (1) edit nodelist-gfortran
+        (2) edit ocean_NWA.in_DA_template
+             DSTART =  40532.0d0  
+                       <--- avg and his file number is counted from Dec 22, 2010
+             forcing file names
+             initial and boundary files
+             NRREC = -1    <---- NRREC = 0
+        (3) copy restart files from each member dir /m0XX/ 
+                     to /t1/cratch/bjchoi/DART/nwaReanaly/
+            using ./s3copy_restartfiles.ksh
+
+         (4) roms_dart_main150206.ksh
+                   <-- roms_dart_log.istep
+                   <-- ocean_NWA.in_DA_template
+                   roms_to_dart
+                   filter
+                   dart_to_roms
+                   istep_to_ymd  --> istep_to_ymd.out
+                input.nml.template.r2d
+                input.nml.template.filter
+                input.nml.template.d2r
+                dart_log.out.0001
+
+                /m001/                 
+                /m002/
+                     log.roms_fwd.002      (log file)
+                     nwa_002_2011_rst.nc   (restart file)
+                     ocean_fil2d_01.nc   ocean_filakt_01.nc  ocean_filr_01.nc
+                     ocean_filu_01.nc   ocean_filw_01.nc ... ocean_filv_01.nc
+                /m030/  
+
+        Other directories and subdirectories
+        /ObsData/
+                Coastline  Figure  GTSPP  MERGEDobsSEQ  SST
+
+        /nwaForward/   history and average from Forward model
+        /nwaDartTMP/   temporary DART files are stored dart.ics.0001 dart.restart.0001
+                       obs_seq files are stored        obs_seq.final20110101
+        /nwaReanaly/   after the assimilation. restart file will be used 
+                       as initial condition for the next ROMS run
+        /PostPro/
+                       Check_obs_seq  Ens_mean  Matlab_tim  Python_zview
+
+     2. model output data are saved in /t4/workdir/bjchoi/DART
+        /FreeRun1405/   atm forcing was specified at 10 m instead of 2 m (Merra forcing)
+                        SST was 3-4 degree C warmer 
+                        because of weak winds *the result is not good.
+        /FreeRun1410/   average files from Free Running model
+                        atm forcing was specified at 2 m
+        /nwaForward04/  average and history files from ROMS-DART
+        /nwaForward04/  restart files from ROMS-DART
+
+
+

@@ -1,0 +1,50 @@
+
+peturb MERRA 3 hourly atmopheric forcing with
+random field with 500 km horizontal de-correlation length scale
+and 5 day de-correlation time scale
+
+-----------------------------------------------------------------
+2015 January 06: bjchoi
+-----------------------------------------------------------------
+
+(1) program directory:
+   /home/bjchoi/MODELS/RandomField/code_bjchoi150106merra_myr/
+   make
+   edit <<infile3.in>>  ( seed number and directory)
+   excute ./run
+
+(2) working directory: /t1/scratch/bjchoi/DART/Inputs/Force/ 
+
+  copy MERRA 2010 and 2011 data from
+  /t1/scratch/forcings_sets/MERRA/drowned/
+  to
+  /t1/scratch/bjchoi/DART/Inputs/Force/MERRA2010/
+  /t1/scratch/bjchoi/DART/Inputs/Force/MERRA2011/
+
+
+(3) <<copy_AtmForce.ksh>>  
+  # copy original MERRA forcing files to each member
+  # i.e., copy atm frc file from /MERRA2011/ to /m001/, /m002/, ..., /m030/ 
+
+
+(4) make perturbed atm forcing files
+
+                             @ /t1/scratch/bjchoi/DART/Inputs/Force/m001/
+                               /t1/scratch/bjchoi/DART/Inputs/Force/m002/
+                                . . .
+                               /t1/scratch/bjchoi/DART/Inputs/Force/m030/
+
+   <<perturb_AtmForce_grp.ksh>> will 
+   # perturb MERRA forcing files for each member
+   # in a group of five members
+
+   directory: /t1/scratch/bjchoi/DART/Inputs/Force/
+   we need two files: <<run_myr>> and <<infile3.in_template>> 
+
+   edit infile3.in_template
+
+
+
+
+
+

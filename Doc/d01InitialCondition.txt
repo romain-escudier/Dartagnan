@@ -1,0 +1,93 @@
+  2015 January 12, 16: bjchoi
+===========================================================
+  make initial netcdf files on Dec 22, 2010.
+===========================================================
+   HYCOM 12/21/2010  --> 355
+   HYCOM 12/22/2010  --> 356
+   HYCOM 12/23/2010  --> 357
+
+   change ocean_time to 12/22/2010
+
+  (1) where is the HYCOM data?
+  /Volume/O5/Data/HYCOM/GLBa0.08/processed/2011/HYCOM_GLBa0.08_2011_001.nc
+                           or download it from HYCOM webpage
+
+  (2) where is the python scripts to make initial conditions?
+     copy the script from  /t1/scratch/dujuan/NWA/Code/ic and bc
+                     to    /t1/scratch/bjchoi/DART/Code_icbc/ic and bc
+
+  Raphael give me four files 
+  ( three hycom daily mean file and hycom data grid information file)
+  copy the files from /t3/workdir/raphael/forBJ/
+                 to   /t1/scratch/bjchoi/DART/Code_icbc/HYCOM
+             << HYCOM_GLBa0.08_2010_355.nc  HYCOM_GLBa0.08_2010_356.nc
+                HYCOM_GLBa0.08_2010_357.nc  HYCOM_GLBa0.08_NWA_grid.nc >>
+
+   * something about Raphael's sosie.x
+     which is an interpolation program back (z) and forth (sigma)
+     and sosie.x can make .nc file from WOA and HYCOM.
+
+     module load sosie
+     copy a namelist from
+     /home/raphael/TOOLS/sosie-rutgers/examples/namelist.3D_temperature_WOA2009_to_ROMS
+     $ sosie.x -f namelist.3D_temperature_WOA2009_to_ROMS
+
+     HYCOM data file is also in z-level format
+     and gridded in regular grid like WOA.
+     Then, we can use sosie to interpolate variables from HYCOM to ROMS.
+
+     How to make a initial file for ROMS?
+          1) << make_remap_weights_file.py  remap.py  remap_uv.py >>
+          2) << make_ic_file.py  >>
+
+   working directory: /t1/scratch/bjchoi/DART/Code_icbc/ic/
+
+   (0) $ module load pyroms/trunk
+       $ module list
+       Currently Loaded Modulefiles:
+         1) netcdf/4.1.2_gcc4.4.7    3) ncview/1.93g      5)sakovtools/default
+         2) openmpi/1.4.3_gcc4.4.7   4) anaconda/1.9.1    6) pyroms/trunk
+
+   (1) edit make_remap_weights_file.py: HYCOM grid file
+       $ ipython make_remap_weights_file.py
+       It will produce remap_grid_GLBa0.08_NWA_t.nc, remap_grid_NWA_rho.nc,
+                       remap_grid_NWA_u.nc, and remap_grid_NWA_v.nc.
+       It will also produce remap_weights_GLBa0.08_to_NWA_bilinear_t_to_rho.nc
+                            remap_weights_GLBa0.08_to_NWA_bilinear_t_to_u.nc
+                            remap_weights_GLBa0.08_to_NWA_bilinear_t_to_v.nc
+
+   (2) edit make_ic_file.py: HYCOM data file
+       $ ipython make_ic_file.py
+       --> HYCOM_GLBa0.08_2010_355_ic_NWA.nc   <ocean_time = 40531>
+
+       $ ncview HYCOM_GLBa0.08_2010_355_ic_NWA.nc &
+
+       * At this point, I don't need to run make_remap_weights_file.py again
+         because I already have to grid and weight files.
+         I just need to run make_ic_file.py for day 356 and 357.
+
+       --> HYCOM_GLBa0.08_2010_356_ic_NWA.nc   <ocean_time = 40532>
+       --> HYCOM_GLBa0.08_2010_357_ic_NWA.nc   <ocean_time = 40533>
+
+   (3) change ocean_time to 12/22/2010 (day 356) in all three initial files.
+
+       example of Changing ocean_time in a netcdf file
+       /t1/scratch/bjchoi/DART/Inputs/IC-NWA/correct_oceantime2.ksh
+       ========================================
+       #!/bin/ksh
+       for file in $( ls | grep NWA-RD.ClimCore2H01R_y00 ) ; do
+           echo working on $file
+           ncap2 -s " ocean_time(0) = double(40542) " $file -o tmp.nc
+           ncatted -a units,ocean_time,m,c,"days since 1900-01-01 00:00:00" tmp.nc
+           ncatted -a calendar,ocean_time,d,c,'' tmp.nc
+           mv tmp.nc $file
+       done
+
+       $ touch <<change_oceantime40532.ksh>>
+         and copy above line to the file
+         edit the date 40542 to 40532
+       $ chmod u+x change_oceantime40532.ksh
+       $ ./change_oceantime40532.ksh
+
+
+

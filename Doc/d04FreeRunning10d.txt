@@ -1,0 +1,51 @@
+  run ROMS without data assimilation for 10 days
+  to have initial conditions for data assimilation run
+---------------------------------------------------------
+  January 22, 2015
+  February 3, 2015 bjchoi
+---------------------------------------------------------
+
+   run ROMS without data assimilation for 10 days
+   from Dec 22, 2010 to Jan 1, 2011.
+   wortking directory /t1/scratch/bjchoi/DART/Run/
+
+   (1) make directories for each member using <<s1make_Directories.ksh>>
+       m001, m002, ..., m030
+
+   (2) we need ocean.in file to run ROMS
+
+       edit <<ocean_NWA.in_FreeRun_template>>
+       (copied from ocean_NWA.in_DA_template)
+
+   (3) we use a shell script to run all members
+
+       edit <<roms_freerun_main150203.ksh>>
+
+   (4) check the time of your initial file and boundary file
+
+   /t1/scratch/bjchoi/DART/Input/IC-NWA/m02/
+   ncdump -v ocean_time HYCOM_GLBa0.08_2010_356_ic_NWA.nc
+   ocean_time:units = "days since 1900-01-01 00:00:00" ;
+   ocean_time = 40532 ;  <---- Dec 22 00:00, 2010
+
+   /t1/scratch/bjchoi/DART/Inputs/BC-NWA/
+   ncdump -v ocean_time HYCOM_GLBa0.08_bdry_NWA_2010.nc
+   ocean_time =  40177, 40178, 40179, 40180,  ... , 40539, 40540, 40541 ;
+
+   (5) we need hostfile to use mpirun 
+
+    /t1/scratch/bjchoi/DART/Run
+    make hostfiles for ROMS free run:
+    hostfile.001 hostfile.002   ... hostfile.030
+
+    First, make <<hostfgile.001>> and <<hostfile.002>>, 
+    then, use <<make_multiple_hostfiles.ksh>>
+    to copy  hostfile.001 and  hostfile.002  to the other files
+
+   (6) run ROMS
+
+    run ROMS freely from Dec 22, 2010 to Jan. 1, 2011.
+    /t1/scratch/bjchoi/DART/Run/
+    $ ./roms_freerun_main150203.ksh
+
+

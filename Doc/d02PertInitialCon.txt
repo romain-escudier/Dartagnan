@@ -1,0 +1,42 @@
+
+  perturb initial condition in ROMS netCDF file
+
+=================================================
+  January 22, 2015        bjchoi
+=================================================
+
+  perturb temperature in the 5 upper layers (0.025,0.007,0.002 deg C)
+
+
+  program files are 
+
+      /home/bjchoi/MODELS/RandomField/code_Init_Pert150122/
+      <<infile.in>>
+      <<run_pert_init>>
+
+  initial condition files are /t1/scratch/bjchoi/DART/IC-NWA/
+
+      (1) <<s1make_Directories.ksh>>   /m001/, /m002/, .... /m030/
+
+      (2) <<s2copy_InitialFile.ksh>>  to /m001/, /m002/, .... /m030/
+        members  1 to 10 are from HYCOM_GLBa0.08_2010_355_ic_NWA.nc
+        members 11 to 20 are from HYCOM_GLBa0.08_2010_356_ic_NWA.nc
+        members 21 to 30 are from HYCOM_GLBa0.08_2010_357_ic_NWA.nc
+
+      however, file names are changed to HYCOM_GLBa0.08_2010_356_ic_NWA.nc
+
+      (3) copy initial perturbation program from
+      /home/bjchoi/MODELS/RandomField/code_Init_Pert150122/<<run_pert_init>>
+                                                       and <<infile.in>>
+
+      (4) make <<infile.in_template>> from infile.in
+
+      (5)    touch <<s3perturb_initial.ksh>>
+          and edit it
+          chmod u+x s3perturb_initial.ksh
+
+      $ ./s3perturb_initial.ksh
+
+
+
+
