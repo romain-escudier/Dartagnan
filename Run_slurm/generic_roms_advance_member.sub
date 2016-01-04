@@ -10,10 +10,6 @@
 
 set -x
 
-#------------------------------------------------------------------------------------
-# add job-id to list
-#------------------------------------------------------------------------------------
-
 this_member=<MEMBER>
 this_job_id=${SLURM_JOB_ID}
 
@@ -23,7 +19,32 @@ this_job_id=${SLURM_JOB_ID}
 #------------------------------------------------------------------------------------
 
 
-#   srun --cpu_bind=rank -n <NCORES> ./oceanM <NAMELIST>  > log.<JOB>
-#   srun --cpu_bind=rank -n 1 echo $(hostname) $this_member $this_job_id > log.$this_member
+#   srun --cpu_bind=rank -n <NCORES> ./oceanM <NAMELIST>  > log.roms_fwd.$this_member
 
+# for testing only
 sleep 15
+
+#------------------------------------------------------------------------------------
+# check if the run finished OK
+#------------------------------------------------------------------------------------
+
+check1=$( grep Blowing-up log.roms_fwd.$this_member )
+
+if [ -z $check1 ] ; then
+   echo "run for member $this_member did not blow up... continue..."
+else
+   echo "run for member $this_member blew up... stopping..."
+   echo "analysis step will be held pending forever, please scancel it"
+   exit 1
+fi
+
+check2=$( grep DONE log.roms_fwd.$this_member | tail -1 | awk '{ print $2 }' )
+
+if [ ! -z $check2 ] ; then
+   echo "run for member $this_member finished OK... continue..."
+else
+   echo "run for member $this_member did not finish... stopping..."
+   echo "analysis step will be held pending forever, please scancel it"
+   exit 1
+fi
+

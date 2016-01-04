@@ -23,7 +23,6 @@ this_job_id=${SLURM_JOB_ID}
 #------------------------------------------------------------------------------------
 
 
-#   srun --cpu_bind=rank -n <NCORES> ./oceanM <NAMELIST>  > log.<JOB>
-#   srun --cpu_bind=rank -n 1 echo $(hostname) $this_member $this_job_id > log.$this_member
+#   srun --cpu_bind=rank -n <NCORES> ./filter 
 
 sleep 60
