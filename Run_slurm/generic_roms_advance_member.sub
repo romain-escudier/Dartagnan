@@ -6,23 +6,25 @@
 #SBATCH --output=roms_advance_<MEMBER>.%J.out
 #SBATCH -p triton24
 
-#CONTROLDIR=<CDIR>
-
 set -x
 
+CONTROLDIR=<CDIR>
 this_member=<MEMBER>
 this_job_id=${SLURM_JOB_ID}
 
+#------------------------------------------------------------------------------------
+# create all necessary inputs and namelists
+#------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------------
 # run the code
 #------------------------------------------------------------------------------------
 
-
 #   srun --cpu_bind=rank -n <NCORES> ./oceanM <NAMELIST>  > log.roms_fwd.$this_member
 
 # for testing only
-sleep 15
+sleep 5
+exit 0
 
 #------------------------------------------------------------------------------------
 # check if the run finished OK

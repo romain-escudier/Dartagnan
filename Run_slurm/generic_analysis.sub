@@ -2,27 +2,38 @@
 #SBATCH -n 1
 #SBATCH --time=0:10:00
 #SBATCH -J analysis
-#SBATCH --dependency=afterok:<DEPLIST>
+#SBATCH --dependency=afterok<DEPLIST>
 #SBATCH --error=analysis.%J.err 
 #SBATCH --output=analysis.%J.out
 #SBATCH -p triton24
 
-#CONTROLDIR=<CDIR>
-
 set -x
 
-#------------------------------------------------------------------------------------
-# add job-id to list
-#------------------------------------------------------------------------------------
-
+CONTROLDIR=<CDIR>
+thiscycle=<CYCLE>
 this_job_id=${SLURM_JOB_ID}
 
+#------------------------------------------------------------------------------------
+# create all necessary inputs and namelists
+#------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------------
-# run the code
+# run the analysis
 #------------------------------------------------------------------------------------
-
 
 #   srun --cpu_bind=rank -n <NCORES> ./filter 
 
-sleep 60
+# test
+sleep 10
+success=1
+
+#------------------------------------------------------------------------------------
+# if analysis successful, submit next cycle
+#------------------------------------------------------------------------------------
+
+if [ $success == 1 ] ; then
+   nextcycle=$(( $thiscycle + 1 ))
+   ssh node0 "cd $CONTROLDIR ; ./submit_cycle.ksh $nextcycle"
+else 
+   echo "Assimilation cycle # $thiscycle failed"
+fi

@@ -1,57 +1,44 @@
 #!/bin/ksh
 #---------------------------------------------------------------------------------------------#
 #                                                                                             #
-# Shell functions                                                                             #
+# Cycle                                                                                       #
 #                                                                                             #
 #---------------------------------------------------------------------------------------------#
 
-# Create the list of slurm jobids of members that analysis job depends on
-# takes as arguments number of members and files with stdout redirection
-create_dependency_list() { nmem=$1 ; filejobs=$2
+if [ ! $# == 1 ] ; then echo 'this script needs the cycle number as an argument' ; exit 1 ; fi
 
-  dep_list=''
-  for kmem in $( seq 1 $nmem ) ; do
-      jobid=$( sed -n ${kmem}p $filejobs | awk '{print $4}' )
-      dep_list="${dep_list},$jobid"
-  done
-  dep_list=$( echo $dep_list | sed -e "s/,//" )
-  echo $dep_list ; }
-   
+cycle=$1
+
+. ./parameters
+. ./functions.ksh   
+
+echo running cycle $cycle of $ncycles
+
+if [[ $cycle > $ncycles ]] ; then echo 'Completed' ; exit 0 ; fi
 
 #---------------------------------------------------------------------------------------------#
-#                                                                                             #
-# PARAMETERS                                                                                  #
-#                                                                                             #
-#---------------------------------------------------------------------------------------------#
+# 1. submit ensemble members
 
-nmembers=30
-
-typeset -Z4 kkkk
-
-#---------------------------------------------------------------------------------------------#
-#                                                                                             #
-# MAIN                                                                                        #
-#                                                                                             #
-#---------------------------------------------------------------------------------------------#
-
-#---------------------------------------------------------------------------------------------#
-# 1. Delete previous list of jobs and Submit MPP job for each member
-if [ -f jobids.list ] ; then rm jobids.list ; fi
+listjobids=""
 
 for kmem in $( seq 1 $nmembers ) ; do
 
     cat generic_roms_advance_member.sub | sed -e "s/<MEMBER>/$kmem/g" \
+                                              -e "s;<CDIR>;$CONTROLDIR;g" \
     > roms_advance_member_${kmem}.sub
 
-    sbatch roms_advance_member_${kmem}.sub >> jobids.list
+    output=$( sbatch < roms_advance_member_${kmem}.sub )
+    id=$( echo $output | awk '{ print $NF }' )
+    listjobids="$listjobids:$id"
 
 done
 
 #---------------------------------------------------------------------------------------------#
-# 2. Create the dependency list and submit the analysis step as dependant
-dep_list=$( create_dependency_list $nmembers jobids.list )
+# 2. submit assimilation step
 
-cat generic_analysis.sub | sed -e "s/<DEPLIST>/$dep_list/g" \
+cat generic_analysis.sub | sed -e "s/<DEPLIST>/$listjobids/g" \
+                               -e "s/<CYCLE>/$cycle/g" \
+                               -e "s;<CDIR>;$CONTROLDIR;g" \
 > analysis.sub
 
-sbatch analysis.sub
+sbatch < analysis.sub
