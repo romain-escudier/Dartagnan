@@ -46,6 +46,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 
    # Get date for this cycle
    date_cycle=$(get_date_from_cycle ${this_cycle} $STARTDATE $DT_ANA)
+   prev_cycle=$(( this_cycle - 1 ))
+   date_cycle_prev=$(get_date_from_cycle ${prev_cycle} $STARTDATE $DT_ANA)
    date_cycle_std=$(print_time_dart $date_cycle)
    HC=$(get_param_from_nc ${GRIDFILE} hc)
    NX=$(get_ndim_from_nc ${GRIDFILE} xi_rho)
@@ -94,9 +96,9 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    
    # Prepare the namelist
    day_zero=149748
-   jday=$(( day_zero + $(($this_cycle/$DT_ANA)) )) # jday = cumulative days from 1601.01.01
-   obs_seq_in=${DATADIR}/ObsData/MERGEDobsSEQ/obs_seq.sst1_gtspp${date_cycle}
-   obs_seq_out=${SCRATCHDIR}/Outputs/Tmpdir/obs_seq.final${date_cycle}
+   jday=$(( day_zero + $(($this_cycle/$DT_ANA)) -1 )) # jday = cumulative days from 1601.01.01
+   obs_seq_in=${DATADIR}/ObsData/MERGEDobsSEQ/obs_seq.sst1_gtspp${date_cycle_prev}
+   obs_seq_out=${SCRATCHDIR}/Outputs/Tmpdir/obs_seq.final${date_cycle_prev}
    restart_in=${SCRATCHDIR}/Outputs/Tmpdir/dart.ics
    restart_out=${SCRATCHDIR}/Outputs/Tmpdir/dart.restart
    roms_restart_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc  #read grid info
@@ -109,8 +111,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
                                                     -e "s;<DARTRSTIN>;$restart_in;g" \
                                                     -e "s;<DARTRSTOUT>;$restart_out;g" \
                                                     -e "s;<DARTINITDAYS>;$jday;g" \
-                                                    -e "s;<FIRSTOBSDAY>;$(($jday-3));g" \
-                                                    -e "s;<LASTOBSDAY>;$(($jday+3));g" \
+                                                    -e "s;<FIRSTOBSDAY>;$(($jday));g" \
+                                                    -e "s;<LASTOBSDAY>;$(($jday));g" \
                                                     -e "s;<TIMEANA>;${date_cycle_std};g" \
                                                     -e "s;<DTANA>;${DT_ANA};g" \
                                                     -e "s;<NX>;$NX;g" \
@@ -128,7 +130,6 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    # Run the Kalman filter
    srun --cpu_bind=rank -n <NCORES> ${SCRATCHDIR}/Exe/filter
    
-
 #------------------------------------------------------------------------------------
 # Convert all members DART files to ROMS files
 #------------------------------------------------------------------------------------
