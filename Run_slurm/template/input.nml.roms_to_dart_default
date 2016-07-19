@@ -1,0 +1,68 @@
+&assim_model_nml
+   write_binary_restart_files = .false.,
+   netCDF_large_file_support  = .true.
+  /
+
+&location_nml
+   horiz_dist_only                 = .false.,
+   vert_normalization_pressure     = 100000.0, 
+   vert_normalization_height       = 10000.0,
+   vert_normalization_level        = 20.0,
+   vert_normalization_scale_height = 5.0,
+   approximate_distance            = .false.,
+   nlon                            = 71,
+   nlat                            = 36,
+   output_box_info                 = .true.,
+   special_vert_normalization_obs_types     = '',
+   special_vert_normalization_pressures     = 100000.0,
+   special_vert_normalization_heights       = 10000.0,
+   special_vert_normalization_levels        = 20.0,
+   special_vert_normalization_scale_heights = 5.0,
+/
+
+&model_nml
+   analysis_time                = '<TIMEANA>',
+   output_state_vector          = .false.,
+   assimilation_period_days     = <DTANA>,
+   assimilation_period_seconds  = 0,
+   model_perturbation_amplitude = 0.2,
+   hc                     = <HC>,
+   model_restart_filename   = '<ROMSRSTNAME>',
+   grid_definition_filename = '<GRIDNAME>'
+   vert_localization_coord  = 3,
+   debug                    = .true.,
+/
+
+&roms_vars_nml
+   variables            = 'temp',         'KIND_TEMPERATURE',
+                          'salt',         'KIND_SALINITY',
+                          'u',            'KIND_U_CURRENT_COMPONENT',
+                          'v',            'KIND_V_CURRENT_COMPONENT',
+                          'zeta',         'KIND_SEA_SURFACE_HEIGHT',
+/
+
+&roms_to_dart_nml
+   roms_to_dart_output_file = '<DARTICSFILE>',
+   perturb_state            = .false.,
+   print_data_ranges        = .true.,
+  /
+
+&obs_kind_nml
+   assimilate_these_obs_types = 'U_CURRENT_COMPONENT',
+                                'V_CURRENT_COMPONENT',
+                                'FLOAT_TEMPERATURE',
+                                'FLOAT_SALINITY',
+                                'SEA_SURFACE_HEIGHT'
+                                'SATELLITE_INFRARED_SST'
+   evaluate_these_obs_types   = 'null',
+/
+
+&utilities_nml
+   TERMLEVEL      = 1,
+   logfilename    = '<DARTLOGOUT>',
+   nmlfilename    = '<DARTLOGNML>',
+   module_details = .true.,
+   print_debug    = .true.,
+   write_nml      = 'file',
+/
+

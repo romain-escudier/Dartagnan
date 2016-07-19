@@ -1,0 +1,16 @@
+# Type of simulation
+ROMSAPP=NWA
+
+# User initials
+USERINI=BJ
+
+# Simulation name
+SIMUNAME=${ROMSAPP}-${USERINI}.REANA01
+
+# Computation directory
+ROMSDIR=/home/romain/Projects/ROMS/
+SCRATCHDIR=${SCRATCH}/dart/tmpdir_${SIMUNAME}/
+
+
+
+
