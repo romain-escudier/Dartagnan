@@ -87,8 +87,6 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    
    done
 
-exit 1
-
 
 #------------------------------------------------------------------------------------
 # run the analysis
@@ -104,7 +102,7 @@ exit 1
    roms_restart_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc  #read grid info
    grid_file=${DATADIR}/Inputs/Grid/NWA_grd.nc
    
-   cat ${SCRATCHDIR}/input.nml.filter_default | sed -e "s;<NMEMBER>;$NMEMBERS;g" \
+   cat ${SCRATCHDIR}/input.nml.filter_default | sed -e "s;<NMEMBERS>;$NMEMBERS;g" \
                                                     -e "s;<TASKPERNODE>;${taskpernode};g" \
                                                     -e "s;<OBSINFILE>;$obs_seq_in;g" \
                                                     -e "s;<OBSOUTFILE>;$obs_seq_out;g" \
@@ -157,6 +155,7 @@ exit 1
                                                     -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_d2r_${this_cycle}_${nnn}.out;g" \
                                                     -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_d2r_${this_cycle}_${nnn}.nml;g" \
                                                     -e "s;<ROMSRSTNAME>;${roms_restart_file};g" \
+                                                    -e "s;<DARTRSTOUT>;${dart_output};g" \
                                                     -e "s;<GRIDNAME>;$grid_file;g" \
        > ${SCRATCHDIR}/input.nml.dart2roms
 

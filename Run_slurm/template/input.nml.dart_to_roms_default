@@ -1,6 +1,6 @@
 &assim_model_nml
    write_binary_restart_files = .true.,
-   netCDF_large_file_support  = .false.
+   netCDF_large_file_support  = .true.
   /
 
 &location_nml
@@ -29,27 +29,31 @@
 
 &model_nml
    analysis_time                = '<TIMEANA>',
-   output_state_vector          = .true.,
+   output_state_vector          = .false.,
    assimilation_period_days     = <DTANA>,
    assimilation_period_seconds  = 0,
    model_perturbation_amplitude = 0.2,
    hc                     = <HC>,
-   model_restart_filename         = '<ROMSRSTNAME>',
+   model_restart_filename   = '<ROMSRSTNAME>',
    grid_definition_filename = '<GRIDNAME>'
-   /
-
-&roms_vars_nml
-   roms_state_variables = 'temp',         'KIND_TEMPERATURE',
+   vert_localization_coord  = 3,
+   debug                    = 0,
+   variables            = 'temp',         'KIND_TEMPERATURE',
                           'salt',         'KIND_SALINITY',
                           'u',            'KIND_U_CURRENT_COMPONENT',
                           'v',            'KIND_V_CURRENT_COMPONENT',
-                          'zeta',         'KIND_SEA_SURFACE_HEIGHT'
+                          'zeta',         'KIND_SEA_SURFACE_HEIGHT',
 /
 
 &obs_kind_nml
    assimilate_these_obs_types = 'SATELLITE_INFRARED_SST',
-                                'SEA_SURFACE_HEIGHT'
-   evaluate_these_obs_types   = 'null'  
+                                'SEA_SURFACE_HEIGHT',
+   evaluate_these_obs_types   = 'null'
+/
+
+
+&obs_sequence_nml
+   write_binary_obs_sequence = .false.
 /
 
 &utilities_nml
@@ -58,6 +62,6 @@
    nmlfilename    = '<DARTLOGNML>',
    module_details = .true.,
    print_debug    = .true.,
-   write_nml      = 'file'
+   write_nml      = 'file',
 /
 

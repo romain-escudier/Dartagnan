@@ -9,11 +9,10 @@ if [ ! $# == 1 ] ; then echo 'this script needs the cycle number as an argument'
 
 cycle=$1
 
-echo "running cycle $cycle of $NCYCLES"
-
 . ./functions.sh
 . ./parameters
 
+echo "running cycle $cycle of $NCYCLES"
 
 if (( $cycle > $NCYCLES )) ; then echo 'Completed' ; exit 0 ; fi
 

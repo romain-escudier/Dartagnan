@@ -1,5 +1,5 @@
 &assim_model_nml
-   write_binary_restart_files = .false.,
+   write_binary_restart_files = .true.,
    netCDF_large_file_support  = .true.
   /
 
@@ -30,10 +30,7 @@
    model_restart_filename   = '<ROMSRSTNAME>',
    grid_definition_filename = '<GRIDNAME>'
    vert_localization_coord  = 3,
-   debug                    = .true.,
-/
-
-&roms_vars_nml
+   debug                    = 0,
    variables            = 'temp',         'KIND_TEMPERATURE',
                           'salt',         'KIND_SALINITY',
                           'u',            'KIND_U_CURRENT_COMPONENT',
@@ -48,13 +45,14 @@
   /
 
 &obs_kind_nml
-   assimilate_these_obs_types = 'U_CURRENT_COMPONENT',
-                                'V_CURRENT_COMPONENT',
-                                'FLOAT_TEMPERATURE',
-                                'FLOAT_SALINITY',
-                                'SEA_SURFACE_HEIGHT'
-                                'SATELLITE_INFRARED_SST'
-   evaluate_these_obs_types   = 'null',
+   assimilate_these_obs_types = 'SATELLITE_INFRARED_SST',
+                                'SEA_SURFACE_HEIGHT',
+   evaluate_these_obs_types   = 'null'
+/
+
+
+&obs_sequence_nml
+   write_binary_obs_sequence = .false.
 /
 
 &utilities_nml
