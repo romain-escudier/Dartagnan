@@ -1,7 +1,7 @@
 #!/bin/ksh
 
-WORKINGDIR=/t6/workdir/romain/DART/Run_slurm/user/romain/NWA-RE.REANA01T/
-DARTMNGDIR=/t6/workdir/romain/DART/Run_slurm/
+WORKINGDIR=/t6/workdir/romain/dartagnan/Run_slurm/user/romain/NWA-RE.REANA01T
+DARTMNGDIR=/t6/workdir/romain/dartagnan/Run_slurm/
 
 # Type of triton cores to use
 TYPENODE=triton16
