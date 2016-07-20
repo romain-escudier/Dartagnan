@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -n <NCORES>
-#SBATCH --time=0:30:00
+#SBATCH --time=1:00:00
 #SBATCH -J analysis
 #SBATCH --dependency=afterok<DEPLIST>
 #SBATCH --error=<CURRENTDIR>/Logs/analysis.%J.err 
@@ -52,10 +52,10 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    # Prepare the namelist
    day_zero=149748
    jday=$(( day_zero + $(($this_cycle/$DT_ANA)) -1 )) # jday = cumulative days from 1601.01.01
-   # obs_seq_in=${DATADIR}/ObsData/SST/obsSEQ/obs_seq.sst1.${date_cycle_prev}
-   obs_seq_in=${DATADIR}/ObsData/SST/obs_seq_test
-   # obs_seq_out=${SCRATCHDIR}/Outputs/Tmpdir/obs_seq.final${date_cycle_prev}
-   obs_seq_out=${SCRATCHDIR}/Outputs/Tmpdir/obs_seq_test.final
+   obs_seq_in=${DATADIR}/ObsData/SST/obsSEQ/obs_seq.sst1.${date_cycle_prev}
+   # obs_seq_in=${DATADIR}/ObsData/SST/obs_seq_test
+   obs_seq_out=${SCRATCHDIR}/Outputs/Tmpdir/obs_seq.final${date_cycle_prev}
+   # obs_seq_out=${SCRATCHDIR}/Outputs/Tmpdir/obs_seq_test.final
    roms_restart_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc  #read grid info
    HC=$(get_param_from_nc ${GRIDFILE} hc)
    restart_in=${SCRATCHDIR}/Outputs/Tmpdir/dart.ics
