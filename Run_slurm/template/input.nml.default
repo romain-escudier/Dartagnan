@@ -1,6 +1,6 @@
 &assim_model_nml
    write_binary_restart_files = .true.,
-   netCDF_large_file_support  = .false.
+   netCDF_large_file_support  = .true.
   /
 
 
@@ -45,7 +45,7 @@
  /
 
 &filter_nml
-   async                    = 4,
+   async                    = 0,
    adv_ens_command          = "./advance_model.csh",
    ens_size                 = <NMEMBERS>,
    tasks_per_model_advance  = 1,
@@ -111,6 +111,13 @@
    special_vert_normalization_scale_heights = 5.0,
 /
 
+&dart_to_roms_nml
+   dart_to_roms_input_file = '<DARTRSTFILE>'
+   advance_time_present    = .false.
+   print_data_ranges       = .true.
+   time_filename           = 'roms_time'
+  /
+
 &model_nml
    analysis_time                = '<TIMEANA>',
    output_state_vector          = .false.,
@@ -129,9 +136,20 @@
                           'zeta',         'KIND_SEA_SURFACE_HEIGHT',
 /
 
+&roms_to_dart_nml
+   roms_to_dart_output_file = '<DARTICSFILE>',
+   perturb_state            = .false.,
+   print_data_ranges        = .true.,
+  /
+
 &obs_kind_nml
-   assimilate_these_obs_types = 'SATELLITE_INFRARED_SST',
-   evaluate_these_obs_types   = 'null'
+   assimilate_these_obs_types = 'U_CURRENT_COMPONENT',
+                                'V_CURRENT_COMPONENT',
+                                'FLOAT_TEMPERATURE',
+                                'FLOAT_SALINITY',
+                                'SEA_SURFACE_HEIGHT'
+                                'SATELLITE_INFRARED_SST',
+   evaluate_these_obs_types   = 'null',
 /
 
 

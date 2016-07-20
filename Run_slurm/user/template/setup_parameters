@@ -10,7 +10,7 @@ ROMSAPP=NWA
 USERINI=RE
 
 # Simulation specific name
-SIMUSUFF=REANA01
+SIMUSUFF=REANA01T
 
 # Computation directory
 ROMSDIR=/home/romain/Projects/ROMS/

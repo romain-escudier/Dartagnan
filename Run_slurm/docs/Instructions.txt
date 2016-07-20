@@ -1,0 +1,66 @@
+-----------------------------------------
+Create new user (user1):
+-----------------------------------------
+$ cd dartagnan/Run_slurm/users/
+$ mkdir user1
+
+Copy the content of template directory
+$ cp template/* user1/
+
+-----------------------------------------
+Create new simulation :
+-----------------------------------------
+$ cd user1/
+$ vi setup_parameters
+Here you need to fill :
+ROMSAPP : The name of the ROMS application (region)
+USERINI : Intials of the user
+SIMUSUFF : The specific name of the simulation
+ROMSDIR : Directory of the ROMS code
+DARTDIR : Directory of the DART code
+
+$ ./setup_simu.sh
+This will create a directory for the new simulation in the user1/ directory
+In this directory, you have :
+parameters        -> parameters for the simulation to fill
+varinfo.dat       -> varinfo.dat to modify for the ROMS model
+src/              -> directory for the headers for the ROMS code
+build.bash        -> script to compile the ROMS code
+build_dart.bash   -> script to compile the DART code
+main.ksh          -> main script to launch the simulation
+clean.sh          -> script to clean the scratch directory
+
+-----------------------------------------
+Compile the ROMS code :
+-----------------------------------------
+$ cd ${name_of_the_simu}/
+First you need to put in src/, the appropriate headers (e.g. nwa.h)
+$ module load netcdf/4.3.0-gcc4.4.7 openmpi/1.8.5_gcc4.4.7
+$ ./build.bash -j 4
+
+-----------------------------------------
+Compile the DART code :
+-----------------------------------------
+$ ./build_dart.bash
+
+-----------------------------------------
+Fill the parameters :
+-----------------------------------------
+$ vi parameters
+Fill with the desired values for this simulation 
+
+-----------------------------------------
+Launch the simulation :
+-----------------------------------------
+$ ./main.ksh
+
+-----------------------------------------
+Look at results :
+-----------------------------------------
+The outputs/logs are stored in the scratch directory:
+it is ${SCRATCH}/dart/tmp_${name_of_the_simu}/
+In this directory there is :
+
+
+
+

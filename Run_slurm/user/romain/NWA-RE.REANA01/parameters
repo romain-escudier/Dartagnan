@@ -1,6 +1,10 @@
 #!/bin/ksh
 
-WORKINGDIR=/t6/workdir/romain/DART/Run_slurm/
+WORKINGDIR=/t6/workdir/romain/dartagnan/Run_slurm/user/romain/NWA-RE.REANA01/
+DARTMNGDIR=/t6/workdir/romain/dartagnan/Run_slurm/
+
+# Type of triton cores to use
+TYPENODE=triton16
 
 # Number of ensemble members to run
 NMEMBERS=3
@@ -21,7 +25,7 @@ NSTART=1
 NCYCLES=1
 
 # Computation directory
-SCRATCHDIR=${SCRATCH}/dart/tmpdir_${SIMU}/
+SCRATCHDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.REANA01/
 DATADIR=/t0/scratch/romain/DART/Data/
 
 #--------------------------------------------------
@@ -62,3 +66,6 @@ BRYFILE=${DATADIR}/Inputs/BC-NWA/HYCOM_GLBa0.08_bdry_NWA_2011.nc
 RUNOFFILE=${DATADIR}/Inputs/Runoff/runoff_NWA_daitren_clim.nc
 TIDESFILE=${DATADIR}/Inputs/Tides/NWA_tides_otps.nc
 SSSREFILE=${DATADIR}/Inputs/SSS/sss_monthly_climato_flooded.nc
+
+
+

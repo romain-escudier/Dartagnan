@@ -36,12 +36,10 @@ cp ${WORKINGDIR}/modules-used ${SCRATCHDIR}/
 
 # Get scripts
 cp ${DARTMNGDIR}/src/* ${SCRATCHDIR}/
-# Get executables for analysis
-cp ${DARTMNGDIR}/dart_exe/* ${SCRATCHDIR}/Exe/
+## Get executables for analysis
+#cp ${WORKINGDIR}/dart_exe/* ${SCRATCHDIR}/Exe/
 # Get templates
-cp ${DARTMNGDIR}/template/input.nml.template.r2d ${SCRATCHDIR}/
-cp ${DARTMNGDIR}/template/input.nml.template.d2r ${SCRATCHDIR}/
-cp ${DARTMNGDIR}/template/input.nml.template.filter ${SCRATCHDIR}/
+cp ${DARTMNGDIR}/template/input.nml.default ${SCRATCHDIR}/
 cp ${DARTMNGDIR}/template/ocean_NWA-RE.template ${SCRATCHDIR}/
 
 

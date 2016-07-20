@@ -39,9 +39,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    done
    rm ${SCRATCHDIR}/Tempfiles/modules.dat
 
-
 #------------------------------------------------------------------------------------
-# Convert all members ROMS files to DART files
+# Prepare the namelist
 #------------------------------------------------------------------------------------
 
    # Get date for this cycle
@@ -49,11 +48,36 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    prev_cycle=$(( this_cycle - 1 ))
    date_cycle_prev=$(get_date_from_cycle ${prev_cycle} $STARTDATE $DT_ANA)
    date_cycle_std=$(print_time_dart $date_cycle)
+
+   # Prepare the namelist
+   day_zero=149748
+   jday=$(( day_zero + $(($this_cycle/$DT_ANA)) -1 )) # jday = cumulative days from 1601.01.01
+   # obs_seq_in=${DATADIR}/ObsData/SST/obsSEQ/obs_seq.sst1.${date_cycle_prev}
+   obs_seq_in=${DATADIR}/ObsData/SST/obs_seq_test
+   # obs_seq_out=${SCRATCHDIR}/Outputs/Tmpdir/obs_seq.final${date_cycle_prev}
+   obs_seq_out=${SCRATCHDIR}/Outputs/Tmpdir/obs_seq_test.final
+   roms_restart_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc  #read grid info
    HC=$(get_param_from_nc ${GRIDFILE} hc)
-   NX=$(get_ndim_from_nc ${GRIDFILE} xi_rho)
-   NY=$(get_ndim_from_nc ${GRIDFILE} eta_rho)
-   NZ=$(get_ndim_from_nc ${GRIDFILE} s_rho)
-   
+   restart_in=${SCRATCHDIR}/Outputs/Tmpdir/dart.ics
+   restart_out=${SCRATCHDIR}/Outputs/Tmpdir/dart.restart
+   cat ${SCRATCHDIR}/input.nml.default  | sed -e "s;<TIMEANA>;${date_cycle_std};g" \
+                                              -e "s;<DTANA>;${DT_ANA};g" \
+                                              -e "s;<HC>;${HC};g" \
+                                              -e "s;<GRIDNAME>;${GRIDFILE};g" \
+                                              -e "s;<NMEMBERS>;${NMEMBERS};g" \
+                                              -e "s;<OBSINFILE>;${obs_seq_in};g" \
+                                              -e "s;<OBSOUTFILE>;${obs_seq_out};g" \
+                                              -e "s;<TASKPERNODE>;${taskpernode};g" \
+                                              -e "s;<DARTRSTIN>;${restart_in};g" \
+                                              -e "s;<DARTRSTOUT>;${restart_out};g" \
+                                              -e "s;<FIRSTOBSDAY>;$(($jday));g" \
+                                              -e "s;<LASTOBSDAY>;$(($jday));g" \
+                                              -e "s;<DARTINITDAYS>;$jday;g" \
+   > ${SCRATCHDIR}/input.nml.temp
+
+#------------------------------------------------------------------------------------
+# Convert all members ROMS files to DART files
+#------------------------------------------------------------------------------------
 
    for kmem in $( seq 1 $NMEMBERS ) ; do
    
@@ -62,21 +86,12 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
       
       roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
       dart_output=${SCRATCHDIR}/Outputs/Tmpdir/dart.ics.${nnnn}
-      analysistime=$(get_param_from_nc $roms_restart ocean_time)
-      echo $roms_restart $dart_output $analysistime
       
       # Create namelist for the roms2dart code
-      cat ${SCRATCHDIR}/input.nml.roms_to_dart_default  | sed -e "s;<DARTICSFILE>;${dart_output};g" \
-                                                    -e "s;<TIMEANA>;${date_cycle_std};g" \
-                                                    -e "s;<DTANA>;${DT_ANA};g" \
-                                                    -e "s;<NX>;$NX;g" \
-                                                    -e "s;<NY>;$NY;g" \
-                                                    -e "s;<NZ>;$NZ;g" \
-                                                    -e "s;<HC>;${HC};g" \
-                                                    -e "s;<ROMSRSTNAME>;${roms_restart};g" \
-                                                    -e "s;<GRIDNAME>;${GRIDFILE};g" \
-                                                    -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_r2d_${this_cycle}_${nnn}.out;g" \
-                                                    -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_r2d_${this_cycle}_${nnn}.nml;g" \
+      cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTICSFILE>;${dart_output};g" \
+                                              -e "s;<ROMSRSTNAME>;${roms_restart};g" \
+                                              -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_r2d_${this_cycle}_${nnn}.out;g" \
+                                              -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_r2d_${this_cycle}_${nnn}.nml;g" \
    > ${SCRATCHDIR}/input.nml.roms2dart
    cp ${SCRATCHDIR}/input.nml.roms2dart ${SCRATCHDIR}/input.nml
 #      cat ${SCRATCHDIR}/input.nml.template.r2d | sed -e "s;<MODEL_RESTART_FILENAME>;$roms_restart;g" \
@@ -94,37 +109,10 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 # run the analysis
 #------------------------------------------------------------------------------------
    
-   # Prepare the namelist
-   day_zero=149748
-   jday=$(( day_zero + $(($this_cycle/$DT_ANA)) -1 )) # jday = cumulative days from 1601.01.01
-   obs_seq_in=${DATADIR}/ObsData/MERGEDobsSEQ/obs_seq.sst1_gtspp${date_cycle_prev}
-   obs_seq_out=${SCRATCHDIR}/Outputs/Tmpdir/obs_seq.final${date_cycle_prev}
-   restart_in=${SCRATCHDIR}/Outputs/Tmpdir/dart.ics
-   restart_out=${SCRATCHDIR}/Outputs/Tmpdir/dart.restart
-   roms_restart_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc  #read grid info
-   grid_file=${DATADIR}/Inputs/Grid/NWA_grd.nc
-   
-   cat ${SCRATCHDIR}/input.nml.filter_default | sed -e "s;<NMEMBERS>;$NMEMBERS;g" \
-                                                    -e "s;<TASKPERNODE>;${taskpernode};g" \
-                                                    -e "s;<OBSINFILE>;$obs_seq_in;g" \
-                                                    -e "s;<OBSOUTFILE>;$obs_seq_out;g" \
-                                                    -e "s;<DARTRSTIN>;$restart_in;g" \
-                                                    -e "s;<DARTRSTOUT>;$restart_out;g" \
-                                                    -e "s;<DARTINITDAYS>;$jday;g" \
-                                                    -e "s;<FIRSTOBSDAY>;$(($jday));g" \
-                                                    -e "s;<LASTOBSDAY>;$(($jday));g" \
-                                                    -e "s;<TIMEANA>;${date_cycle_std};g" \
-                                                    -e "s;<DTANA>;${DT_ANA};g" \
-                                                    -e "s;<NX>;$NX;g" \
-                                                    -e "s;<NY>;$NY;g" \
-                                                    -e "s;<NZ>;$NZ;g" \
-                                                    -e "s;<HC>;${HC};g" \
-                                                    -e "s;<ROMSRSTNAME>;${roms_restart_file};g" \
-                                                    -e "s;<GRIDNAME>;$grid_file;g" \
-                                                    -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_filt_${this_cycle}.out;g" \
-                                                    -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_filt_${this_cycle}.nml;g" \
+   cat ${SCRATCHDIR}/input.nml.temp | sed -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_filt_${this_cycle}.out;g" \
+                                          -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_filt_${this_cycle}.nml;g" \
+                                          -e "s;<ROMSRSTNAME>;${roms_restart_file};g" \
    > ${SCRATCHDIR}/input.nml.filter
-   
    cp ${SCRATCHDIR}/input.nml.filter ${SCRATCHDIR}/input.nml
    
    # Run the Kalman filter
@@ -139,25 +127,13 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
       printf -v nnn "%03d" $kmem
       printf -v nnnn "%04d" $kmem
    
-       roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
        roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
        dart_output=${SCRATCHDIR}/Outputs/Tmpdir/dart.restart.${nnnn}
-       grid_file=${DATADIR}/Inputs/Grid/NWA_grd.nc
-       analysistime=$( ncdump -v ocean_time $roms_restart | tail -2 | head -1 | awk '{print $4}' )
-       echo $roms_restart $dart_output $analysistime
    
-       cp $roms_restart $roms_reanaly
-       cat ${SCRATCHDIR}/input.nml.dart_to_roms_default  | sed -e "s;<TIMEANA>;${date_cycle_std};g" \
-                                                    -e "s;<DTANA>;${DT_ANA};g" \
-                                                    -e "s;<NX>;$NX;g" \
-                                                    -e "s;<NY>;$NY;g" \
-                                                    -e "s;<NZ>;$NZ;g" \
-                                                    -e "s;<HC>;${HC};g" \
-                                                    -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_d2r_${this_cycle}_${nnn}.out;g" \
-                                                    -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_d2r_${this_cycle}_${nnn}.nml;g" \
-                                                    -e "s;<ROMSRSTNAME>;${roms_restart_file};g" \
-                                                    -e "s;<DARTRSTOUT>;${dart_output};g" \
-                                                    -e "s;<GRIDNAME>;$grid_file;g" \
+       cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTRSTFILE>;${dart_output};g" \
+                                               -e "s;<ROMSRSTNAME>;${roms_reanaly};g" \
+                                               -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_d2r_${this_cycle}_${nnn}.out;g" \
+                                               -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_d2r_${this_cycle}_${nnn}.nml;g" \
        > ${SCRATCHDIR}/input.nml.dart2roms
 
 #       cat ${SCRATCHDIR}/input.nml.template.d2r | sed -e "s;<MODEL_RESTART_FILENAME>;$roms_reanaly;g" \

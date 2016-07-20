@@ -383,7 +383,7 @@ fi
 
 # Put the binary to execute in the following directory.
 
- export            BINDIR=/t0/scratch/romain/tmpdir_NWA-RE.HCo01T
+ export            BINDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.REANA01/
 
 # Put the f90 files in a project specific Build directory to avoid conflict
 # with other projects.
@@ -414,3 +414,9 @@ if [ $parallel -eq 1 ]; then
 else
   make
 fi
+
+# Move the oceanM executable
+mkdir -p $BINDIR/Exe/
+mv $BINDIR/oceanM $BINDIR/Exe/
+
+
