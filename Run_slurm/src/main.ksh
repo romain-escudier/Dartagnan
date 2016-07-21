@@ -17,6 +17,8 @@ mkdir -p ${SCRATCHDIR}/Outputs/History/
 mkdir -p ${SCRATCHDIR}/Outputs/Prior/
 mkdir -p ${SCRATCHDIR}/Outputs/Reanalysis/
 mkdir -p ${SCRATCHDIR}/Outputs/Tmpdir/
+mkdir -p ${SCRATCHDIR}/Outputs/Filtfiles/
+
 
 for kmem in $( seq 1 $NMEMBERS ) ; do
    printf -v nnn "%03d" $kmem
@@ -24,6 +26,7 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    mkdir -p ${SCRATCHDIR}/Outputs/History/m${nnn}/
    mkdir -p ${SCRATCHDIR}/Outputs/Prior/m${nnn}/
    mkdir -p ${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/
+   mkdir -p ${SCRATCHDIR}/Outputs/Filtfiles/m${nnn}/
 
    init_file_tmp=$( echo ${INITFILE} | sed -e "s;XXX;${nnn};")
    ln -fs ${init_file_tmp} ${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_ini_${STARTDATE}.nc

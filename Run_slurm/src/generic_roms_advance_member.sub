@@ -85,6 +85,13 @@ cat <CURRENTDIR>/ocean_${SIMU}.in | sed -e "s;<DT>;$DT;g"                       
 mkdir -p ${SCRATCHDIR}/Tempfiles/m${this_member}/
 cd ${SCRATCHDIR}/Tempfiles/m${this_member}/
 
+# Save filtering files every month (before computing the first day of the month)
+if [[ ${date_cycle:6:2} == '01' && (( ${this_cycle} != 1 )) ]] ; then # No filter files on cycle 1
+   for file_filt in ocean_fil*.nc ; do
+      cp ${file_filt} ${SCRATCHDIR}/Outputs/Filtfiles/m${this_member}/${file_filt%.*}_${date_cycle}.nc
+   done
+fi
+
 #------------------------------------------------------------------------------------
 # reload modules used when compiling
 #------------------------------------------------------------------------------------
@@ -105,8 +112,11 @@ rm ${SCRATCHDIR}/Tempfiles/m${this_member}/modules.dat
 # run the code
 #------------------------------------------------------------------------------------
 
+# srun --cpu_bind=rank -n <NCORES> <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTDIR>/Logs/log.roms_fwd.m${this_member}
 
-srun --cpu_bind=rank -n <NCORES> <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTDIR>/Logs/log.roms_fwd.m${this_member}
+sleep 1
+exit 0
+
 
 #------------------------------------------------------------------------------------
 # check if the run finished OK
