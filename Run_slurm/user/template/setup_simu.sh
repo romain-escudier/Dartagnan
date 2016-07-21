@@ -27,11 +27,11 @@ cat ${DARTMNGDIR}/template/parameters.template | sed -e "s;<SIMUNAME>;${SIMUNAME
 
 
 # Create build script : ROMS
-cat ${DARTMNGDIR}/template/build.bash.template | sed -e "s;<ROMS_APP>;$ROMSAPP;g"\
+cat ${DARTMNGDIR}/template/build_roms.bash.template | sed -e "s;<ROMS_APP>;$ROMSAPP;g"\
                                                      -e "s;<ROMS_DIR>;$ROMSDIR;g"\
                                                      -e "s;<MY_TMPDIR>;$SCRATCHDIR;g"\
-> ${SIMUDIR}/build.bash
-chmod 755 ${SIMUDIR}/build.bash
+> ${SIMUDIR}/build_roms.bash
+chmod 755 ${SIMUDIR}/build_roms.bash
 
 
 # Create build script : DART
