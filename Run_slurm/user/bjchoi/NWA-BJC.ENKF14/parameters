@@ -59,7 +59,7 @@ FORCINGPREF=drowned_MERRA_
 FORCINGSUFF=_3hours_
 
 GRIDFILE=/t0/scratch/romain/inputs/NWA_grd.nc
-INITFILE=
+INITFILE=/dev/null
 
 CLIMFILE=${DATADIR}/Inputs/CLM-NWA/HYCOM_GLBa0.08_monthly_clim_NWA_2011.nc
 BRYFILE=${DATADIR}/Inputs/BC-NWA/HYCOM_GLBa0.08_bdry_NWA_2011.nc
