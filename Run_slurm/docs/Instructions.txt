@@ -59,8 +59,15 @@ Look at results :
 -----------------------------------------
 The outputs/logs are stored in the scratch directory:
 it is ${SCRATCH}/dart/tmp_${name_of_the_simu}/
-In this directory there is :
+$ cd ${SCRATCH}/dart/tmp_${name_of_the_simu}/
 
+The output files are in Outputs/ :
+Average/    -> directory for average files
+History/    -> directory for history files
+Prior/      -> directory for prior restart files (before assimilation)
+Reanalysis/ -> directory for reanalysis restart files (after assimilation)
+Tmpdir/     -> directory for temporary dart files
 
+The logs are in Logs/
 
 
