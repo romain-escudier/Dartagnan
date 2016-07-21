@@ -40,7 +40,7 @@ cp ${DARTMNGDIR}/src/* ${SCRATCHDIR}/
 #cp ${WORKINGDIR}/dart_exe/* ${SCRATCHDIR}/Exe/
 # Get templates
 cp ${DARTMNGDIR}/template/input.nml.default ${SCRATCHDIR}/
-cp ${DARTMNGDIR}/template/ocean_${SIMU}.in ${SCRATCHDIR}/
+cp ${WORKINGDIR}/ocean_${SIMU}.in ${SCRATCHDIR}/
 
 
 cd ${SCRATCHDIR}
