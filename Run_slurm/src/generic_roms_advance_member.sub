@@ -106,7 +106,7 @@ rm ${SCRATCHDIR}/Tempfiles/m${this_member}/modules.dat
 #------------------------------------------------------------------------------------
 
 
-srun --cpu_bind=rank -n <NCORES> <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTDIR>/Logs/log.roms_fwd.m${this_member}
+srun --cpu_bind=rank -n <NCORES> <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTDIR>/Logs/log.roms_fwd.c${this_cycle}.m${this_member}
 
 #------------------------------------------------------------------------------------
 # check if the run finished OK
