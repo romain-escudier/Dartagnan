@@ -47,6 +47,10 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 # Prepare the namelists
 #------------------------------------------------------------------------------------
 
+   # Temporary directory
+   Temp_dir=${SCRATCHDIR}/Outputs/Tmpdir/
+   rm ${Temp_dir}/*
+
    # Get date for this cycle
    date_cycle=$(get_date_from_cycle ${this_cycle} $STARTDATE $DT_ANA)
    prev_cycle=$(( this_cycle - 1 ))
@@ -61,13 +65,13 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    # Select the correct observation files
    obs_seq_in=${DATADIR}/ObsData/SST/obsSEQ/obs_seq.sst1.${date_cycle_prev}
    # obs_seq_in=${DATADIR}/ObsData/SST/obs_seq_test
-   obs_seq_out=${SCRATCHDIR}/Outputs/Tmpdir/obs_seq.final${date_cycle_prev}
-   # obs_seq_out=${SCRATCHDIR}/Outputs/Tmpdir/obs_seq_test.final
+   obs_seq_out=${Temp_dir}/obs_seq.final${date_cycle_prev}
+   # obs_seq_out=${Temp_dir}/obs_seq_test.final
 
    # Other options
    roms_restart_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc  #read grid info
-   restart_in=${SCRATCHDIR}/Outputs/Tmpdir/dart.ics
-   restart_out=${SCRATCHDIR}/Outputs/Tmpdir/dart.restart
+   restart_in=${Temp_dir}/dart.ics
+   restart_out=${Temp_dir}/dart.restart
    hc=$(get_param_from_nc ${GRIDFILE} hc) # ROMS critical depth
 
    # Create the temporary namelist 
@@ -96,7 +100,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
       printf -v nnnn "%04d" $kmem
       
       roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
-      dart_input=${SCRATCHDIR}/Outputs/Tmpdir/dart.ics.${nnnn}
+      dart_input=${Temp_dir}/dart.ics.${nnnn}
       
       # Create namelist for the roms2dart code
       cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTICSFILE>;${dart_input};g" \
@@ -136,7 +140,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
       printf -v nnnn "%04d" $kmem
    
       roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
-      dart_output=${SCRATCHDIR}/Outputs/Tmpdir/dart.restart.${nnnn}
+      dart_output=${Temp_dir}/dart.restart.${nnnn}
    
       # Create namelist for the dart2roms code
       cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTRSTFILE>;${dart_output};g" \
