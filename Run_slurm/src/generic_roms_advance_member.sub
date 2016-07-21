@@ -33,8 +33,8 @@ declare -i yyyy=${date_cycle:0:4} # Year of cycle
 
 # Initial state for the model
 if ((${this_cycle} == 1)) ; then
-    initialfile=${SCRATCHDIR}/Outputs/Reanalysis/m${this_member}/${SIMU}_ini_${STARTDATE}.nc
-    restart=0
+    initialfile=${SCRATCHDIR}/Outputs/Reanalysis/m${this_member}/${SIMU}_rstana_20110101.nc
+    restart=-1
 else
     prev_cycle=$(( $this_cycle - 1 ))
     date_prev_cycle=$(get_date_from_cycle ${prev_cycle} ${STARTDATE} ${DT_ANA})

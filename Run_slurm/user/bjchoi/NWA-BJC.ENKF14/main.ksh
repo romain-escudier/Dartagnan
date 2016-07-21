@@ -25,8 +25,8 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    mkdir -p ${SCRATCHDIR}/Outputs/Prior/m${nnn}/
    mkdir -p ${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/
 
-   init_file_tmp=$( echo ${INITFILE} | sed -e "s;XXX;${nnn};")
-   ln -fs ${init_file_tmp} ${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_ini_${STARTDATE}.nc
+   #init_file_tmp=$( echo ${INITFILE} | sed -e "s;XXX;${nnn};")
+   #ln -fs ${init_file_tmp} ${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_ini_${STARTDATE}.nc
 done
 
 # Get parameters
