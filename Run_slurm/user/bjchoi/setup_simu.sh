@@ -26,7 +26,7 @@ cat ${DARTMNGDIR}/template/parameters.template | sed -e "s;<SIMUNAME>;${SIMUNAME
 > ${SIMUDIR}/parameters
 
 
-# Create build script
+# Create build script : ROMS
 cat ${DARTMNGDIR}/template/build.bash.template | sed -e "s;<ROMS_APP>;$ROMSAPP;g"\
                                                      -e "s;<ROMS_DIR>;$ROMSDIR;g"\
                                                      -e "s;<MY_TMPDIR>;$SCRATCHDIR;g"\
@@ -34,5 +34,12 @@ cat ${DARTMNGDIR}/template/build.bash.template | sed -e "s;<ROMS_APP>;$ROMSAPP;g
 chmod 755 ${SIMUDIR}/build.bash
 
 
+# Create build script : DART
+
+cat ${DARTMNGDIR}/template/build_dart.bash.template | sed -e "s;<DARTDIR>;$DARTDIR;g"\
+                                                          -e "s;<WORKDIR>;$ROMSDIR;g"\
+                                                          -e "s;<SCRATCHDIR>;$SCRATCHDIR;g"\
+> ${SIMUDIR}/build_dart.bash
+chmod 755 ${SIMUDIR}/build_dart.bash
 
 
