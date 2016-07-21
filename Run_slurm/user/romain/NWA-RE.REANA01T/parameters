@@ -67,7 +67,3 @@ RUNOFFILE=${DATADIR}/Inputs/Runoff/runoff_NWA_daitren_clim.nc
 TIDESFILE=${DATADIR}/Inputs/Tides/NWA_tides_otps.nc
 SSSREFILE=${DATADIR}/Inputs/SSS/sss_monthly_climato_flooded.nc
 
-
-# HC=$(ncdump -v hc ${GRIDFILE} | grep "hc = ")
-# HC=${HC#*=}
-# HC=${HC%;}

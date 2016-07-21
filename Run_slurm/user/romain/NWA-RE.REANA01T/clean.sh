@@ -16,7 +16,3 @@ rm -r ${SCRATCHDIR}/Roms_files
 rm -r ${SCRATCHDIR}/Tempfiles
 rm -r ${SCRATCHDIR}/Logs
 
-mv ${SCRATCHDIR}/Exe/oceanM ${SCRATCHDIR}
-rm ${SCRATCHDIR}/Exe/*
-mv ${SCRATCHDIR}/oceanM ${SCRATCHDIR}/Exe/
-

@@ -13,33 +13,46 @@ SIMUDIR=${CURRENTDIR}/${SIMUNAME}/
 mkdir ${SIMUDIR}/
 mkdir ${SIMUDIR}/src/
 
+##########################################################################
 # Copy template files
+##########################################################################
+# ROMS template files
 cp ${DARTMNGDIR}/template/varinfo.dat ${SIMUDIR}/
+cat ${DARTMNGDIR}/template/ocean_in.template | sed -e "s;<TITLESIMU>;${SIMULONG};g" \
+                                                   -e "s;<SIMUAPP>;${ROMSAPP};g"    \
+> ${SIMUDIR}/ocean_${SIMUNAME}.in
+
+# Main scripts 
 cp ${DARTMNGDIR}/src/main.ksh ${SIMUDIR}/
 cp ${DARTMNGDIR}/src/clean.sh ${SIMUDIR}/
 
-
+# Dartagnan parameters
 cat ${DARTMNGDIR}/template/parameters.template | sed -e "s;<SIMUNAME>;${SIMUNAME};g"     \
                                                      -e "s;<SCRATCHDIR>;${SCRATCHDIR};g" \
                                                      -e "s;<WORKINGDIR>;${SIMUDIR};g" \
                                                      -e "s;<DARTMNGDIR>;${DARTMNGDIR};g" \
 > ${SIMUDIR}/parameters
 
-
+##########################################################################
 # Create build script : ROMS
-cat ${DARTMNGDIR}/template/build_roms.bash.template | sed -e "s;<ROMS_APP>;$ROMSAPP;g"\
-                                                     -e "s;<ROMS_DIR>;$ROMSDIR;g"\
-                                                     -e "s;<MY_TMPDIR>;$SCRATCHDIR;g"\
+##########################################################################
+cat ${DARTMNGDIR}/template/build_roms.bash.template | sed -e "s;<ROMS_APP>;${ROMSAPP};g"\
+                                                     -e "s;<ROMS_DIR>;${ROMSDIR};g"\
+                                                     -e "s;<MY_TMPDIR>;${SCRATCHDIR};g"\
 > ${SIMUDIR}/build_roms.bash
 chmod 755 ${SIMUDIR}/build_roms.bash
 
 
+##########################################################################
 # Create build script : DART
+##########################################################################
 
-cat ${DARTMNGDIR}/template/build_dart.bash.template | sed -e "s;<DARTDIR>;$DARTDIR;g"\
-                                                          -e "s;<WORKDIR>;$ROMSDIR;g"\
-                                                          -e "s;<SCRATCHDIR>;$SCRATCHDIR;g"\
+cat ${DARTMNGDIR}/template/build_dart.bash.template | sed -e "s;<DARTDIR>;${DARTDIR};g"\
+                                                          -e "s;<WORKDIR>;${SIMUDIR};g"\
+                                                          -e "s;<SCRATCHDIR>;${SCRATCHDIR};g"\
 > ${SIMUDIR}/build_dart.bash
 chmod 755 ${SIMUDIR}/build_dart.bash
+
+
 
 

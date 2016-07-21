@@ -8,10 +8,10 @@ MYDIR=$(pwd)
 
 cd ${DARTDIR}/models/ROMS/work/
 
-echo $(pwd)
-
 ./quickbuild.csh -mpi
 
+mkdir -p ${WORKDIR}/dart_exe/
+mkdir -p ${SCRATCHDIR}/Exe/
 cp roms_to_dart filter dart_to_roms ${WORKDIR}/dart_exe/
 cp roms_to_dart filter dart_to_roms ${SCRATCHDIR}/Exe/
 

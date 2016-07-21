@@ -35,11 +35,11 @@
 !
 ! Application title.
 
-       TITLE = Northwest Atlantic 7km Grid
+       TITLE = <TITLESIMU>
 
 ! C-preprocessing Flag.
 
-    MyAppCPP = NWA
+    MyAppCPP = <SIMUAPP>
 
 ! Input variable information file name.  This file needs to be processed
 ! first so all information arrays can be initialized properly.
