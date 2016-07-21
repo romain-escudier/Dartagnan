@@ -1,15 +1,32 @@
+
+############################################################
+## To be filled by user
+#############################################################
+
 # Type of simulation
 ROMSAPP=NWA
 
 # User initials
-USERINI=BJ
+USERINI=BJC
 
-# Simulation name
-SIMUNAME=${ROMSAPP}-${USERINI}.REANA01
+# Simulation specific name
+SIMUSUFF=ENKF14
 
 # Computation directory
-ROMSDIR=/home/romain/Projects/ROMS/
-SCRATCHDIR=${SCRATCH}/dart/tmpdir_${SIMUNAME}/
+ROMSDIR=/home/bjchoi/MODELS/ROMS-ESM
+DARTDIR=/home/bjchoi/MODELS/lanai
+
+
+
+############################################################
+# No user change after this
+############################################################
+
+# Simulation name
+SIMUNAME=${ROMSAPP}-${USERINI}.${SIMUSUFF}
+
+# Directory of outputs
+SCRATCHDIR=${SCRATCH}/tmpdir_${SIMUNAME}/
 
 
 
