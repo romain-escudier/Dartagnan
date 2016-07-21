@@ -19,6 +19,10 @@ cd ${SCRATCHDIR}
 
 if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 
+#------------------------------------------------------------------------------------
+# Specific options for triton computer
+#------------------------------------------------------------------------------------
+
    if [ $TYPENODE == 'triton16' ] ; then
        taskpernode=16
    elif [ $TYPENODE == 'triton24' ] ; then
@@ -28,7 +32,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    fi
    
 #------------------------------------------------------------------------------------
-# Load the appropriate modules
+# Load the appropriate modules (from module-used)
 #------------------------------------------------------------------------------------
 
    sed '1d' ${SCRATCHDIR}/modules-used > ${SCRATCHDIR}/Tempfiles/modules.dat
@@ -40,7 +44,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    rm ${SCRATCHDIR}/Tempfiles/modules.dat
 
 #------------------------------------------------------------------------------------
-# Prepare the namelist
+# Prepare the namelists
 #------------------------------------------------------------------------------------
 
    # Get date for this cycle
@@ -49,20 +53,27 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    date_cycle_prev=$(get_date_from_cycle ${prev_cycle} $STARTDATE $DT_ANA)
    date_cycle_std=$(print_time_dart $date_cycle)
 
-   # Prepare the namelist
-   day_zero=149748
-   jday=$(( day_zero + $(($this_cycle/$DT_ANA)) -1 )) # jday = cumulative days from 1601.01.01
+   # Get the associate Dart day
+   dart_ref_date=16010101
+   day_zero=$(($(get_timediff_dates ${dart_ref_date} ${STARTDATE})-1)) # jday = cumulative days from 1601.01.01
+   jday=$(( day_zero + $(($this_cycle/$DT_ANA)) -1 )) # observations are taken from the day before
+
+   # Select the correct observation files
    obs_seq_in=${DATADIR}/ObsData/SST/obsSEQ/obs_seq.sst1.${date_cycle_prev}
    # obs_seq_in=${DATADIR}/ObsData/SST/obs_seq_test
    obs_seq_out=${SCRATCHDIR}/Outputs/Tmpdir/obs_seq.final${date_cycle_prev}
    # obs_seq_out=${SCRATCHDIR}/Outputs/Tmpdir/obs_seq_test.final
+
+   # Other options
    roms_restart_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc  #read grid info
-   HC=$(get_param_from_nc ${GRIDFILE} hc)
    restart_in=${SCRATCHDIR}/Outputs/Tmpdir/dart.ics
    restart_out=${SCRATCHDIR}/Outputs/Tmpdir/dart.restart
+   hc=$(get_param_from_nc ${GRIDFILE} hc) # ROMS critical depth
+
+   # Create the temporary namelist 
    cat ${SCRATCHDIR}/input.nml.default  | sed -e "s;<TIMEANA>;${date_cycle_std};g" \
                                               -e "s;<DTANA>;${DT_ANA};g" \
-                                              -e "s;<HC>;${HC};g" \
+                                              -e "s;<HC>;${hc};g" \
                                               -e "s;<GRIDNAME>;${GRIDFILE};g" \
                                               -e "s;<NMEMBERS>;${NMEMBERS};g" \
                                               -e "s;<OBSINFILE>;${obs_seq_in};g" \
@@ -70,8 +81,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
                                               -e "s;<TASKPERNODE>;${taskpernode};g" \
                                               -e "s;<DARTRSTIN>;${restart_in};g" \
                                               -e "s;<DARTRSTOUT>;${restart_out};g" \
-                                              -e "s;<FIRSTOBSDAY>;$(($jday));g" \
-                                              -e "s;<LASTOBSDAY>;$(($jday));g" \
+                                              -e "s;<FIRSTOBSDAY>;$(($jday-3));g" \
+                                              -e "s;<LASTOBSDAY>;$(($jday+3));g" \
                                               -e "s;<DARTINITDAYS>;$jday;g" \
    > ${SCRATCHDIR}/input.nml.temp
 
@@ -85,22 +96,18 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
       printf -v nnnn "%04d" $kmem
       
       roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
-      dart_output=${SCRATCHDIR}/Outputs/Tmpdir/dart.ics.${nnnn}
+      dart_input=${SCRATCHDIR}/Outputs/Tmpdir/dart.ics.${nnnn}
       
       # Create namelist for the roms2dart code
-      cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTICSFILE>;${dart_output};g" \
+      cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTICSFILE>;${dart_input};g" \
                                               -e "s;<ROMSRSTNAME>;${roms_restart};g" \
                                               -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_r2d_${this_cycle}_${nnn}.out;g" \
                                               -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_r2d_${this_cycle}_${nnn}.nml;g" \
-   > ${SCRATCHDIR}/input.nml.roms2dart
-   cp ${SCRATCHDIR}/input.nml.roms2dart ${SCRATCHDIR}/input.nml
-#      cat ${SCRATCHDIR}/input.nml.template.r2d | sed -e "s;<MODEL_RESTART_FILENAME>;$roms_restart;g" \
-#                                                     -e "s;<DART_OUTPUT_FILENAME>;$dart_output;g" \
-#                                                     -e "s;<GRID_FILENAME>;$grid_file;g" > ${SCRATCHDIR}/input.nml.tmp.r2d	
-#      cp ${SCRATCHDIR}/input.nml.tmp.r2d ${SCRATCHDIR}/input.nml
+      > ${SCRATCHDIR}/input.nml.roms2dart
+
       # run DART Fortran program
+      cp ${SCRATCHDIR}/input.nml.roms2dart ${SCRATCHDIR}/input.nml
       ${SCRATCHDIR}/Exe/roms_to_dart
-      # $roms_restart Please do not remove restart files	
    
    done
 
@@ -109,6 +116,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 # run the analysis
 #------------------------------------------------------------------------------------
    
+   # Create namelist for the filter code
    cat ${SCRATCHDIR}/input.nml.temp | sed -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_filt_${this_cycle}.out;g" \
                                           -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_filt_${this_cycle}.nml;g" \
                                           -e "s;<ROMSRSTNAME>;${roms_restart_file};g" \
@@ -127,38 +135,38 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
       printf -v nnn "%03d" $kmem
       printf -v nnnn "%04d" $kmem
    
-       roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
-       dart_output=${SCRATCHDIR}/Outputs/Tmpdir/dart.restart.${nnnn}
+      roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
+      dart_output=${SCRATCHDIR}/Outputs/Tmpdir/dart.restart.${nnnn}
    
-       cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTRSTFILE>;${dart_output};g" \
-                                               -e "s;<ROMSRSTNAME>;${roms_reanaly};g" \
-                                               -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_d2r_${this_cycle}_${nnn}.out;g" \
-                                               -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_d2r_${this_cycle}_${nnn}.nml;g" \
-       > ${SCRATCHDIR}/input.nml.dart2roms
+      # Create namelist for the dart2roms code
+      cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTRSTFILE>;${dart_output};g" \
+                                              -e "s;<ROMSRSTNAME>;${roms_reanaly};g" \
+                                              -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_d2r_${this_cycle}_${nnn}.out;g" \
+                                              -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_d2r_${this_cycle}_${nnn}.nml;g" \
+      > ${SCRATCHDIR}/input.nml.dart2roms
 
-#       cat ${SCRATCHDIR}/input.nml.template.d2r | sed -e "s;<MODEL_RESTART_FILENAME>;$roms_reanaly;g" \
-#                                                      -e "s;<DART_OUTPUT_FILENAME>;$dart_output;g" \
-#                                                      -e "s;<GRID_FILENAME>;$grid_file;g" > ${SCRATCHDIR}/input.nml.tmp.d2r
-#       cp ${SCRATCHDIR}/input.nml.tmp.d2r ${SCRATCHDIR}/Exe/input.nml
-       cp ${SCRATCHDIR}/input.nml.dart2roms ${SCRATCHDIR}/input.nml
-       # run a Fortran program
-       ${SCRATCHDIR}/Exe/dart_to_roms
-       # mv $dart_output ${dart_output}.old
+      # run a Fortran program
+      cp ${SCRATCHDIR}/input.nml.dart2roms ${SCRATCHDIR}/input.nml
+      ${SCRATCHDIR}/Exe/dart_to_roms
    
    done
 
 else
 
+#------------------------------------------------------------------------------------
+# If no analysis, just copy the prior into the reanalysis directory
+#------------------------------------------------------------------------------------
+
    date_cycle=$(get_date_from_cycle ${this_cycle} ${STARTDATE} ${DT_ANA})
 
-    for kmem in $( seq 1 $NMEMBERS ) ; do
+   for kmem in $( seq 1 $NMEMBERS ) ; do
 
-        printf -v nnn "%03d" $kmem
-        roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
-        roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
-        cp ${roms_restart} ${roms_reanaly}
+      printf -v nnn "%03d" $kmem
+      roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
+      roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
+      cp ${roms_restart} ${roms_reanaly}
 
-    done
+   done
    
 fi
 
