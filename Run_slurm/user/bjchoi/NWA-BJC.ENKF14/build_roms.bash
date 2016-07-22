@@ -85,7 +85,8 @@ export   ROMS_APPLICATION=NWA
 # Set a local environmental variable to define the path to the directories
 # where all this project's files are kept.
 
-export        MY_ROOT_DIR=/home/bjchoi/MODELS/ROMS-ESM
+#export        MY_ROOT_DIR=/home/bjchoi/MODELS/ROMS-ESM
+export        MY_ROOT_DIR=/home/bjchoi/MODELS/ROMS-kate
 export     MY_PROJECT_DIR=${PWD}
 
 # The path to the user's local current ROMS source code.

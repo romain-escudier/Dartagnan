@@ -13,7 +13,7 @@ USERINI=BJC
 SIMUSUFF=ENKF14
 
 # Computation directory
-ROMSDIR=/home/bjchoi/MODELS/ROMS-ESM
+ROMSDIR=/home/bjchoi/MODELS/ROMS-kate
 DARTDIR=/home/bjchoi/MODELS/lanai
 
 
