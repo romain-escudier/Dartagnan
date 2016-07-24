@@ -18,7 +18,7 @@ mkdir ${SIMUDIR}/src/
 ##########################################################################
 # ROMS template files
 cp ${DARTMNGDIR}/template/varinfo.dat ${SIMUDIR}/
-cat ${DARTMNGDIR}/template/ocean_in.template | sed -e "s;<TITLESIMU>;${SIMULONG};g" \
+cat ${DARTMNGDIR}/template/ocean_in.template | sed -e "s;<TITLESIMU>;${APPLONG};g" \
                                                    -e "s;<SIMUAPP>;${ROMSAPP};g"    \
 > ${SIMUDIR}/ocean_${SIMUNAME}.in
 

@@ -121,7 +121,7 @@ srun --cpu_bind=rank -n <NCORES> <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTD
 # check if the run finished OK
 #------------------------------------------------------------------------------------
 
-  check1=$( grep Blowing-up <CURRENTDIR>/Logs/log.roms_fwd.m${this_member} )
+  check1=$( grep Blowing-up <CURRENTDIR>/Logs/log.roms_fwd.c${this_cycle}.m${this_member} )
   
   if [ -z $check1 ] ; then
      echo "run for member $this_member did not blow up... continue..."
@@ -131,7 +131,7 @@ srun --cpu_bind=rank -n <NCORES> <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTD
      exit 1
   fi
   
-  check2=$( grep DONE <CURRENTDIR>/Logs/log.roms_fwd.m${this_member} | tail -1 | awk '{ print $2 }' )
+  check2=$( grep DONE <CURRENTDIR>/Logs/log.roms_fwd.c${this_cycle}.m${this_member} | tail -1 | awk '{ print $2 }' )
   
   if [ ! -z $check2 ] ; then
      echo "run for member $this_member finished OK... continue..."
