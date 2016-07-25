@@ -20,13 +20,15 @@ if (( $cycle > $NCYCLES )) ; then echo 'Completed' ; exit 0 ; fi
 # 1. submit ensemble members
 
 listjobids=""
+printf -v disp_cycle "%03d" ${cycle}
 
 for kmem in $( seq 1 $NMEMBERS ) ; do
 
    printf -v nnn "%03d" $kmem
+   
 
    cat ${SCRATCHDIR}/generic_roms_advance_member.sub | sed -e "s/<MEMBER>/$nnn/g" \
-                                                           -e "s;<CYCLE>;$cycle;g" \
+                                                           -e "s;<CYCLE>;${disp_cycle};g" \
                                                            -e "s;<NCORES>;${NCORES_ROMS};g"\
                                                            -e "s;<TYPENODE>;${TYPENODE};g"\
                                                            -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
@@ -42,7 +44,7 @@ done
 # 2. submit assimilation step
 
 cat ${SCRATCHDIR}/generic_analysis.sub | sed -e "s/<DEPLIST>/$listjobids/g" \
-                                             -e "s/<CYCLE>/$cycle/g" \
+                                             -e "s/<CYCLE>/${this_cycle}/g" \
                                              -e "s;<TYPENODE>;${TYPENODE};g"\
                                              -e "s;<NCORES>;${NCORES_DART};g"\
                                              -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \

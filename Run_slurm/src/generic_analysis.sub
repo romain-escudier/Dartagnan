@@ -105,8 +105,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
       # Create namelist for the roms2dart code
       cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTICSFILE>;${dart_input};g" \
                                               -e "s;<ROMSRSTNAME>;${roms_restart};g" \
-                                              -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_r2d_${this_cycle}_${nnn}.out;g" \
-                                              -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_r2d_${this_cycle}_${nnn}.nml;g" \
+                                              -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_r2d_c${this_cycle}_m${nnn}.out;g" \
+                                              -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_r2d_c${this_cycle}_m${nnn}.nml;g" \
       > ${SCRATCHDIR}/input.nml.roms2dart
 
       # run DART Fortran program
@@ -121,8 +121,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 #------------------------------------------------------------------------------------
    
    # Create namelist for the filter code
-   cat ${SCRATCHDIR}/input.nml.temp | sed -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_filt_${this_cycle}.out;g" \
-                                          -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_filt_${this_cycle}.nml;g" \
+   cat ${SCRATCHDIR}/input.nml.temp | sed -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_filt_c${this_cycle}.out;g" \
+                                          -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_filt_c${this_cycle}.nml;g" \
                                           -e "s;<ROMSRSTNAME>;${roms_restart_file};g" \
    > ${SCRATCHDIR}/input.nml.filter
    cp ${SCRATCHDIR}/input.nml.filter ${SCRATCHDIR}/input.nml
@@ -145,8 +145,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
       # Create namelist for the dart2roms code
       cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTRSTFILE>;${dart_output};g" \
                                               -e "s;<ROMSRSTNAME>;${roms_reanaly};g" \
-                                              -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_d2r_${this_cycle}_${nnn}.out;g" \
-                                              -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_d2r_${this_cycle}_${nnn}.nml;g" \
+                                              -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_d2r_c${this_cycle}_m${nnn}.out;g" \
+                                              -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_d2r_c${this_cycle}_m${nnn}.nml;g" \
       > ${SCRATCHDIR}/input.nml.dart2roms
 
       # run a Fortran program
