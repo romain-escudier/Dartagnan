@@ -66,8 +66,10 @@ get_date_from_cycle() { CYCLE=$1 ; STARTDATE=$2 ; DTCYCLE=$3
    
    done
    YEAR_TMP=YEAR_TMP-1
+   MONT_TMP=1
+   DAYS_TMP=1
    ISTP_TMP=${ISTP_TMP}+${NDAYS}
-   
+    
    #######################################################
    #           FIND WHICH MONTH FOR CYCLE
    #######################################################
