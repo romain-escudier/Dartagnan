@@ -66,8 +66,10 @@ get_date_from_cycle() { CYCLE=$1 ; STARTDATE=$2 ; DTCYCLE=$3
    
    done
    YEAR_TMP=YEAR_TMP-1
-   MONT_TMP=1
-   DAYS_TMP=1
+   if ((${YEAR_TMP} != ${YEAR_START})) ; then
+       MONT_TMP=1
+       DAYS_TMP=1
+   fi
    ISTP_TMP=${ISTP_TMP}+${NDAYS}
     
    #######################################################
@@ -91,7 +93,6 @@ get_date_from_cycle() { CYCLE=$1 ; STARTDATE=$2 ; DTCYCLE=$3
    MONT_DISP=$( printf "%02d" ${MONT_TMP} )
    DAYS_DISP=$( printf "%02d" ${DAYS_TMP} )
    echo "${YEAR_TMP}${MONT_DISP}${DAYS_DISP}"
-
 
 }
 
