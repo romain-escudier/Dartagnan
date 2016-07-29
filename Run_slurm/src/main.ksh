@@ -8,7 +8,8 @@
 . ./parameters
 
 # Prepare scratch directory
-mkdir -p ${SCRATCHDIR}/Logs/
+mkdir -p ${SCRATCHDIR}/Logs/ROMS/
+mkdir -p ${SCRATCHDIR}/Logs/DART/
 mkdir -p ${SCRATCHDIR}/Tempfiles/
 mkdir -p ${SCRATCHDIR}/Roms_files/
 mkdir -p ${SCRATCHDIR}/Exe/
@@ -42,7 +43,7 @@ cp ${DARTMNGDIR}/src/* ${SCRATCHDIR}/
 ## Get executables for analysis
 #cp ${WORKINGDIR}/dart_exe/* ${SCRATCHDIR}/Exe/
 # Get templates
-cp ${DARTMNGDIR}/template/input.nml.default ${SCRATCHDIR}/
+cp ${WORKINGDIR}/input_${SIMU}.nml ${SCRATCHDIR}/
 cp ${WORKINGDIR}/ocean_${SIMU}.in ${SCRATCHDIR}/
 
 

@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH -n <NCORES>
-#SBATCH --time=1:00:00
+#SBATCH --time=3:00:00
 #SBATCH -J analysis
 #SBATCH --dependency=afterok<DEPLIST>
-#SBATCH --error=<CURRENTDIR>/Logs/analysis.%J.err 
-#SBATCH --output=<CURRENTDIR>/Logs/analysis.%J.out
+#SBATCH --error=<CURRENTDIR>/Logs/analysis_c<DISPCYCLE>.%J.err 
+#SBATCH --output=<CURRENTDIR>/Logs/analysis_c<DISPCYCLE>.%J.out
 #SBATCH -p <TYPENODE>
 
 set -x
@@ -13,6 +13,7 @@ set -x
 . <CURRENTDIR>/functions.sh
 
 this_cycle=<CYCLE>
+disp_cycle=<DISPCYCLE>
 this_job_id=${SLURM_JOB_ID}
 
 cd ${SCRATCHDIR}
@@ -75,7 +76,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    hc=$(get_param_from_nc ${GRIDFILE} hc) # ROMS critical depth
 
    # Create the temporary namelist 
-   cat ${SCRATCHDIR}/input.nml.default  | sed -e "s;<TIMEANA>;${date_cycle_std};g" \
+   cat ${SCRATCHDIR}/input_${SIMU}.nml  | sed -e "s;<TIMEANA>;${date_cycle_std};g" \
                                               -e "s;<DTANA>;${DT_ANA};g" \
                                               -e "s;<HC>;${hc};g" \
                                               -e "s;<GRIDNAME>;${GRIDFILE};g" \
@@ -105,8 +106,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
       # Create namelist for the roms2dart code
       cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTICSFILE>;${dart_input};g" \
                                               -e "s;<ROMSRSTNAME>;${roms_restart};g" \
-                                              -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_r2d_c${this_cycle}_m${nnn}.out;g" \
-                                              -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_r2d_c${this_cycle}_m${nnn}.nml;g" \
+                                              -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_r2d_c${disp_cycle}_m${nnn}.out;g" \
+                                              -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_r2d_c${disp_cycle}_m${nnn}.nml;g" \
       > ${SCRATCHDIR}/input.nml.roms2dart
 
       # run DART Fortran program
@@ -121,8 +122,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 #------------------------------------------------------------------------------------
    
    # Create namelist for the filter code
-   cat ${SCRATCHDIR}/input.nml.temp | sed -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_filt_c${this_cycle}.out;g" \
-                                          -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_filt_c${this_cycle}.nml;g" \
+   cat ${SCRATCHDIR}/input.nml.temp | sed -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_filt_c${disp_cycle}.out;g" \
+                                          -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_filt_c${disp_cycle}.nml;g" \
                                           -e "s;<ROMSRSTNAME>;${roms_restart_file};g" \
    > ${SCRATCHDIR}/input.nml.filter
    cp ${SCRATCHDIR}/input.nml.filter ${SCRATCHDIR}/input.nml
@@ -138,15 +139,17 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    
       printf -v nnn "%03d" $kmem
       printf -v nnnn "%04d" $kmem
-   
+      
+      roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
       roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
       dart_output=${Temp_dir}/dart.restart.${nnnn}
-   
+      cp $roms_restart  $roms_reanaly
+
       # Create namelist for the dart2roms code
       cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTRSTFILE>;${dart_output};g" \
                                               -e "s;<ROMSRSTNAME>;${roms_reanaly};g" \
-                                              -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/dart_d2r_c${this_cycle}_m${nnn}.out;g" \
-                                              -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/dart_d2r_c${this_cycle}_m${nnn}.nml;g" \
+                                              -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}_m${nnn}.out;g" \
+                                              -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}_m${nnn}.nml;g" \
       > ${SCRATCHDIR}/input.nml.dart2roms
 
       # run a Fortran program

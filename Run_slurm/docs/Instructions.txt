@@ -16,8 +16,10 @@ Here you need to fill :
 ROMSAPP : The name of the ROMS application (region)
 USERINI : Intials of the user
 SIMUSUFF : The specific name of the simulation
+APPLONG : The long name of the application
 ROMSDIR : Directory of the ROMS code
 DARTDIR : Directory of the DART code
+Your simulation will be called SIMUNAME=ROMSAPP-USERINI.SIMUSUFF
 
 $ ./setup_simu.sh
 This will create a directory for the new simulation in the user1/ directory
@@ -29,45 +31,84 @@ build.bash        -> script to compile the ROMS code
 build_dart.bash   -> script to compile the DART code
 main.ksh          -> main script to launch the simulation
 clean.sh          -> script to clean the scratch directory
+ocean_SIMUNAME.in  -> ROMS namelist
+input_SIMUNAME.nml -> DART namelist
+
 
 -----------------------------------------
 Compile the ROMS code :
 -----------------------------------------
-$ cd ${name_of_the_simu}/
-First you need to put in src/, the appropriate headers (e.g. nwa.h)
+$ cd SIMUNAME/
+First you need to put in src/, the appropriate headers (e.g. nwa.h, ana_nudgcoef.h)
 $ module load netcdf/4.3.0-gcc4.4.7 openmpi/1.8.5_gcc4.4.7
 $ ./build.bash -j 4
+
 
 -----------------------------------------
 Compile the DART code :
 -----------------------------------------
 $ ./build_dart.bash
+(will call the quickbuild.csh of the DART code)
+
 
 -----------------------------------------
-Fill the parameters :
+Put the run parameter values :
 -----------------------------------------
 $ vi parameters
 Fill with the desired values for this simulation 
+
+
+-----------------------------------------
+Check the ROMS namelist :
+-----------------------------------------
+$ vi ocean_SIMUNAME.in
+Put the desired parameters for the ROMS model
+(parameters between <> are automatically filled by the script)
+
+
+-----------------------------------------
+Check the DART namelist :
+-----------------------------------------
+$ vi input_SIMUNAME.nml
+Put the desired parameters for the DART assimilation
+(parameters between <> are automatically filled by the script)
+
 
 -----------------------------------------
 Launch the simulation :
 -----------------------------------------
 $ ./main.ksh
 
+
 -----------------------------------------
 Look at results :
 -----------------------------------------
 The outputs/logs are stored in the scratch directory:
-it is ${SCRATCH}/dart/tmp_${name_of_the_simu}/
-$ cd ${SCRATCH}/dart/tmp_${name_of_the_simu}/
+it is ${SCRATCH}/dart/tmp_SIMUNAME/
+$ cd ${SCRATCH}/dart/tmp_SIMUNAME/
 
 The output files are in Outputs/ :
 Average/    -> directory for average files
 History/    -> directory for history files
 Prior/      -> directory for prior restart files (before assimilation)
 Reanalysis/ -> directory for reanalysis restart files (after assimilation)
+Filtfiles/  -> directory where filtering files are saved every month (for tides)
+Each of these directories have a sub-directory for each member
 Tmpdir/     -> directory for temporary dart files
 
 The logs are in Logs/
+ROMS/ -> ROMS log outputs
+DART/ -> DART log outputs
+
+Executables are in Exe/
+
+Build files for ROMS are in Build/
+
+
+
+
+
+
+
 
 

@@ -22,6 +22,10 @@ cat ${DARTMNGDIR}/template/ocean_in.template | sed -e "s;<TITLESIMU>;${APPLONG};
                                                    -e "s;<SIMUAPP>;${ROMSAPP};g"    \
 > ${SIMUDIR}/ocean_${SIMUNAME}.in
 
+# Dart template files
+cp ${DARTMNGDIR}/template/input.nml.template ${SIMUDIR}/input_${SIMUNAME}.nml
+
+
 # Main scripts 
 cp ${DARTMNGDIR}/src/main.ksh ${SIMUDIR}/
 cp ${DARTMNGDIR}/src/clean.sh ${SIMUDIR}/

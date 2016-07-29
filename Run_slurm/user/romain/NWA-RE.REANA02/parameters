@@ -20,7 +20,7 @@ DT_ANA=1
 SIMU=NWA-RE.REANA02
 
 # start at cycle nstart
-NSTART=2
+NSTART=8
 # end at cycle ncycles
 NCYCLES=31
 

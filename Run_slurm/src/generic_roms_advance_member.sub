@@ -2,8 +2,8 @@
 #SBATCH -n <NCORES>
 #SBATCH --time=3:00:00
 #SBATCH -J roms_advance_<MEMBER>
-#SBATCH --error=<CURRENTDIR>/Logs/roms_advance_c<CYCLE>_m<MEMBER>.%J.err 
-#SBATCH --output=<CURRENTDIR>/Logs/roms_advance_c<CYCLE>_m<MEMBER>.%J.out
+#SBATCH --error=<CURRENTDIR>/Logs/roms_advance_c<DISPCYCLE>_m<MEMBER>.%J.err 
+#SBATCH --output=<CURRENTDIR>/Logs/roms_advance_c<DISPCYCLE>_m<MEMBER>.%J.out
 #SBATCH -p <TYPENODE>
 
 set -x
@@ -13,6 +13,7 @@ set -x
 
 this_member=<MEMBER>
 this_cycle=<CYCLE>
+disp_cycle=<DISPCYCLE>
 this_job_id=${SLURM_JOB_ID}
 
 
@@ -24,8 +25,8 @@ this_job_id=${SLURM_JOB_ID}
 NAMELIST=${SCRATCHDIR}/Roms_files/ocean_${SIMU}_m${this_member}.in
 
 # Time periods
-ntimeana=$(( ${DT_ANA}*86400/$DT )) # Number of steps between restart files
-ntimeout=$(( ${DT_OUT}*86400/$DT )) # Number of steps between outputs files
+ntimeana=$(compute_eq_integer_result ${DT_ANA}*86400/$DT) # Number of steps between restart files
+ntimeout=$(compute_eq_integer_result ${DT_OUT}*86400/$DT) # Number of steps between outputs files
 time_end=$(( ${this_cycle} * ${ntimeana})) # Number of steps to reach before stopping
 startday=$(get_timediff_dates ${REFDATE} ${STARTDATE}) # Starting date (in days since reference)
 date_cycle=$(get_date_from_cycle ${this_cycle} ${STARTDATE} ${DT_ANA}) # Date of cycle YYYYMMDD
@@ -112,7 +113,7 @@ rm ${SCRATCHDIR}/Tempfiles/m${this_member}/modules.dat
 # run the code
 #------------------------------------------------------------------------------------
 
-srun --cpu_bind=rank -n <NCORES> <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTDIR>/Logs/log.roms_fwd.c${this_cycle}.m${this_member}
+srun --cpu_bind=rank -n <NCORES> <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTDIR>/Logs/ROMS/log.roms_fwd.c${disp_cycle}.m${this_member}
 
 #sleep 1
 #exit 0
@@ -121,7 +122,7 @@ srun --cpu_bind=rank -n <NCORES> <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTD
 # check if the run finished OK
 #------------------------------------------------------------------------------------
 
-  check1=$( grep Blowing-up <CURRENTDIR>/Logs/log.roms_fwd.c${this_cycle}.m${this_member} )
+  check1=$( grep Blowing-up <CURRENTDIR>/Logs/ROMS/log.roms_fwd.c${disp_cycle}.m${this_member} )
   
   if [ -z $check1 ] ; then
      echo "run for member $this_member did not blow up... continue..."
@@ -131,7 +132,7 @@ srun --cpu_bind=rank -n <NCORES> <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTD
      exit 1
   fi
   
-  check2=$( grep DONE <CURRENTDIR>/Logs/log.roms_fwd.c${this_cycle}.m${this_member} | tail -1 | awk '{ print $2 }' )
+  check2=$( grep DONE <CURRENTDIR>/Logs/ROMS/log.roms_fwd.c${disp_cycle}.m${this_member} | tail -1 | awk '{ print $2 }' )
   
   if [ ! -z $check2 ] ; then
      echo "run for member $this_member finished OK... continue..."

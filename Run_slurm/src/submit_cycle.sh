@@ -28,7 +28,8 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    
 
    cat ${SCRATCHDIR}/generic_roms_advance_member.sub | sed -e "s/<MEMBER>/$nnn/g" \
-                                                           -e "s;<CYCLE>;${disp_cycle};g" \
+                                                           -e "s;<CYCLE>;${cycle};g" \
+                                                           -e "s;<DISPCYCLE>;${disp_cycle};g" \
                                                            -e "s;<NCORES>;${NCORES_ROMS};g"\
                                                            -e "s;<TYPENODE>;${TYPENODE};g"\
                                                            -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
@@ -44,7 +45,8 @@ done
 # 2. submit assimilation step
 
 cat ${SCRATCHDIR}/generic_analysis.sub | sed -e "s/<DEPLIST>/$listjobids/g" \
-                                             -e "s/<CYCLE>/${this_cycle}/g" \
+                                             -e "s;<CYCLE>;${cycle};g" \
+                                             -e "s;<DISPCYCLE>;${disp_cycle};g" \
                                              -e "s;<TYPENODE>;${TYPENODE};g"\
                                              -e "s;<NCORES>;${NCORES_DART};g"\
                                              -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \

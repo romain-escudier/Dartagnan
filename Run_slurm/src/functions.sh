@@ -44,31 +44,26 @@ get_date_from_cycle() { CYCLE=$1 ; STARTDATE=$2 ; DTCYCLE=$3
       declare -i NDAYS=365
       # check if it is a leap year
       IS_LEAP=$(is_leap_year ${YEAR_TMP})
-      
       if [ "${IS_LEAP}" = true ] ; then
          NDAYS=366
       fi
    
       # Different if it is the first year (may not start on Jan 1st)
       if ((${YEAR_TMP} == ${YEAR_START})) ; then
-         if ((${MONT_TMP}>3)) ; then
+         if ((${MONT_TMP}>3)) || [ "${IS_LEAP}" = false ]; then
             NDAYS=$(get_sum_from_array ${nb_days_months[*]:${MONT_TMP}-1})-${DAYS_TMP}+1
          else
-            if [ "${IS_LEAP}" = true ] ; then
-               NDAYS=$(get_sum_from_array ${nb_days_months[*]:${MONT_TMP}-1})-${DAYS_TMP}+2
-            else
-               NDAYS=$(get_sum_from_array ${nb_days_months[*]:${MONT_TMP}-1})-${DAYS_TMP}+1
-            fi
+            NDAYS=$(get_sum_from_array ${nb_days_months[*]:${MONT_TMP}-1})-${DAYS_TMP}+2
          fi
       fi
       ISTP_TMP=${ISTP_TMP}-${NDAYS}
       YEAR_TMP=YEAR_TMP+1
-   
    done
+
    YEAR_TMP=YEAR_TMP-1
    if ((${YEAR_TMP} != ${YEAR_START})) ; then
-       MONT_TMP=1
-       DAYS_TMP=1
+      MONT_TMP=1
+      DAYS_TMP=1
    fi
    ISTP_TMP=${ISTP_TMP}+${NDAYS}
     
@@ -87,6 +82,7 @@ get_date_from_cycle() { CYCLE=$1 ; STARTDATE=$2 ; DTCYCLE=$3
       ISTP_TMP=${ISTP_TMP}-${NDAYS}
       MONT_TMP=MONT_TMP+1
    done
+
    MONT_TMP=MONT_TMP-1
    declare -i DAYS_TMP=${ISTP_TMP}+${NDAYS}
    
@@ -214,5 +210,18 @@ print_time_dart() { MYDATE=$1
    echo ${DATEOUT}
 
 }
+
+compute_eq_integer_result() { EQUATION=$1
+
+   res=$(echo "scale=0; $1" | bc -l)
+   echo ${res%.*}
+
+}
+
+
+
+
+
+
 
 
