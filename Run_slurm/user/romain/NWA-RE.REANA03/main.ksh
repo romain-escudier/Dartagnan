@@ -19,6 +19,8 @@ mkdir -p ${SCRATCHDIR}/Outputs/Prior/
 mkdir -p ${SCRATCHDIR}/Outputs/Reanalysis/
 mkdir -p ${SCRATCHDIR}/Outputs/Tmpdir/
 mkdir -p ${SCRATCHDIR}/Outputs/Filtfiles/
+mkdir -p ${SCRATCHDIR}/Outputs/ObsOut/
+mkdir -p ${SCRATCHDIR}/Outputs/Diags/
 
 
 for kmem in $( seq 1 $NMEMBERS ) ; do

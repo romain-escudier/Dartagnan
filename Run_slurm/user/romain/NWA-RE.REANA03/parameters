@@ -53,6 +53,9 @@ DT=180
 # Output step (days)
 DT_OUT=1
 
+# Filter output step (days)
+DT_FILT=1
+
 # File parameters
 FORCINGDIR=${DATADIR}/Inputs/Force/
 FORCINGPREF=drowned_MERRA_

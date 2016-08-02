@@ -87,7 +87,7 @@ mkdir -p ${SCRATCHDIR}/Tempfiles/m${this_member}/
 cd ${SCRATCHDIR}/Tempfiles/m${this_member}/
 
 # Save filtering files every month (before computing the first day of the month)
-if [[ ${date_cycle:6:2} == '01' && (( ${this_cycle} != 1 )) ]] ; then # No filter files on cycle 1
+if (( $((${this_cycle}%${DT_FILT})) == 0 )) ; then # No filter files on cycle 1
    for file_filt in ocean_fil*.nc ; do
       cp ${file_filt} ${SCRATCHDIR}/Outputs/Filtfiles/m${this_member}/${file_filt%.*}_${date_cycle}.nc
    done

@@ -66,7 +66,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    # Select the correct observation files
    obs_seq_in=${DATADIR}/ObsData/SST/obsSEQ/obs_seq.sst1.${date_cycle_prev}
    # obs_seq_in=${DATADIR}/ObsData/SST/obs_seq_test
-   obs_seq_out=${Temp_dir}/obs_seq.final${date_cycle_prev}
+   obs_seq_out=${SCRATCHDIR}/Outputs/ObsOut/obs_seq.sst1.final.${date_cycle_prev}
    # obs_seq_out=${Temp_dir}/obs_seq_test.final
 
    # Other options
@@ -108,10 +108,9 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
                                               -e "s;<ROMSRSTNAME>;${roms_restart};g" \
                                               -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_r2d_c${disp_cycle}_m${nnn}.out;g" \
                                               -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_r2d_c${disp_cycle}_m${nnn}.nml;g" \
-      > ${SCRATCHDIR}/input.nml.roms2dart
+      > ${SCRATCHDIR}/input.nml
 
       # run DART Fortran program
-      cp ${SCRATCHDIR}/input.nml.roms2dart ${SCRATCHDIR}/input.nml
       ${SCRATCHDIR}/Exe/roms_to_dart
    
    done
@@ -125,12 +124,21 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    cat ${SCRATCHDIR}/input.nml.temp | sed -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_filt_c${disp_cycle}.out;g" \
                                           -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_filt_c${disp_cycle}.nml;g" \
                                           -e "s;<ROMSRSTNAME>;${roms_restart_file};g" \
-   > ${SCRATCHDIR}/input.nml.filter
-   cp ${SCRATCHDIR}/input.nml.filter ${SCRATCHDIR}/input.nml
+   > ${SCRATCHDIR}/input.nml
    
    # Run the Kalman filter
    srun --cpu_bind=rank -n <NCORES> ${SCRATCHDIR}/Exe/filter
-   
+  
+   # Copy the diag outputs
+   cp ${SCRATCHDIR}/Prior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Prior_Diag_${date_cycle}.nc
+   cp ${SCRATCHDIR}/Posterior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Posterior_Diag_${date_cycle}.nc
+
+   if [ -f ${restart_out}] ; then
+      success=1
+   else
+      success=0
+   fi
+ 
 #------------------------------------------------------------------------------------
 # Convert all members DART files to ROMS files
 #------------------------------------------------------------------------------------
@@ -150,10 +158,9 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
                                               -e "s;<ROMSRSTNAME>;${roms_reanaly};g" \
                                               -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}_m${nnn}.out;g" \
                                               -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}_m${nnn}.nml;g" \
-      > ${SCRATCHDIR}/input.nml.dart2roms
+      > ${SCRATCHDIR}/input.nml
 
       # run a Fortran program
-      cp ${SCRATCHDIR}/input.nml.dart2roms ${SCRATCHDIR}/input.nml
       ${SCRATCHDIR}/Exe/dart_to_roms
    
    done
@@ -174,10 +181,10 @@ else
       cp ${roms_restart} ${roms_reanaly}
 
    done
+   success=1
    
 fi
 
-success=1
 
 #------------------------------------------------------------------------------------
 # if analysis successful, submit next cycle
