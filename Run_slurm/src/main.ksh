@@ -31,6 +31,8 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    mkdir -p ${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/
    mkdir -p ${SCRATCHDIR}/Outputs/Filtfiles/m${nnn}/
 
+
+   #TODO Add case of restart from other simu
    init_file_tmp=$( echo ${INITFILE} | sed -e "s;XXX;${nnn};")
    ln -fs ${init_file_tmp} ${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_ini_${STARTDATE}.nc
 done
