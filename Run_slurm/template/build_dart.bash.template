@@ -12,8 +12,8 @@ cd ${DARTDIR}/models/ROMS/work/
 
 mkdir -p ${WORKDIR}/dart_exe/
 mkdir -p ${SCRATCHDIR}/Exe/
-cp roms_to_dart filter dart_to_roms ${WORKDIR}/dart_exe/
-cp roms_to_dart filter dart_to_roms ${SCRATCHDIR}/Exe/
+cp roms_to_dart filter dart_to_roms obs_diag obs_seq_to_netcdf ${WORKDIR}/dart_exe/
+cp roms_to_dart filter dart_to_roms obs_diag obs_seq_to_netcdf ${SCRATCHDIR}/Exe/
 
 cd ${MYDIR}
 
