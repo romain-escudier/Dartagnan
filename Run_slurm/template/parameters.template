@@ -38,6 +38,10 @@ NCORES_DART=48
 # start analysis at cycle nstart_ana
 NSTART_ANA=10
 
+# Observation files
+OBS_DIR=${DATADIR}/ObsData/SST/obsSEQ/
+OBS_PREF=obs_seq.sst1.
+
 #--------------------------------------------------
 # ROMS PARAMETERS
 #--------------------------------------------------

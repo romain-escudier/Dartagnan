@@ -64,7 +64,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    jday=$(( day_zero + $(($this_cycle/$DT_ANA)) -1 )) # observations are taken from the day before
 
    # Select the correct observation files
-   obs_seq_in=${OBS_DIR}/${OBS_PREF}.${date_cycle_prev}
+   obs_seq_in=${OBS_DIR}/${OBS_PREF}${date_cycle_prev}
    obs_seq_out=${SCRATCHDIR}/Outputs/ObsOut/${OBS_PREF}.final.${date_cycle_prev}
 
    # Other options

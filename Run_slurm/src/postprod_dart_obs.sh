@@ -42,6 +42,6 @@ mv obs_diag_output.nc ${SCRATCHDIR}/Outputs/Diags/
 # Create netcdf observation files
 ${SCRATCHDIR}/Exe/obs_seq_to_netcdf
 mv obs_epoch_*.nc ${SCRATCHDIR}/Outputs/Diags/
-rename obs_epoch ${OBS_PREF} ${SCRATCHDIR}/Outputs/Diags/obs_epoch*.nc
+rename obs_epoch_ ${OBS_PREF} ${SCRATCHDIR}/Outputs/Diags/obs_epoch*.nc
 
 
