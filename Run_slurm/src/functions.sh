@@ -211,6 +211,26 @@ print_time_dart() { MYDATE=$1
 
 }
 
+print_time_dart_list() { MYDATE=$1
+
+   MYYEAR=${MYDATE:0:4}
+   MYMONTH=${MYDATE:4:2}
+   MYDAY=${MYDATE:6:2}
+
+   MYHR=${MYDATE:8:2}
+   MYMN=${MYDATE:10:2}
+   MYSC=${MYDATE:12:2}
+   if [ -z $MYHR ] ; then
+      DATEOUT="${MYYEAR}, ${MYMONTH}, ${MYDAY}, 0, 0, 0"
+   else
+      DATEOUT="${MYYEAR}, ${MYMONTH}, ${MYDAY}, ${MYHR}, ${MYMN}, ${MYSC}"
+   fi
+
+   echo ${DATEOUT}
+
+}
+
+
 compute_eq_integer_result() { EQUATION=$1
 
    res=$(echo "scale=0; $1" | bc -l)

@@ -156,11 +156,11 @@
    grid_definition_filename     = '<GRIDNAME>'
    vert_localization_coord      = 3
    debug     = 0
-   variables = 'temp',         'KIND_TEMPERATURE'
-               'salt',         'KIND_SALINITY'
-               'u',            'KIND_U_CURRENT_COMPONENT'
-               'v',            'KIND_V_CURRENT_COMPONENT'
-               'zeta',         'KIND_SEA_SURFACE_HEIGHT'
+   variables = 'temp',         'KIND_TEMPERATURE',
+               'salt',         'KIND_SALINITY',
+               'u',            'KIND_U_CURRENT_COMPONENT',
+               'v',            'KIND_V_CURRENT_COMPONENT',
+               'zeta',         'KIND_SEA_SURFACE_HEIGHT',
   /
 
 &roms_to_dart_nml
@@ -257,13 +257,13 @@
 # hlevel_edges should be changed to more realistic values for ROMS
 &obs_diag_nml
    obs_sequence_name = ''
-   obs_sequence_list = 'obs_seq_files.txt'
-   first_bin_center  =  2011, 1,  3, 0, 0, 0
-   last_bin_center   =  2011, 1,  8, 0, 0, 0
-   bin_separation    =     0, 0,  1, 0, 0, 0
-   bin_width         =     0, 0,  1, 0, 0, 0
+   obs_sequence_list = '<OBS_SEQ_LIST>'
+   first_bin_center  = <DATESTARTBIN>
+   last_bin_center   = <DATEENDBIN> 
+   bin_separation    = <BINSEP>
+   bin_width         = <BINWIDTH>
    time_to_skip      =     0, 0,  0, 0, 0, 0
-   max_num_bins = 1000
+   max_num_bins = <MAXBINS>
    trusted_obs  = 'null'
    Nregions     = 1
    lonlim1      =     0.0
@@ -282,10 +282,10 @@
 
 &schedule_nml
    calendar        = 'Gregorian'
-   first_bin_start =  1601,  1,  1,  0,  0,  0
-   first_bin_end   =  2999,  1,  1,  0,  0,  0
-   last_bin_end    =  2999,  1,  1,  0,  0,  0
-   bin_interval_days    = 1000000
+   first_bin_start =  <DATESTARTBIN_INI>
+   first_bin_end   =  <DATESTARTBIN_END>
+   last_bin_end    =  <DATEENDBIN_END>
+   bin_interval_days    = <DTANA>
    bin_interval_seconds = 0
    max_num_bins         = 1000
    print_table          = .true.
@@ -293,8 +293,8 @@
 
 
 &obs_seq_to_netcdf_nml
-   obs_sequence_name = 'obs_seq.final'
-   obs_sequence_list = ''
+   obs_sequence_name = ''
+   obs_sequence_list = '<OBS_SEQ_LIST>'
    append_to_netcdf  = .false.
    lonlim1    =    0.0
    lonlim2    =  360.0

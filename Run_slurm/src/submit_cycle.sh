@@ -14,7 +14,11 @@ cycle=$1
 
 echo "running cycle $cycle of $NCYCLES"
 
-if (( $cycle > $NCYCLES )) ; then echo 'Completed' ; exit 0 ; fi
+if (( $cycle > $NCYCLES )) ; then 
+   ./postprod_dart_obs.sh
+   echo 'Completed' ; 
+   exit 0 ; 
+fi
 
 #---------------------------------------------------------------------------------------------#
 # 1. submit ensemble members

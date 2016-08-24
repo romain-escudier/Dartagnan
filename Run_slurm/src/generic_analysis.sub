@@ -130,14 +130,10 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    srun --cpu_bind=rank -n <NCORES> ${SCRATCHDIR}/Exe/filter
   
    # Copy the diag outputs
-   cp ${SCRATCHDIR}/Prior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Prior_Diag_${date_cycle}.nc
-   cp ${SCRATCHDIR}/Posterior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Posterior_Diag_${date_cycle}.nc
+   mv ${SCRATCHDIR}/Prior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Prior_Diag_${date_cycle}.nc
+   mv ${SCRATCHDIR}/Posterior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Posterior_Diag_${date_cycle}.nc
 
-   if [ -f ${restart_out}] ; then
-      success=1
-   else
-      success=0
-   fi
+   success=1
  
 #------------------------------------------------------------------------------------
 # Convert all members DART files to ROMS files
