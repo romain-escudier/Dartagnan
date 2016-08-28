@@ -31,7 +31,6 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    mkdir -p ${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/
    mkdir -p ${SCRATCHDIR}/Outputs/Filtfiles/m${nnn}/
 
-
    #TODO Add case of restart from other simu
    init_file_tmp=$( echo ${INITFILE} | sed -e "s;XXX;${nnn};")
    ln -fs ${init_file_tmp} ${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_ini_${STARTDATE}.nc
@@ -44,8 +43,6 @@ cp ${WORKINGDIR}/modules-used ${SCRATCHDIR}/
 
 # Get scripts
 cp ${DARTMNGDIR}/src/* ${SCRATCHDIR}/
-## Get executables for analysis
-#cp ${WORKINGDIR}/dart_exe/* ${SCRATCHDIR}/Exe/
 # Get templates
 cp ${WORKINGDIR}/input_${SIMU}.nml ${SCRATCHDIR}/
 cp ${WORKINGDIR}/ocean_${SIMU}.in ${SCRATCHDIR}/
@@ -54,7 +51,7 @@ cp ${WORKINGDIR}/ocean_${SIMU}.in ${SCRATCHDIR}/
 cd ${SCRATCHDIR}
 echo "Creating working directory : $(pwd)"
 
-# Lauch 1rst iteration of cycle
+# Launch 1rst iteration of cycle
 ${SCRATCHDIR}/submit_cycle.sh $NSTART > ${SCRATCHDIR}/Logs/submit.log
 
 

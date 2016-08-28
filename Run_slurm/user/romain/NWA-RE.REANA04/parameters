@@ -36,19 +36,27 @@ DATADIR=/t0/scratch/romain/DART/Data/
 NCORES_DART=48
 
 # start analysis at cycle nstart_ana
-NSTART_ANA=5
+NSTART_ANA=10
+
+# Observation files
+OBS_DIR=${DATADIR}/ObsData/SST/obsSEQ/
+OBS_PREF=obs_seq.sst1.
 
 #--------------------------------------------------
 # ROMS PARAMETERS
 #--------------------------------------------------
 
 # Number of core for forward
-NCORES_ROMS=48
-ITILE=6
+NCORES_ROMS=96
+ITILE=12
 JTILE=8
 
 # Time step
-DT=180
+DT=200
+
+# SPIN-UP
+DT_SPIN=200
+NCYCLES_SPIN=5
 
 # Output step (days)
 DT_OUT=1

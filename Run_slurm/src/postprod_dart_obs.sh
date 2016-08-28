@@ -3,6 +3,21 @@
 . ./parameters
 . ./functions.sh
 
+#------------------------------------------------------------------------------------
+# Load the appropriate modules (from module-used)
+#------------------------------------------------------------------------------------
+
+sed '1d' ${SCRATCHDIR}/modules-used > ${SCRATCHDIR}/Tempfiles/modules.dat
+list=$( cat ${SCRATCHDIR}/Tempfiles/modules.dat | sed -e "s/[0-9])//g" )
+module purge
+for mod in $list ; do
+   module load $mod
+done
+rm ${SCRATCHDIR}/Tempfiles/modules.dat
+
+#------------------------------------------------------------------------------------
+# Post production process
+#------------------------------------------------------------------------------------
 
 # Observation assimilated directory
 obs_dir=${SCRATCHDIR}/Outputs/ObsOut/
@@ -12,7 +27,9 @@ max_bins=1000
 
 # Create a list with all the final observation files
 LIST_FILES=${SCRATCHDIR}/Tempfiles/list_obs.txt
-ls ${obs_dir} > ${LIST_FILES}
+find ${obs_dir} -type f > ${LIST_FILES}
+
+return 1
 
 # Dates of bins
 date_first_bin_start=${STARTDATE}
@@ -31,6 +48,9 @@ cat ${SCRATCHDIR}/input_${SIMU}.nml  | sed -e "s;<OBS_SEQ_LIST>;${LIST_FILES};g"
                                            -e "s;<DATEENDBIN_END>;$(print_time_dart_list ${date_last_bin});g" \
                                            -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_post_c${disp_cycle}.out;g" \
                                            -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_post_c${disp_cycle}.out;g" \
+                                           -e "s;<DTANA>;${DT_ANA};g" \
+                                           -e "s;<;;g" \
+                                           -e "s;>;;g" \
 > ${SCRATCHDIR}/input.nml
 
 cd ${SCRATCHDIR}
@@ -38,6 +58,7 @@ cd ${SCRATCHDIR}
 # Create diagnostic file
 ${SCRATCHDIR}/Exe/obs_diag
 mv obs_diag_output.nc ${SCRATCHDIR}/Outputs/Diags/
+mv LargeInnov.txt ${SCRATCHDIR}/Outputs/Diags/
 
 # Create netcdf observation files
 ${SCRATCHDIR}/Exe/obs_seq_to_netcdf

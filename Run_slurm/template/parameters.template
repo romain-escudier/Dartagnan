@@ -52,7 +52,11 @@ ITILE=6
 JTILE=8
 
 # Time step
-DT=180
+DT=200
+
+# SPIN-UP
+DT_SPIN=200
+NCYCLES_SPIN=5
 
 # Output step (days)
 DT_OUT=1

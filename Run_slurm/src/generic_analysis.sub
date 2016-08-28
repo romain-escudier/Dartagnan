@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -n <NCORES>
 #SBATCH --time=3:00:00
-#SBATCH -J analysis
+#SBATCH -J ana_c<DISPCYCLE>
 #SBATCH --dependency=afterok<DEPLIST>
 #SBATCH --error=<CURRENTDIR>/Logs/analysis_c<DISPCYCLE>.%J.err 
 #SBATCH --output=<CURRENTDIR>/Logs/analysis_c<DISPCYCLE>.%J.out
@@ -65,7 +65,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 
    # Select the correct observation files
    obs_seq_in=${OBS_DIR}/${OBS_PREF}${date_cycle_prev}
-   obs_seq_out=${SCRATCHDIR}/Outputs/ObsOut/${OBS_PREF}.final.${date_cycle_prev}
+   obs_seq_out=${SCRATCHDIR}/Outputs/ObsOut/${OBS_PREF}final.${date_cycle_prev}
 
    # Other options
    roms_restart_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc  #read grid info
@@ -145,7 +145,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
       roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
       roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
       dart_output=${Temp_dir}/dart.restart.${nnnn}
-      cp $roms_restart  $roms_reanaly
+      rsync -havz $roms_restart  $roms_reanaly
 
       # Create namelist for the dart2roms code
       cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTRSTFILE>;${dart_output};g" \

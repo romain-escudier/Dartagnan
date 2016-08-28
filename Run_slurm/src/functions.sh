@@ -205,8 +205,22 @@ print_time_dart() { MYDATE=$1
    MYMONTH=${MYDATE:4:2}
    MYDAY=${MYDATE:6:2}
    
-   DATEOUT="${MYYEAR}-${MYMONTH}-${MYDAY} 00:00:00"
-   
+   MYHR=${MYDATE:8:2}
+   MYMN=${MYDATE:10:2}
+   MYSC=${MYDATE:12:2}
+   if [ -z $MYHR ] ; then
+      DATEOUT="${MYYEAR}-${MYMONTH}-${MYDAY} 00:00:00"
+   else
+      if [ -z $MYMN ] ; then
+         DATEOUT="${MYYEAR}-${MYMONTH}-${MYDAY} ${MYHR}:00:00"
+      else
+         if [ -z $MYSC ] ; then
+            DATEOUT="${MYYEAR}-${MYMONTH}-${MYDAY} ${MYHR}:${MYMN}:00"
+         else
+            DATEOUT="${MYYEAR}-${MYMONTH}-${MYDAY} ${MYHR}:${MYMN}:${MYSC}"
+         fi
+      fi
+   fi
    echo ${DATEOUT}
 
 }
@@ -223,7 +237,15 @@ print_time_dart_list() { MYDATE=$1
    if [ -z $MYHR ] ; then
       DATEOUT="${MYYEAR}, ${MYMONTH}, ${MYDAY}, 0, 0, 0"
    else
-      DATEOUT="${MYYEAR}, ${MYMONTH}, ${MYDAY}, ${MYHR}, ${MYMN}, ${MYSC}"
+      if [ -z $MYMN ] ; then
+         DATEOUT="${MYYEAR}, ${MYMONTH}, ${MYDAY}, ${MYHR}, 0, 0"
+      else
+         if [ -z $MYSC ] ; then
+            DATEOUT="${MYYEAR}, ${MYMONTH}, ${MYDAY}, ${MYHR}, ${MYMN}, 0"
+         else
+            DATEOUT="${MYYEAR}, ${MYMONTH}, ${MYDAY}, ${MYHR}, ${MYMN}, ${MYSC}"
+         fi
+      fi
    fi
 
    echo ${DATEOUT}
@@ -238,10 +260,16 @@ compute_eq_integer_result() { EQUATION=$1
 
 }
 
+comp_files_md5sum() { FILE1=$1 ; FILE2=$2
 
+   sum1=$( md5sum ${FILE1} ); sum1=${sum1%${FILE1}} 
+   sum2=$( md5sum ${FILE2} ); sum2=${sum2%${FILE2}}
+   
+   if [ "${sum1}" == "${sum2}" ] ; then
+      echo "true"
+   else
+      echo "false"
+   fi
+   
 
-
-
-
-
-
+}
