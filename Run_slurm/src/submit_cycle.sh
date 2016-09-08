@@ -35,7 +35,7 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
                                                            -e "s;<CYCLE>;${cycle};g" \
                                                            -e "s;<DISPCYCLE>;${disp_cycle};g" \
                                                            -e "s;<NCORES>;${NCORES_ROMS};g"\
-                                                           -e "s;<TYPENODE>;${TYPENODE};g"\
+                                                           -e "s;<TYPENODE>;${TYPENODE_ROMS};g"\
                                                            -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
    > ${SCRATCHDIR}/Tempfiles/roms_advance_member_${nnn}.sub
    
@@ -51,7 +51,7 @@ done
 cat ${SCRATCHDIR}/generic_analysis.sub | sed -e "s/<DEPLIST>/$listjobids/g" \
                                              -e "s;<CYCLE>;${cycle};g" \
                                              -e "s;<DISPCYCLE>;${disp_cycle};g" \
-                                             -e "s;<TYPENODE>;${TYPENODE};g"\
+                                             -e "s;<TYPENODE>;${TYPENODE_DART};g"\
                                              -e "s;<NCORES>;${NCORES_DART};g"\
                                              -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
 > ${SCRATCHDIR}/Tempfiles/analysis.sub

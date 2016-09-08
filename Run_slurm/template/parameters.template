@@ -1,10 +1,13 @@
 #!/bin/ksh
 
+# Directories
 WORKINGDIR=<WORKINGDIR>
 DARTMNGDIR=<DARTMNGDIR>
 
 # Type of triton cores to use
-TYPENODE=triton16
+# (Don't use generic -triton- for dart)
+TYPENODE_ROMS=triton
+TYPENODE_DART=triton16
 
 # Number of ensemble members to run
 NMEMBERS=3
@@ -47,8 +50,8 @@ OBS_PREF=obs_seq.sst1.
 #--------------------------------------------------
 
 # Number of core for forward
-NCORES_ROMS=48
-ITILE=6
+NCORES_ROMS=96
+ITILE=12
 JTILE=8
 
 # Time step
@@ -71,7 +74,8 @@ FORCINGPREF=drowned_MERRA_
 FORCINGSUFF=_3hours_
 
 GRIDFILE=/t0/scratch/romain/inputs/NWA_grd.nc
-INITFILE=${DATADIR}/Inputs/Init/NWA-RD.ClimCore2H01R_y0XXXm01d01.nc
+INITDIR=${DATADIR}/Inputs/Init/HYCOM/
+INITFILE=HYCOM_GLBa0.08_2010_356_ic_NWA.nc
 
 CLIMFILE=${DATADIR}/Inputs/CLM-NWA/HYCOM_GLBa0.08_monthly_clim_NWA_2011.nc
 BRYFILE=${DATADIR}/Inputs/BC-NWA/HYCOM_GLBa0.08_bdry_NWA_2011.nc

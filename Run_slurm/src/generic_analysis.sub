@@ -9,24 +9,29 @@
 
 set -x
 
+# Get parameters and useful functions
 . <CURRENTDIR>/parameters
 . <CURRENTDIR>/functions.sh
 
+# Get values of cycle and job id
 this_cycle=<CYCLE>
 disp_cycle=<DISPCYCLE>
 this_job_id=${SLURM_JOB_ID}
 
+# Go to the root directory of the simulation (SCRATCHDIR)
 cd ${SCRATCHDIR}
 
+# Only apply filter after a few days (defined in parameter: NSTART_ANA)
 if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 
 #------------------------------------------------------------------------------------
 # Specific options for triton computer
 #------------------------------------------------------------------------------------
 
-   if [ $TYPENODE == 'triton16' ] ; then
+   # Number of processor per node
+   if   [ '<TYPENODE>' == 'triton16' ] ; then
        taskpernode=16
-   elif [ $TYPENODE == 'triton24' ] ; then
+   elif [ '<TYPENODE>' == 'triton24' ] ; then
        taskpernode=24
    else
        echo "Machine not supported"; exit 1
@@ -48,27 +53,36 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 # Prepare the namelists
 #------------------------------------------------------------------------------------
 
-   # Temporary directory
+   ### Temporary directory
    Temp_dir=${SCRATCHDIR}/Outputs/Tmpdir/
+   # Clean it before use
    rm ${Temp_dir}/*
 
-   # Get date for this cycle
+   ### Get dates
+   # for this cycle
    date_cycle=$(get_date_from_cycle ${this_cycle} $STARTDATE $DT_ANA)
+   date_cycle_std=$(print_time_dart $date_cycle)
+   # For previous cycle
    prev_cycle=$(( this_cycle - 1 ))
    date_cycle_prev=$(get_date_from_cycle ${prev_cycle} $STARTDATE $DT_ANA)
-   date_cycle_std=$(print_time_dart $date_cycle)
 
-   # Get the associate Dart day
-   dart_ref_date=16010101
-   day_zero=$(($(get_timediff_dates ${dart_ref_date} ${STARTDATE})-1)) # jday = cumulative days from 1601.01.01
+   ### Get the associate Dart day
+   # Dart reference is January 1st, 1601
+   dart_ref_date=16010101 
+   # jday = cumulative days from 1601.01.01
+   day_zero=$(($(get_timediff_dates ${dart_ref_date} ${STARTDATE})-1))
    jday=$(( day_zero + $(($this_cycle/$DT_ANA)) -1 )) # observations are taken from the day before
 
-   # Select the correct observation files
+   ### Observations
+   # Select the correct input observation files
    obs_seq_in=${OBS_DIR}/${OBS_PREF}${date_cycle_prev}
+   # The output observation is called final
    obs_seq_out=${SCRATCHDIR}/Outputs/ObsOut/${OBS_PREF}final.${date_cycle_prev}
 
-   # Other options
-   roms_restart_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc  #read grid info
+   ### Other options
+   # read grid info
+   roms_restart_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc
+   # Temporart dart files
    restart_in=${Temp_dir}/dart.ics
    restart_out=${Temp_dir}/dart.restart
    hc=$(get_param_from_nc ${GRIDFILE} hc) # ROMS critical depth
@@ -95,8 +109,9 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 
    for kmem in $( seq 1 $NMEMBERS ) ; do
    
-      printf -v nnn "%03d" $kmem
+      # Dart files have 4 digits in their name, our directories only 3
       printf -v nnnn "%04d" $kmem
+      printf -v nnn "%03d" $kmem
       
       roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
       dart_input=${Temp_dir}/dart.ics.${nnnn}
@@ -138,13 +153,16 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 #------------------------------------------------------------------------------------
 
    for kmem in $( seq 1 $NMEMBERS ) ; do
-   
+  
+      # Dart files have 4 digits in their name, our directories only 3 
       printf -v nnn "%03d" $kmem
       printf -v nnnn "%04d" $kmem
       
       roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
       roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
       dart_output=${Temp_dir}/dart.restart.${nnnn}
+      
+      # Dart need an existing reanalysis file (which is going to be overwritten)
       rsync -havz $roms_restart  $roms_reanaly
 
       # Create namelist for the dart2roms code
@@ -165,8 +183,10 @@ else
 # If no analysis, just copy the prior into the reanalysis directory
 #------------------------------------------------------------------------------------
 
+   # Get the current date
    date_cycle=$(get_date_from_cycle ${this_cycle} ${STARTDATE} ${DT_ANA})
 
+   # Copy priors into reanalysis
    for kmem in $( seq 1 $NMEMBERS ) ; do
 
       printf -v nnn "%03d" $kmem

@@ -20,9 +20,9 @@ DT_ANA=1
 SIMU=NWA-RE.REANA04
 
 # start at cycle nstart
-NSTART=1
+NSTART=32
 # end at cycle ncycles
-NCYCLES=31
+NCYCLES=90
 
 # Computation directory
 SCRATCHDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.REANA04/
