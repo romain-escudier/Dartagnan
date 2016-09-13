@@ -101,7 +101,8 @@ if (( $((${this_cycle}%${DT_FILT})) == 0 )) ; then # No filter files on cycle 1
           echo "Filtering files already copied. No new copy started."
        else
           for file_filt in ${SCRATCHDIR}/Outputs/Filtfiles/m${this_member}/ocean_fil*${date_cycle}.nc ; do
-             rsync -havz ${SCRATCHDIR}/Outputs/Filtfiles/m${this_member}/${file_filt} ${file_filt%_${date_cycle}*}.nc
+             file_filt_short=$(basename ${file_filt})
+             rsync -havz ${file_filt} ${file_filt_short%_${date_cycle}*}.nc
           done
        fi
    else

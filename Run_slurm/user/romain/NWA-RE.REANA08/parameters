@@ -1,11 +1,13 @@
 #!/bin/ksh
 
-WORKINGDIR=/t6/workdir/romain/dartagnan/Run_slurm/user/romain/NWA-RE.REANA06/
+# Directories
+WORKINGDIR=/t6/workdir/romain/dartagnan/Run_slurm/user/romain/NWA-RE.REANA08/
 DARTMNGDIR=/t6/workdir/romain/dartagnan/Run_slurm/
 
 # Type of triton cores to use
-TYPENODE_ROMS=triton16
-TYPENODE_DART=triton16
+# (Don't use generic -triton- for dart)
+TYPENODE_ROMS=triton24
+TYPENODE_DART=triton24
 
 # Number of ensemble members to run
 NMEMBERS=30
@@ -18,7 +20,7 @@ STARTDATE=20110101
 DT_ANA=1
 
 # Simulation name
-SIMU=NWA-RE.REANA06
+SIMU=NWA-RE.REANA08
 
 # start at cycle nstart
 NSTART=1
@@ -26,7 +28,7 @@ NSTART=1
 NCYCLES=30
 
 # Computation directory
-SCRATCHDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.REANA06/
+SCRATCHDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.REANA08/
 DATADIR=/t0/scratch/romain/DART/Data/
 
 #--------------------------------------------------
@@ -37,7 +39,7 @@ DATADIR=/t0/scratch/romain/DART/Data/
 NCORES_DART=48
 
 # start analysis at cycle nstart_ana
-NSTART_ANA=3
+NSTART_ANA=5
 
 # Observation files
 OBS_DIR=${DATADIR}/ObsData/SST/obsSEQ/
@@ -72,8 +74,8 @@ FORCINGPREF=drowned_MERRA_
 FORCINGSUFF=_3hours_
 
 GRIDFILE=/t0/scratch/romain/inputs/NWA_grd.nc
-INITDIR=${DATADIR}/Inputs/Init/HYCOM/
-INITFILE=HYCOM_GLBa0.08_2010_356_ic_NWA.nc
+INITDIR=${DATADIR}/Inputs/Init/HYCOM_ClimCore2/
+INITFILE=HYCOM_GLBa0.08_2011_001_ClimCore2_NWA_init.nc
 
 CLIMFILE=${DATADIR}/Inputs/CLM-NWA/HYCOM_GLBa0.08_monthly_clim_NWA_2011.nc
 BRYFILE=${DATADIR}/Inputs/BC-NWA/HYCOM_GLBa0.08_bdry_NWA_2011.nc

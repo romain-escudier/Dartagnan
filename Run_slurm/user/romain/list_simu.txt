@@ -1,0 +1,54 @@
+NWA-RE.REANA0[1-3] : First tests to make the system work (can be deleted)
+
+NWA-RE.REANA04 : premiere simu "longue" 90 jours (30 membres)
+	- ClimCORE2 initial conditions
+	- 0.3 Rep error for SST
+	- 10 jours freerun avec pert forcages
+	-> Probleme de biais => * changer init/bnd?
+				* changer Rep error
+
+NWA-RE.REANA05 : test avec meme init pour tous les membres
+	- HYCOM initial conditions
+	- 0.3 Rep error for SST
+        - 10 jours freerun avec pert forcages
+	-> Pas assez de spread!
+
+NWA-RE.REANA06 : test avec perturbed init pour tous les membres
+	- HYCOM perturbed initial conditions
+        - 0.3 Rep error for SST
+        - 3 jours freerun avec pert forcages
+        -> MPI error!
+
+NWA-RE.REANA07 : test avec 0.6 de rep error sur obs
+        - ClimCORE2 initial conditions
+        - 0.6 Rep error for SST
+        - 10 jours freerun avec pert forcages
+        -> 
+
+NWA-RE.REANA08 : test avec new init
+        - HYCOM + anomalie de ClimCORE2 for initial conditions
+        - 0.3 Rep error for SST
+        - 5 jours freerun avec pert forcages
+        ->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
