@@ -1,10 +1,23 @@
 #!/bin/bash
 #SBATCH -n <NCORES>
-#SBATCH --time=3:00:00
-#SBATCH -J roms_<MEMBER>_c<DISPCYCLE>
+#SBATCH --time=<WALLTIME>
+#SBATCH -J roms_<MEMBER>_c<DISPCYCLE>_<SIMU>
 #SBATCH --error=<CURRENTDIR>/Logs/roms_advance_c<DISPCYCLE>_m<MEMBER>.%J.err 
 #SBATCH --output=<CURRENTDIR>/Logs/roms_advance_c<DISPCYCLE>_m<MEMBER>.%J.out
 #SBATCH -p <TYPENODE>
+#BSUB -n <NCORES>
+#BSUB -R "span[ptile=16]"
+#BSUB -q <QUEUE>
+#BSUB -N
+#BSUB -x
+#BSUB -a poe
+#BSUB -o <CURRENTDIR>/Logs/roms_advance_c<DISPCYCLE>_m<MEMBER>.%J.out
+#BSUB -e <CURRENTDIR>/Logs/roms_advance_c<DISPCYCLE>_m<MEMBER>.%J.err
+#BSUB -J roms_<MEMBER>_c<DISPCYCLE>_<SIMU>
+#BSUB -W <WALLTIME>
+#BSUB -P <PROJECTCODE>
+
+
 
 set -x
 
@@ -132,7 +145,7 @@ rm ${SCRATCHDIR}/Tempfiles/m${this_member}/modules.dat
 # run the code
 #------------------------------------------------------------------------------------
 
-srun --cpu_bind=rank -n <NCORES> <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTDIR>/Logs/ROMS/log.roms_fwd.c${disp_cycle}.m${this_member}
+${RUN} -n <NCORES> <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTDIR>/Logs/ROMS/log.roms_fwd.c${disp_cycle}.m${this_member}
 
 #sleep 1
 #exit 0

@@ -5,9 +5,25 @@
 #                                                                                             #
 #---------------------------------------------------------------------------------------------#
 
+# List of functions
+# Time functions
+#   - get_sum_from_array(array)                   : Compute sum of an array
+#   - get_date_from_cycle(cycle,startdate,dt)     : Compute date from cycle and start date
+#   - get_timediff_dates(date1,date2)             : Compute difference in days between two dates
+#   - is_leap_year(year)                          : Determine if year is leap year
+#   - print_time_dart(date)                       : Display date in format (YYYY-MM-DD HH:MM:SS)
+#   - print_time_dart_list(date)                  : Display date in format (YYYY, MM, DD, HH, MM, SS)
+# Netcdf functions  
+#   - get_param_from_nc(file,var)                 : Get parameter value from netCDF file
+#   - get_ndim_from_nc(file,dim)                  : Get dimension size from netCDF file
+# Miscellaneous
+#   - compute_eq_integer_result(eq)               : Compute truncated result of equation
+#   - comp_files_md5sum(file1,file2)              : Compare md5sum of two files
+
+
+
 
 nb_days_months=(31 28 31 30 31 30 31 31 30 31 30 31)
-
 
 #---------------------------------------------------------------------------------------------#
 # Compute sum of an array
@@ -147,7 +163,7 @@ get_timediff_dates() { DATE1=$1 ; DATE2=$2
 
 
 #---------------------------------------------------------------------------------------------#
-# Determine is year is leap year
+# Determine if year is leap year
 
 is_leap_year() { YEAR_TMP=$1
 
@@ -198,6 +214,8 @@ get_ndim_from_nc() { FILENAME=$1 ; DIMNAME=$2
 
 }
 
+#---------------------------------------------------------------------------------------------#
+# Display date in dart format for namelists (YYYY-MM-DD HH:MM:SS)
 
 print_time_dart() { MYDATE=$1
 
@@ -224,6 +242,10 @@ print_time_dart() { MYDATE=$1
    echo ${DATEOUT}
 
 }
+
+
+#---------------------------------------------------------------------------------------------#
+# Display date in dart list format for namelists (YYYY, MM, DD, HH, MM, SS)
 
 print_time_dart_list() { MYDATE=$1
 
@@ -252,6 +274,8 @@ print_time_dart_list() { MYDATE=$1
 
 }
 
+#---------------------------------------------------------------------------------------------#
+# Compute truncated result of equation 
 
 compute_eq_integer_result() { EQUATION=$1
 
@@ -259,6 +283,9 @@ compute_eq_integer_result() { EQUATION=$1
    echo ${res%.*}
 
 }
+
+#---------------------------------------------------------------------------------------------#
+# Compare md5sum of two files
 
 comp_files_md5sum() { FILE1=$1 ; FILE2=$2
 
@@ -270,6 +297,5 @@ comp_files_md5sum() { FILE1=$1 ; FILE2=$2
    else
       echo "false"
    fi
-   
 
 }

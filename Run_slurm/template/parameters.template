@@ -4,13 +4,8 @@
 WORKINGDIR=<WORKINGDIR>
 DARTMNGDIR=<DARTMNGDIR>
 
-# Type of triton cores to use
-# (Don't use generic -triton- for dart)
-TYPENODE_ROMS=triton
-TYPENODE_DART=triton16
-
 # Number of ensemble members to run
-NMEMBERS=3
+NMEMBERS=30
 
 # Starting date
 REFDATE=19000101
@@ -31,9 +26,40 @@ NCYCLES=1
 SCRATCHDIR=<SCRATCHDIR>
 DATADIR=/t0/scratch/romain/DART/Data/
 
-#--------------------------------------------------
+
+#-------------------------------------------------------
+# QUEUEING SYSTEM PARAMETERS
+#-------------------------------------------------------
+
+CLUSTER_NAME=triton
+
+# Time limit
+TLIM_ROMS=3:00:00
+TLIM_DART=3:00:00
+
+# TRITON OPTIONS
+# Type of triton cores to use
+# (Don't use generic -triton- for dart)
+TYPENODE_ROMS=triton
+TYPENODE_DART=triton16
+
+# YELLOWSTONE OPTIONS
+
+
+
+
+
+if [ ${CLUSTER_NAME} = "triton" ] ; then
+   SUBMIT=sbatch
+   RUN="srun --cpu_bind=rank"
+elif [ ${CLUSTER_NAME} = "yellowstone" ] ; then
+   SUBMIT=bsub
+   RUN=mpirun.lsf
+fi
+
+#-------------------------------------------------------
 # DART PARAMETERS
-#--------------------------------------------------
+#-------------------------------------------------------
 
 # Number of core for analysis
 NCORES_DART=48
@@ -45,9 +71,9 @@ NSTART_ANA=10
 OBS_DIR=${DATADIR}/ObsData/SST/obsSEQ/
 OBS_PREF=obs_seq.sst1.
 
-#--------------------------------------------------
+#-------------------------------------------------------
 # ROMS PARAMETERS
-#--------------------------------------------------
+#-------------------------------------------------------
 
 # Number of core for forward
 NCORES_ROMS=96

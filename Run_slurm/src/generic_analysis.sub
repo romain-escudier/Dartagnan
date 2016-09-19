@@ -1,11 +1,22 @@
 #!/bin/bash
 #SBATCH -n <NCORES>
-#SBATCH --time=3:00:00
-#SBATCH -J ana_c<DISPCYCLE>
+#SBATCH --time=<WALLTIME>
+#SBATCH -J ana_c<DISPCYCLE>_<SIMU>
 #SBATCH --dependency=afterok<DEPLIST>
 #SBATCH --error=<CURRENTDIR>/Logs/analysis_c<DISPCYCLE>.%J.err 
 #SBATCH --output=<CURRENTDIR>/Logs/analysis_c<DISPCYCLE>.%J.out
 #SBATCH -p <TYPENODE>
+#BSUB -n <NCORES>
+#BSUB -R "span[ptile=16]"
+#BSUB -q <QUEUE>
+#BSUB -N
+#BSUB -x
+#BSUB -a poe
+#BSUB -o <CURRENTDIR>/Logs/analysis_c<DISPCYCLE>.%J.out
+#BSUB -e <CURRENTDIR>/Logs/analysis_c<DISPCYCLE>.%J.err
+#BSUB -J ana_c<DISPCYCLE>_<SIMU>
+#BSUB -W <WALLTIME>
+#BSUB -w "done(<DEPLIST>)"
 
 set -x
 
@@ -140,7 +151,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    > ${SCRATCHDIR}/input.nml
    
    # Run the Kalman filter
-   srun --cpu_bind=rank -n <NCORES> ${SCRATCHDIR}/Exe/filter
+   ${RUN} -n <NCORES> ${SCRATCHDIR}/Exe/filter
   
    # Copy the diag outputs
    mv ${SCRATCHDIR}/Prior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Prior_Diag_${date_cycle}.nc

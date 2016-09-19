@@ -37,10 +37,16 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
                                                            -e "s;<NCORES>;${NCORES_ROMS};g"\
                                                            -e "s;<TYPENODE>;${TYPENODE_ROMS};g"\
                                                            -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
+                                                           -e "s;<WALLTIME>;${TLIM_ROMS};g" \
+                                                           -e "s;<SIMU>;${SIMU};g" \
    > ${SCRATCHDIR}/Tempfiles/roms_advance_member_${nnn}.sub
    
-   output=$( sbatch < ${SCRATCHDIR}/Tempfiles/roms_advance_member_${nnn}.sub )
-   id=$( echo $output | awk '{ print $NF }' )
+   output=$( ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/roms_advance_member_${nnn}.sub )
+   if [ ${CLUSTER_NAME} = "triton" ] ; then
+      id=$( echo $output | awk '{ print $NF }' )
+   else
+      id=$( echo $output | awk '{ print 2 }' )
+   fi
    listjobids="$listjobids:$id"
 
 done
@@ -54,6 +60,22 @@ cat ${SCRATCHDIR}/generic_analysis.sub | sed -e "s/<DEPLIST>/$listjobids/g" \
                                              -e "s;<TYPENODE>;${TYPENODE_DART};g"\
                                              -e "s;<NCORES>;${NCORES_DART};g"\
                                              -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
+                                             -e "s;<WALLTIME>;${TLIM_DART};g" \
+                                             -e "s;<SIMU>;${SIMU};g" \
 > ${SCRATCHDIR}/Tempfiles/analysis.sub
-sbatch < ${SCRATCHDIR}/Tempfiles/analysis.sub
+${SUBMIT} < ${SCRATCHDIR}/Tempfiles/analysis.sub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
