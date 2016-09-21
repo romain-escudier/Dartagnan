@@ -31,7 +31,7 @@ DATADIR=/t0/scratch/romain/DART/Data/
 # QUEUEING SYSTEM PARAMETERS
 #-------------------------------------------------------
 
-CLUSTER_NAME=triton
+CLUSTER=triton
 
 # Time limit
 TLIM_ROMS=3:00:00
@@ -44,15 +44,14 @@ TYPENODE_ROMS=triton
 TYPENODE_DART=triton16
 
 # YELLOWSTONE OPTIONS
+PROJECT=
+QUEUE=regular
 
 
-
-
-
-if [ ${CLUSTER_NAME} = "triton" ] ; then
+if [ ${CLUSTER} = "triton" ] ; then
    SUBMIT=sbatch
    RUN="srun --cpu_bind=rank"
-elif [ ${CLUSTER_NAME} = "yellowstone" ] ; then
+elif [ ${CLUSTER} = "yellowstone" ] ; then
    SUBMIT=bsub
    RUN=mpirun.lsf
 fi

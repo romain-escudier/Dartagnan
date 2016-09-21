@@ -7,7 +7,7 @@
 
 . ./parameters
 
-# Prepare scratch directory
+# Prepare scratch directories
 mkdir -p ${SCRATCHDIR}/Logs/ROMS/
 mkdir -p ${SCRATCHDIR}/Logs/DART/
 mkdir -p ${SCRATCHDIR}/Tempfiles/
@@ -40,12 +40,18 @@ cp ${WORKINGDIR}/parameters ${SCRATCHDIR}/
 cp ${WORKINGDIR}/varinfo.dat ${SCRATCHDIR}/
 cp ${WORKINGDIR}/modules-used ${SCRATCHDIR}/
 
-# Get scripts
-cp ${DARTMNGDIR}/src/* ${SCRATCHDIR}/
 # Get templates
 cp ${WORKINGDIR}/input_${SIMU}.nml ${SCRATCHDIR}/
 cp ${WORKINGDIR}/ocean_${SIMU}.in ${SCRATCHDIR}/
 
+# Get scripts
+cp ${DARTMNGDIR}/src/*.sh ${SCRATCHDIR}/
+# Get scripts to be submitted with header corresponding to cluster
+cd ${DARTMNGDIR}/src/
+sed "/<HEADER>/r header.${CLUSTER}" generic_analysis.sub \
+        | sed -e "/<HEADER>/d" > ${SCRATCHDIR}/${SIMU}_analysis.sub
+sed "/<HEADER>/r header.${CLUSTER}" generic_roms_advance_member.sub \
+        | sed -e "/<HEADER>/d" -e "/<DEPLIST>/d" > ${SCRATCHDIR}/${SIMU}_roms_advance_member.sub # Also remove the dependency list
 
 cd ${SCRATCHDIR}
 echo "Creating working directory : $(pwd)"

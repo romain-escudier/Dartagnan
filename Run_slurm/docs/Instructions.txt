@@ -86,7 +86,6 @@ Launch the simulation :
 -----------------------------------------
 $ ./main.ksh
 
-
 -----------------------------------------
 Look at results :
 -----------------------------------------
@@ -101,6 +100,7 @@ The output files are in Outputs/ :
    Reanalysis/ -> directory for reanalysis restart files (after assimilation)
    Filtfiles/  -> directory where filtering files are saved every month (for tides)
 Each of these directories have a sub-directory for each member
+
 In Outputs, we also have :
    ObsOut/     -> directory for output observation files
    Diags/      -> directory for diagnostic files

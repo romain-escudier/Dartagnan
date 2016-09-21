@@ -1,22 +1,5 @@
 #!/bin/bash
-#SBATCH -n <NCORES>
-#SBATCH --time=<WALLTIME>
-#SBATCH -J ana_c<DISPCYCLE>_<SIMU>
-#SBATCH --dependency=afterok<DEPLIST>
-#SBATCH --error=<CURRENTDIR>/Logs/analysis_c<DISPCYCLE>.%J.err 
-#SBATCH --output=<CURRENTDIR>/Logs/analysis_c<DISPCYCLE>.%J.out
-#SBATCH -p <TYPENODE>
-#BSUB -n <NCORES>
-#BSUB -R "span[ptile=16]"
-#BSUB -q <QUEUE>
-#BSUB -N
-#BSUB -x
-#BSUB -a poe
-#BSUB -o <CURRENTDIR>/Logs/analysis_c<DISPCYCLE>.%J.out
-#BSUB -e <CURRENTDIR>/Logs/analysis_c<DISPCYCLE>.%J.err
-#BSUB -J ana_c<DISPCYCLE>_<SIMU>
-#BSUB -W <WALLTIME>
-#BSUB -w "done(<DEPLIST>)"
+<HEADER>
 
 set -x
 

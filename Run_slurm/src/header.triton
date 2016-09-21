@@ -1,0 +1,8 @@
+#SBATCH -n <NCORES>
+#SBATCH --time=<WALLTIME>
+#SBATCH -J <JOBNAME>
+#SBATCH --dependency=afterok<DEPLIST>
+#SBATCH --error=<CURRENTDIR>/Logs/<LOGNAME>.%J.err
+#SBATCH --output=<CURRENTDIR>/Logs/<LOGNAME>.%J.out
+#SBATCH -p <TYPENODE>
+
