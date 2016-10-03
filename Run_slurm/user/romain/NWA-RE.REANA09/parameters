@@ -1,8 +1,8 @@
 #!/bin/ksh
 
 # Directories
-WORKINGDIR=<WORKINGDIR>
-DARTMNGDIR=<DARTMNGDIR>
+WORKINGDIR=/home/romain/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA09/
+DARTMNGDIR=/home/romain/Projects/dartagnan/Run_slurm/
 
 # Number of ensemble members to run
 NMEMBERS=30
@@ -15,15 +15,15 @@ STARTDATE=20110101
 DT_ANA=1
 
 # Simulation name
-SIMU=<SIMUNAME>
+SIMU=NWA-RE.REANA09
 
 # start at cycle nstart
 NSTART=1
 # end at cycle ncycles
-NCYCLES=1
+NCYCLES=10
 
 # Computation directory
-SCRATCHDIR=<SCRATCHDIR>
+SCRATCHDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.REANA09/
 DATADIR=/t0/scratch/romain/DART/Data/
 
 #-------------------------------------------------------
@@ -34,7 +34,7 @@ CLUSTER=triton
 
 # Time limit
 TLIM_ROMS=3:00:00
-TLIM_DART=3:00:00
+TLIM_DART=5:00:00
 
 # TRITON OPTIONS
 # Type of triton cores to use
@@ -54,7 +54,7 @@ QUEUE=regular
 NCORES_DART=48
 
 # start analysis at cycle nstart_ana
-NSTART_ANA=10
+NSTART_ANA=2
 
 # Observation files
 OBS_DIR=${DATADIR}/ObsData/SST/obsSEQ/
@@ -89,8 +89,8 @@ FORCINGPREF=drowned_MERRA_
 FORCINGSUFF=_3hours_
 
 GRIDFILE=/t0/scratch/romain/inputs/NWA_grd.nc
-INITDIR=${DATADIR}/Inputs/Init/HYCOM/
-INITFILE=HYCOM_GLBa0.08_2010_356_ic_NWA.nc
+INITDIR=${DATADIR}/Inputs/Init/HYCOM_ClimCore2/
+INITFILE=HYCOM_GLBa0.08_2011_001_ClimCore2_NWA_init.nc
 
 CLIMFILE=${DATADIR}/Inputs/CLM-NWA/HYCOM_GLBa0.08_monthly_clim_NWA_2011.nc
 BRYFILE=${DATADIR}/Inputs/BC-NWA/HYCOM_GLBa0.08_bdry_NWA_2011.nc
@@ -99,9 +99,7 @@ TIDESFILE=${DATADIR}/Inputs/Tides/NWA_tides_otps.nc
 SSSREFILE=${DATADIR}/Inputs/SSS/sss_monthly_climato_flooded.nc
 
 
-#-------------------------------------------------------
-# EXECUTABLES
-#-------------------------------------------------------
+
 
 if [ ${CLUSTER} = "triton" ] ; then
    SUBMIT=sbatch
@@ -110,3 +108,5 @@ elif [ ${CLUSTER} = "yellowstone" ] ; then
    SUBMIT=bsub
    RUN=mpirun.lsf
 fi
+
+

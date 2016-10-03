@@ -138,38 +138,46 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
   
    # Copy the diag outputs
    mv ${SCRATCHDIR}/Prior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Prior_Diag_${date_cycle}.nc
-   mv ${SCRATCHDIR}/Posterior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Posterior_Diag_${date_cycle}.nc
-
-   success=1
+   cmd_status=$?
+   if ((cmd_status==0)); then
+      mv ${SCRATCHDIR}/Posterior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Posterior_Diag_${date_cycle}.nc
+      success=true
+   else
+      success=false
+   fi
  
 #------------------------------------------------------------------------------------
 # Convert all members DART files to ROMS files
 #------------------------------------------------------------------------------------
 
-   for kmem in $( seq 1 $NMEMBERS ) ; do
-  
-      # Dart files have 4 digits in their name, our directories only 3 
-      printf -v nnn "%03d" $kmem
-      printf -v nnnn "%04d" $kmem
+   if [ "$success" = true ] ; then
+ 
+      for kmem in $( seq 1 $NMEMBERS ) ; do
       
-      roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
-      roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
-      dart_output=${Temp_dir}/dart.restart.${nnnn}
-      
-      # Dart need an existing reanalysis file (which is going to be overwritten)
-      rsync -havz $roms_restart  $roms_reanaly
-
-      # Create namelist for the dart2roms code
-      cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTRSTFILE>;${dart_output};g" \
-                                              -e "s;<ROMSRSTNAME>;${roms_reanaly};g" \
-                                              -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}_m${nnn}.out;g" \
-                                              -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}_m${nnn}.nml;g" \
-      > ${SCRATCHDIR}/input.nml
-
-      # run a Fortran program
-      ${SCRATCHDIR}/Exe/dart_to_roms
+         # Dart files have 4 digits in their name, our directories only 3 
+         printf -v nnn "%03d" $kmem
+         printf -v nnnn "%04d" $kmem
+         
+         roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
+         roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
+         dart_output=${Temp_dir}/dart.restart.${nnnn}
+         
+         # Dart need an existing reanalysis file (which is going to be overwritten)
+         rsync -havz $roms_restart  $roms_reanaly
    
-   done
+         # Create namelist for the dart2roms code
+         cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTRSTFILE>;${dart_output};g" \
+                                                 -e "s;<ROMSRSTNAME>;${roms_reanaly};g" \
+                                                 -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}_m${nnn}.out;g" \
+                                                 -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}_m${nnn}.nml;g" \
+         > ${SCRATCHDIR}/input.nml
+   
+         # run a Fortran program
+         ${SCRATCHDIR}/Exe/dart_to_roms
+      
+      done
+
+   fi
 
 else
 
@@ -186,10 +194,10 @@ else
       printf -v nnn "%03d" $kmem
       roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
       roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
-      cp ${roms_restart} ${roms_reanaly}
+      rsync -havz ${roms_restart} ${roms_reanaly}
 
    done
-   success=1
+   success=true
    
 fi
 
@@ -198,7 +206,16 @@ fi
 # if analysis successful, submit next cycle
 #------------------------------------------------------------------------------------
 
-if [ $success == 1 ] ; then
+if [ "$success" = true ] ; then
+
+   # Compress this cycle logs
+   cd ${SCRATCHDIR}/Logs/
+   tar -czf log_tmp.tar.gz *c${disp_cycle}*; rm ${SCRATCHDIR}/Logs/*c${disp_cycle}*; mv log_tmp.tar.gz ${SCRATCHDIR}/Logs/log_c${disp_cycle}.tar.gz
+   cd ${SCRATCHDIR}/Logs/ROMS/
+   tar -czf ${SCRATCHDIR}/Logs/roms_log_c${disp_cycle}.tar.gz *c${disp_cycle}*; rm ${SCRATCHDIR}/Logs/ROMS/*c${disp_cycle}*
+   cd ${SCRATCHDIR}/Logs/DART/
+   tar -czf ${SCRATCHDIR}/Logs/dart_log_c${disp_cycle}.tar.gz *c${disp_cycle}*; rm ${SCRATCHDIR}/Logs/DART/*c${disp_cycle}*
+   
    nextcycle=$(( $this_cycle + 1 ))
    ssh node0 "cd ${SCRATCHDIR}/ ; ${SCRATCHDIR}/submit_cycle.sh $nextcycle >> ${SCRATCHDIR}/Logs/submit.log"
 else 

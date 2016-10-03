@@ -46,8 +46,8 @@ cat ${SCRATCHDIR}/input_${SIMU}.nml  | sed -e "s;<OBS_SEQ_LIST>;${LIST_FILES};g"
                                            -e "s;<DATESTARTBIN_INI>;$(print_time_dart_list ${date_first_bin_start});g" \
                                            -e "s;<DATESTARTBIN_END>;$(print_time_dart_list ${date_first_bin_end});g" \
                                            -e "s;<DATEENDBIN_END>;$(print_time_dart_list ${date_last_bin});g" \
-                                           -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_post_c${disp_cycle}.out;g" \
-                                           -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_post_c${disp_cycle}.out;g" \
+                                           -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_post.out;g" \
+                                           -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_post.nml;g" \
                                            -e "s;<DTANA>;${DT_ANA};g" \
                                            -e "s;<;;g" \
                                            -e "s;>;;g" \
@@ -56,12 +56,12 @@ cat ${SCRATCHDIR}/input_${SIMU}.nml  | sed -e "s;<OBS_SEQ_LIST>;${LIST_FILES};g"
 cd ${SCRATCHDIR}
 
 # Create diagnostic file
-${SCRATCHDIR}/Exe/obs_diag
+${SCRATCHDIR}/Exe/obs_diag > ${SCRATCHDIR}/Logs/DART/dart_diags.log
 mv obs_diag_output.nc ${SCRATCHDIR}/Outputs/Diags/
 mv LargeInnov.txt ${SCRATCHDIR}/Outputs/Diags/
 
 # Create netcdf observation files
-${SCRATCHDIR}/Exe/obs_seq_to_netcdf
+${SCRATCHDIR}/Exe/obs_seq_to_netcdf > ${SCRATCHDIR}/Logs/DART/dart_obsfiles.log
 mv obs_epoch_*.nc ${SCRATCHDIR}/Outputs/Diags/
 rename obs_epoch_ ${OBS_PREF} ${SCRATCHDIR}/Outputs/Diags/obs_epoch*.nc
 

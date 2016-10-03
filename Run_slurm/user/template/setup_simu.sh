@@ -28,7 +28,7 @@ cp ${DARTMNGDIR}/template/input.nml.template ${SIMUDIR}/input_${SIMUNAME}.nml
 
 
 # Main scripts 
-cp ${DARTMNGDIR}/src/main.ksh ${SIMUDIR}/
+cp ${DARTMNGDIR}/src/main.sh ${SIMUDIR}/
 cp ${DARTMNGDIR}/src/clean.sh ${SIMUDIR}/
 
 # Dartagnan parameters

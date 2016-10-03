@@ -57,6 +57,6 @@ cd ${SCRATCHDIR}
 echo "Creating working directory : $(pwd)"
 
 # Launch 1rst iteration of cycle
-${SCRATCHDIR}/submit_cycle.sh $NSTART > ${SCRATCHDIR}/Logs/submit.log
+#${SCRATCHDIR}/submit_cycle.sh $NSTART > ${SCRATCHDIR}/Logs/submit.log
 
 

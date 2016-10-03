@@ -6,14 +6,15 @@
 #---------------------------------------------------------------------------------------------#
 
 if [ ! $# == 1 ] ; then echo 'this script needs the cycle number as an argument' ; exit 1 ; fi
-
 cycle=$1
 
 . ./functions.sh
 . ./parameters
 
 echo "running cycle $cycle of $NCYCLES"
+printf -v disp_cycle "%03d" ${cycle}
 
+# Check if finished + post-processing
 if (( $cycle > $NCYCLES )) ; then 
    ./postprod_dart_obs.sh
    echo 'Completed' ; 
@@ -24,7 +25,6 @@ fi
 # 1. submit ensemble members
 
 listjobids=""
-printf -v disp_cycle "%03d" ${cycle}
 
 for kmem in $( seq 1 $NMEMBERS ) ; do
 
@@ -45,7 +45,7 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    > ${SCRATCHDIR}/Tempfiles/roms_advance_member_${nnn}.sub
    
    output=$( ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/roms_advance_member_${nnn}.sub )
-   if [ ${CLUSTER_NAME} = "triton" ] ; then
+   if [ ${CLUSTER} = "triton" ] ; then
       id=$( echo $output | awk '{ print $NF }' )
    else
       id=$( echo $output | awk '{ print 2 }' )
