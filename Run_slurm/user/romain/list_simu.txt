@@ -1,49 +1,67 @@
 NWA-RE.REANA0[1-3] : First tests to make the system work (can be deleted)
 
-NWA-RE.REANA04 : premiere simu "longue" 90 jours (30 membres)
+NWA-RE.REANA04 : premiere simu "longue" 			[63 jours] (30 membres)
 	- ClimCORE2 initial conditions
 	- 0.3 Rep error for SST
 	- 10 jours freerun avec pert forcages
 	-> Probleme de biais => * changer init/bnd?
 				* changer Rep error
 
-NWA-RE.REANA05 : test avec meme init pour tous les membres
+NWA-RE.REANA05 : test avec meme init pour tous les membres 	[9 jours]
 	- HYCOM initial conditions
 	- 0.3 Rep error for SST
         - 10 jours freerun avec pert forcages
 	-> Pas assez de spread!
 
-NWA-RE.REANA06 : test avec perturbed init pour tous les membres
-	- HYCOM perturbed initial conditions
+NWA-RE.REANA06 : test avec perturbed init pour tous les membres [0 jours]
+	- HYCOM perturbed initial conditions (BJ code)
         - 0.3 Rep error for SST
         - 3 jours freerun avec pert forcages
         -> MPI error!
 
-NWA-RE.REANA07 : test avec 0.6 de rep error sur obs
+NWA-RE.REANA07 : test avec 0.6 de rep error sur obs 		[23 jours]
         - ClimCORE2 initial conditions
         - 0.6 Rep error for SST
         - 10 jours freerun avec pert forcages
-        -> 
+        -> No real effect
 
-NWA-RE.REANA08 : test avec new init
+NWA-RE.REANA08 : test avec new init 				[18 jours]
         - HYCOM + anomalie de ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
         - 5 jours freerun avec pert forcages
-        ->
+        -> Better at beginning but still problematic drift
 
+NWA-RE.REANA09 : same as NWA-RE.REANA08 but with new coding 	[42 jours]
+        - HYCOM + anomalie de ClimCORE2 for initial conditions
+        - 0.3 Rep error for SST
+        - 2 jours freerun avec pert forcages
+        -> Same as NWA-RE.REANA08, the init is now confirmed to be good but drift
 
+NWA-RE.REANA10 : combination new init + 0.6 de rep error sur obs [14 jours]
+        - HYCOM + anomalie de ClimCORE2 for initial conditions
+        - 0.6 (14 days) then 0.3 Rep error for SST
+        - 2 jours freerun avec pert forcages
+        -> No change
 
+NWA-RE.REANA11 : First test corrected atmo perturbed fields	 [34 jours]
+        - HYCOM + anomalie de ClimCORE2 for initial conditions
+        - 0.3 Rep error for SST
+        - 1 jour freerun avec pert forcages
+        -> No change :D
 
+-RE.REANA12 : Test with corrected atmo perturbed fields 
+              + corrected SW 					 [49 jours]
+        - HYCOM + anomalie de ClimCORE2 for initial conditions
+        - 0.3 Rep error for SST
+        - 1 jour freerun avec pert forcages
+        -> Much better! But still some drift (weaker)
 
-
-
-
-
-
-
-
-
-
+-RE.REANA12 : Test with corrected atmo perturbed fields
+              + corrected SW and LW                              [3 jours]
+        - HYCOM + anomalie de ClimCORE2 for initial conditions
+        - 0.3 Rep error for SST
+        - 1 jour freerun avec pert forcages
+        -> 
 
 
 

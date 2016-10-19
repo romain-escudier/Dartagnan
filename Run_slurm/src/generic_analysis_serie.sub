@@ -42,7 +42,6 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
        module load $mod
    done
    rm ${SCRATCHDIR}/Tempfiles/modules.dat
-   module load parallel
 
 #------------------------------------------------------------------------------------
 # Prepare the namelists
@@ -116,14 +115,14 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
                                               -e "s;<ROMSRSTNAME>;${roms_restart};g" \
                                               -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_r2d_c${disp_cycle}_m${nnn}.out;g" \
                                               -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_r2d_c${disp_cycle}_m${nnn}.nml;g" \
-      > ${SCRATCHDIR}/Tempfiles/m${nnn}/input.nml
+      > ${SCRATCHDIR}/input.nml
+
+      # run DART Fortran program
+      ${SCRATCHDIR}/Exe/roms_to_dart
    
    done
 
-   # run DART Fortran program in parallel
-   seq -f %03g 1 $NMEMBERS | parallel "cd ${SCRATCHDIR}/Tempfiles/m{}/;${SCRATCHDIR}/Exe/roms_to_dart"
-   cd ${SCRATCHDIR}/
-   
+
 #------------------------------------------------------------------------------------
 # run the analysis
 #------------------------------------------------------------------------------------
@@ -171,13 +170,12 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
                                                  -e "s;<ROMSRSTNAME>;${roms_reanaly};g" \
                                                  -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}_m${nnn}.out;g" \
                                                  -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}_m${nnn}.nml;g" \
-         > ${SCRATCHDIR}/Tempfiles/m${nnn}/input.nml
+         > ${SCRATCHDIR}/input.nml
    
+         # run a Fortran program
+         ${SCRATCHDIR}/Exe/dart_to_roms
+      
       done
-
-      # run DART Fortran program in parallel
-      seq -f %03g 1 $NMEMBERS | parallel "cd ${SCRATCHDIR}/Tempfiles/m{}/;${SCRATCHDIR}/Exe/dart_to_roms"
-      cd ${SCRATCHDIR}/
 
    fi
 

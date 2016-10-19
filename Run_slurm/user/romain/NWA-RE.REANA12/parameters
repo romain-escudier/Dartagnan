@@ -1,8 +1,8 @@
 #!/bin/ksh
 
 # Directories
-WORKINGDIR=<WORKINGDIR>
-DARTMNGDIR=<DARTMNGDIR>
+WORKINGDIR=/home/romain/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA12/
+DARTMNGDIR=/home/romain/Projects/dartagnan/Run_slurm/
 
 # Number of ensemble members to run
 NMEMBERS=30
@@ -15,15 +15,15 @@ STARTDATE=20110101
 DT_ANA=1
 
 # Simulation name
-SIMU=<SIMUNAME>
+SIMU=NWA-RE.REANA12
 
 # start at cycle nstart
 NSTART=1
 # end at cycle ncycles
-NCYCLES=1
+NCYCLES=90
 
 # Computation directory
-SCRATCHDIR=<SCRATCHDIR>
+SCRATCHDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.REANA12/
 DATADIR=/t0/scratch/romain/DART/Data/
 
 #-------------------------------------------------------
@@ -34,7 +34,7 @@ CLUSTER=triton
 
 # Time limit
 TLIM_ROMS=3:00:00
-TLIM_DART=3:00:00
+TLIM_DART=10:00:00
 
 # TRITON OPTIONS
 # Type of triton cores to use

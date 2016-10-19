@@ -29,8 +29,6 @@ max_bins=1000
 LIST_FILES=${SCRATCHDIR}/Tempfiles/list_obs.txt
 find ${obs_dir} -type f > ${LIST_FILES}
 
-return 1
-
 # Dates of bins
 date_first_bin_start=${STARTDATE}
 date_first_bin_end=$(get_date_from_cycle 2 ${STARTDATE} ${DT_ANA})
