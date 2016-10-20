@@ -214,9 +214,10 @@ if [ "$success" = true ] ; then
    cd ${SCRATCHDIR}/Logs/
    tar -czf log_tmp.tar.gz *c${disp_cycle}*; rm ${SCRATCHDIR}/Logs/*c${disp_cycle}*; mv log_tmp.tar.gz ${SCRATCHDIR}/Logs/log_c${disp_cycle}.tar.gz
    cd ${SCRATCHDIR}/Logs/ROMS/
-   tar -czf ${SCRATCHDIR}/Logs/roms_log_c${disp_cycle}.tar.gz *c${disp_cycle}*; rm ${SCRATCHDIR}/Logs/ROMS/*c${disp_cycle}*
+   tar -czf roms_log_c${disp_cycle}.tar.gz log.roms_fwd.c${disp_cycle}.m???; rm log.roms_fwd.c${disp_cycle}.m???
    cd ${SCRATCHDIR}/Logs/DART/
-   tar -czf ${SCRATCHDIR}/Logs/dart_log_c${disp_cycle}.tar.gz *c${disp_cycle}*; rm ${SCRATCHDIR}/Logs/DART/*c${disp_cycle}*
+   tar -czf dart_log_c${disp_cycle}.tar.gz dart_*_c${disp_cycle}*
+   rm ${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}*;rm ${SCRATCHDIR}/Logs/DART/dart_r2d_c${disp_cycle}*;rm ${SCRATCHDIR}/Logs/DART/dart_filt_c${disp_cycle}*
    
    nextcycle=$(( $this_cycle + 1 ))
    ssh node0 "cd ${SCRATCHDIR}/ ; ${SCRATCHDIR}/submit_cycle.sh $nextcycle >> ${SCRATCHDIR}/Logs/submit.log"
