@@ -56,14 +56,19 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	 [34 jours]
         - 1 jour freerun avec pert forcages
         -> Much better! But still some drift (weaker)
 
--RE.REANA12 : Test with corrected atmo perturbed fields
-              + corrected SW and LW                              [3 jours]
+-RE.REANA13 : Test with corrected atmo perturbed fields
+              + corrected SW and LW!                             [13 jours]
         - HYCOM + anomalie de ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
         - 1 jour freerun avec pert forcages
-        -> 
+        -> No more bias?
 
-
+-RE.REANA14 : As RE.REANA13 mais new grid avec wtype from mean SeaWiFS chloro
+              + test roms2dart/dart2roms en parallele            [0 jour]
+        - HYCOM + anomalie de ClimCORE2 for initial conditions
+        - 0.3 Rep error for SST
+        - 1 jour freerun avec pert forcages
+        ->
 
 
 
