@@ -120,7 +120,6 @@
 #  define ALBEDO_CURVE
 #  undef ALBEDO_FILE
 #  undef LONGWAVE
-#  define WTYPE_GRID
 # endif
 #endif
 

@@ -84,11 +84,11 @@ DT_FILT=1
 
 
 # File parameters
-FORCINGDIR=${DATADIR}/Inputs/Forcings/Perturbed/
+FORCINGDIR=${DATADIR}/Inputs/Forcings/Perturbed/CorrectDx/
 FORCINGPREF=drowned_MERRA_
 FORCINGSUFF=_3hours_
 
-GRIDFILE=/t0/scratch/romain/inputs/NWA_grd.nc
+GRIDFILE=/t0/scratch/romain/inputs/NWA_grd_newwtypechl.nc
 INITDIR=${DATADIR}/Inputs/Init/HYCOM_ClimCore2/
 INITFILE=HYCOM_GLBa0.08_2011_001_ClimCore2_NWA_init.nc
 

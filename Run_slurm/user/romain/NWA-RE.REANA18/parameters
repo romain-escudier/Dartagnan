@@ -1,7 +1,7 @@
 #!/bin/ksh
 
 # Directories
-WORKINGDIR=/home/romain/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA14/
+WORKINGDIR=/home/romain/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA18/
 DARTMNGDIR=/home/romain/Projects/dartagnan/Run_slurm/
 
 # Number of ensemble members to run
@@ -15,15 +15,15 @@ STARTDATE=20110101
 DT_ANA=1
 
 # Simulation name
-SIMU=NWA-RE.REANA14
+SIMU=NWA-RE.REANA18
 
 # start at cycle nstart
 NSTART=1
 # end at cycle ncycles
-NCYCLES=60
+NCYCLES=90
 
 # Computation directory
-SCRATCHDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.REANA14/
+SCRATCHDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.REANA18/
 DATADIR=/t0/scratch/romain/DART/Data/
 
 #-------------------------------------------------------
@@ -39,7 +39,7 @@ TLIM_DART=10:00:00
 # TRITON OPTIONS
 # Type of triton cores to use
 # (Don't use generic -triton- for dart)
-TYPENODE_ROMS=triton16
+TYPENODE_ROMS=triton24
 TYPENODE_DART=triton16
 
 # YELLOWSTONE OPTIONS
@@ -57,8 +57,8 @@ NCORES_DART=48
 NSTART_ANA=2
 
 # Observation files
-OBS_DIR=${DATADIR}/ObsData/SST/obsSEQ/
-OBS_PREF=obs_seq.sst1.
+OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/
+OBS_PREF=obs_seq.sst_gtspp.
 
 #-------------------------------------------------------
 # ROMS PARAMETERS

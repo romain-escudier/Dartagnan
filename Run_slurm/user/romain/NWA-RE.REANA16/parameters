@@ -1,7 +1,7 @@
 #!/bin/ksh
 
 # Directories
-WORKINGDIR=/home/romain/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA14/
+WORKINGDIR=/home/romain/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA16/
 DARTMNGDIR=/home/romain/Projects/dartagnan/Run_slurm/
 
 # Number of ensemble members to run
@@ -15,7 +15,7 @@ STARTDATE=20110101
 DT_ANA=1
 
 # Simulation name
-SIMU=NWA-RE.REANA14
+SIMU=NWA-RE.REANA16
 
 # start at cycle nstart
 NSTART=1
@@ -23,7 +23,7 @@ NSTART=1
 NCYCLES=60
 
 # Computation directory
-SCRATCHDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.REANA14/
+SCRATCHDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.REANA16/
 DATADIR=/t0/scratch/romain/DART/Data/
 
 #-------------------------------------------------------

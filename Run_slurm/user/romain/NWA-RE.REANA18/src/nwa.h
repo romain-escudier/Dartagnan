@@ -12,7 +12,6 @@
 **  Options for NWA simulation
 */
 
-#define NO_HIS
 #undef NETCDF4
 #undef PARALLEL_IO
 #undef OFFLINE_FLOATS
@@ -44,6 +43,7 @@
 /* output stuff */
 
  
+#define NO_HIS
 #define LONG_NUMS
 #define NO_WRITE_GRID
 #undef OUT_DOUBLE
@@ -112,7 +112,7 @@
 # define CCSM_FLUXES
 # if defined BULK_FLUXES || defined CCSM_FLUXES
 #  define LONGWAVE_OUT
-#  define DIURNAL_SRFLUX
+#  undef DIURNAL_SRFLUX
 #  define EMINUSP
 #  undef ANA_SRFLUX
 #  undef ALBEDO
@@ -120,9 +120,9 @@
 #  define ALBEDO_CURVE
 #  undef ALBEDO_FILE
 #  undef LONGWAVE
-#  define WTYPE_GRID
 # endif
 #endif
+# define WTYPE_GRID
 
 /* surface and side corrections */
 
