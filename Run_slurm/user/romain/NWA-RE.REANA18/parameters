@@ -40,7 +40,7 @@ TLIM_DART=10:00:00
 # Type of triton cores to use
 # (Don't use generic -triton- for dart)
 TYPENODE_ROMS=triton24
-TYPENODE_DART=triton16
+TYPENODE_DART=triton24
 
 # YELLOWSTONE OPTIONS
 PROJECT=
@@ -51,13 +51,13 @@ QUEUE=regular
 #-------------------------------------------------------
 
 # Number of core for analysis
-NCORES_DART=48
+NCORES_DART=72
 
 # start analysis at cycle nstart_ana
 NSTART_ANA=2
 
 # Observation files
-OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/
+OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/
 OBS_PREF=obs_seq.sst_gtspp.
 
 #-------------------------------------------------------
@@ -65,9 +65,9 @@ OBS_PREF=obs_seq.sst_gtspp.
 #-------------------------------------------------------
 
 # Number of core for forward
-NCORES_ROMS=96
+NCORES_ROMS=72
 ITILE=12
-JTILE=8
+JTILE=6
 
 # Time step
 DT=200
@@ -104,7 +104,7 @@ SSSREFILE=${DATADIR}/Inputs/SSS/sss_monthly_climato_flooded.nc
 #-------------------------------------------------------
 
 if [ ${CLUSTER} = "triton" ] ; then
-   SUBMIT=sbatch
+   SUBMIT="sbatch --reservation=dart2"
    RUN="srun --cpu_bind=rank"
 elif [ ${CLUSTER} = "yellowstone" ] ; then
    SUBMIT=bsub

@@ -45,8 +45,7 @@ else
 fi
 
 # Outputs of the simulation
-restart_dir=${SCRATCHDIR}/Outputs/Prior/m${this_member}/
-restartfile=${restart_dir}/${SIMU}_rst_${date_cycle}.nc
+restartfile=${SCRATCHDIR}/Outputs/Prior/m${this_member}//${SIMU}_rst_${date_cycle}.nc
 historyfile=${SCRATCHDIR}/Outputs/History/m${this_member}/${SIMU}_his_${date_cycle}.nc
 averagefile=${SCRATCHDIR}/Outputs/Average/m${this_member}/${SIMU}_avg_${date_cycle}.nc
 

@@ -43,7 +43,7 @@ TYPENODE_ROMS=triton
 TYPENODE_DART=triton16
 
 # YELLOWSTONE OPTIONS
-PROJECT=
+PROJECT=URTG0011
 QUEUE=regular
 
 #-------------------------------------------------------
