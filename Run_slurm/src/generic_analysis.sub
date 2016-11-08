@@ -56,23 +56,23 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    ### Get dates
    # for this cycle
    date_cycle=$(get_date_from_cycle ${this_cycle} $STARTDATE $DT_ANA)
-   date_cycle_std=$(print_time_dart $date_cycle)
-   # For previous cycle
-   prev_cycle=$(( this_cycle - 1 ))
-   date_cycle_prev=$(get_date_from_cycle ${prev_cycle} $STARTDATE $DT_ANA)
+   # For next cycle
+   next_cycle=$(( this_cycle + 1 ))
+   date_cycle_next=$(get_date_from_cycle ${next_cycle} $STARTDATE $DT_ANA)
+   date_cycle_next_std=$(print_time_dart $date_cycle_next)
 
    ### Get the associate Dart day
    # Dart reference is January 1st, 1601
    dart_ref_date=16010101 
    # jday = cumulative days from 1601.01.01
    day_zero=$(($(get_timediff_dates ${dart_ref_date} ${STARTDATE})-1))
-   jday=$(( day_zero + $(($this_cycle/$DT_ANA)) -1 )) # observations are taken from the day before
+   jday=$(( day_zero + $(($next_cycle/$DT_ANA))))
 
    ### Observations
    # Select the correct input observation files
-   obs_seq_in=${OBS_DIR}/${OBS_PREF}${date_cycle_prev}
+   obs_seq_in=${OBS_DIR}/${OBS_PREF}${date_cycle_next}
    # The output observation is called final
-   obs_seq_out=${SCRATCHDIR}/Outputs/ObsOut/${OBS_PREF}final.${date_cycle_prev}
+   obs_seq_out=${SCRATCHDIR}/Outputs/ObsOut/${OBS_PREF}final.${date_cycle_next}
 
    ### Other options
    # read grid info
@@ -83,7 +83,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    hc=$(get_param_from_nc ${GRIDFILE} hc) # ROMS critical depth
 
    # Create the temporary namelist 
-   cat ${SCRATCHDIR}/input_${SIMU}.nml  | sed -e "s;<TIMEANA>;${date_cycle_std};g" \
+   cat ${SCRATCHDIR}/input_${SIMU}.nml  | sed -e "s;<TIMEANA>;${date_cycle_next_std};g" \
                                               -e "s;<DTANA>;${DT_ANA};g" \
                                               -e "s;<HC>;${hc};g" \
                                               -e "s;<GRIDNAME>;${GRIDFILE};g" \
@@ -93,8 +93,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
                                               -e "s;<TASKPERNODE>;${taskpernode};g" \
                                               -e "s;<DARTRSTIN>;${restart_in};g" \
                                               -e "s;<DARTRSTOUT>;${restart_out};g" \
-                                              -e "s;<FIRSTOBSDAY>;$(($jday-3));g" \
-                                              -e "s;<LASTOBSDAY>;$(($jday+3));g" \
+                                              -e "s;<FIRSTOBSDAY>;$(($jday-1));g" \
+                                              -e "s;<LASTOBSDAY>;$(($jday+1));g" \
                                               -e "s;<DARTINITDAYS>;$jday;g" \
    > ${SCRATCHDIR}/input.nml.temp
 
@@ -136,16 +136,17 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    
    # Run the Kalman filter
    ${RUN} -n <NCORES> ${SCRATCHDIR}/Exe/filter
-  
-   # Copy the diag outputs
-   mv ${SCRATCHDIR}/Prior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Prior_Diag_${date_cycle}.nc
-   cmd_status=$?
-   if ((cmd_status==0)); then
-      mv ${SCRATCHDIR}/Posterior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Posterior_Diag_${date_cycle}.nc
+ 
+
+   # If successfully created restart files
+   if [ -f ${Temp_dir}/dart.restart.0001 ]; then
       success=true
+      # Copy the diag outputs
+      mv ${SCRATCHDIR}/Prior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Prior_Diag_${date_cycle}.nc
+      mv ${SCRATCHDIR}/Posterior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Posterior_Diag_${date_cycle}.nc
    else
       success=false
-   fi
+   fi 
  
 #------------------------------------------------------------------------------------
 # Convert all members DART files to ROMS files
