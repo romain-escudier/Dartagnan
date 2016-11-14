@@ -98,7 +98,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
 	   mask covering our region...
 
 -RE.REANA17 : As RE.REANA16 but with corrected atm fields (no land mask)
-               + increased variance atm pert + spatially variable WTYPE [56 jours]
+               + increased variance atm pert + spatially variable WTYPE [90 jours]
         - HYCOM + anomalie de ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
         - 1 jour freerun avec pert forcages
@@ -114,24 +114,18 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
-        - GTSPP data
-        -> 
+        - GTSPP data (Serr=0.05)
+        -> Not enough salinity assimilated
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-RE.REANA19 : First test with GTSPP data                              [0 jours]
+        - HYCOM + anomalie de ClimCORE2 for initial conditions
+        - 0.3 Rep error for SST
+        - 1 jour freerun avec pert forcages
+        - Perturbation corrected + smaller (500km) + increased variance
+        - SW+LW corrected -> NOCS (no mask)
+        - Gridded WTYPE
+        - GTSPP data (Serr=0.5)
+        -> Too much error for salinity now?
 
 
 

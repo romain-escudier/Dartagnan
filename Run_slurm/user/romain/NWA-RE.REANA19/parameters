@@ -1,8 +1,8 @@
 #!/bin/ksh
 
 # Directories
-WORKINGDIR=<WORKINGDIR>
-DARTMNGDIR=<DARTMNGDIR>
+WORKINGDIR=/home/romain/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA19/
+DARTMNGDIR=/home/romain/Projects/dartagnan/Run_slurm/
 
 # Number of ensemble members to run
 NMEMBERS=30
@@ -15,15 +15,15 @@ STARTDATE=20110101
 DT_ANA=1
 
 # Simulation name
-SIMU=<SIMUNAME>
+SIMU=NWA-RE.REANA19
 
 # start at cycle nstart
 NSTART=1
 # end at cycle ncycles
-NCYCLES=10
+NCYCLES=90
 
 # Computation directory
-SCRATCHDIR=<SCRATCHDIR>
+SCRATCHDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.REANA19/
 DATADIR=/t0/scratch/romain/DART/Data/
 
 #-------------------------------------------------------
@@ -57,7 +57,7 @@ NCORES_DART=72
 NSTART_ANA=2
 
 # Observation files
-OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/
+OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/Serr05/
 OBS_PREF=obs_seq.sst_gtspp.
 
 #-------------------------------------------------------
@@ -104,7 +104,7 @@ SSSREFILE=${DATADIR}/Inputs/SSS/sss_monthly_climato_flooded.nc
 #-------------------------------------------------------
 
 if [ ${CLUSTER} = "triton" ] ; then
-   SUBMIT=sbatch
+   SUBMIT="sbatch --reservation=dart"
    RUN="srun --cpu_bind=rank"
 elif [ ${CLUSTER} = "yellowstone" ] ; then
    SUBMIT=bsub
