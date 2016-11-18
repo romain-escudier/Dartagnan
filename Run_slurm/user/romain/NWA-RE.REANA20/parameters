@@ -1,8 +1,8 @@
 #!/bin/ksh
 
 # Directories
-WORKINGDIR=<WORKINGDIR>
-DARTMNGDIR=<DARTMNGDIR>
+WORKINGDIR=/glade/u/home/romaines/Projects/dartagnan/user/romain/NWA-RE.REANA20/
+DARTMNGDIR=/glade/u/home/romaines/Projects/dartagnan/
 
 # Number of ensemble members to run
 NMEMBERS=30
@@ -15,26 +15,26 @@ STARTDATE=20110101
 DT_ANA=1
 
 # Simulation name
-SIMU=<SIMUNAME>
+SIMU=NWA-RE.REANA20
 
 # start at cycle nstart
 NSTART=1
 # end at cycle ncycles
-NCYCLES=10
+NCYCLES=3
 
 # Computation directory
-SCRATCHDIR=<SCRATCHDIR>
-DATADIR=/t0/scratch/romain/DART/Data/
+SCRATCHDIR=/glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA20/
+DATADIR=/glade/scratch/dussin/romain/
 
 #-------------------------------------------------------
 # QUEUEING SYSTEM PARAMETERS
 #-------------------------------------------------------
 
-CLUSTER=triton
+CLUSTER=yellowstone
 
 # Time limit
-TLIM_ROMS=3:00
-TLIM_DART=10:00
+TLIM_ROMS=0:10
+TLIM_DART=0:30
 
 # TRITON OPTIONS
 # Type of triton cores to use
@@ -51,13 +51,13 @@ QUEUE=regular
 #-------------------------------------------------------
 
 # Number of core for analysis
-NCORES_DART=72
+NCORES_DART=32
 
 # start analysis at cycle nstart_ana
 NSTART_ANA=2
 
 # Observation files
-OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/
+OBS_DIR=${DATADIR}/SST_GTSPP/obsSEQ/Serr05/
 OBS_PREF=obs_seq.sst_gtspp.
 
 #-------------------------------------------------------
@@ -65,9 +65,9 @@ OBS_PREF=obs_seq.sst_gtspp.
 #-------------------------------------------------------
 
 # Number of core for forward
-NCORES_ROMS=72
-ITILE=12
-JTILE=6
+NCORES_ROMS=80
+ITILE=10
+JTILE=8
 
 # Time step
 DT=200
@@ -84,19 +84,19 @@ DT_FILT=1
 
 
 # File parameters
-FORCINGDIR=${DATADIR}/Inputs/Forcings/Perturbed/CorrectDx/
+FORCINGDIR=${DATADIR}/CorrectDx/
 FORCINGPREF=drowned_MERRA_
 FORCINGSUFF=_3hours_
 
-GRIDFILE=/t0/scratch/romain/inputs/NWA_grd_newwtypechl.nc
-INITDIR=${DATADIR}/Inputs/Init/HYCOM_ClimCore2/
+GRIDFILE=${DATADIR}/NWA_grd_newwtypechl.nc
+INITDIR=${DATADIR}/Init/HYCOM_ClimCore2/
 INITFILE=HYCOM_GLBa0.08_2011_001_ClimCore2_NWA_init.nc
 
-CLIMFILE=${DATADIR}/Inputs/CLM-NWA/HYCOM_GLBa0.08_monthly_clim_NWA_2011.nc
-BRYFILE=${DATADIR}/Inputs/BC-NWA/HYCOM_GLBa0.08_bdry_NWA_2011.nc
-RUNOFFILE=${DATADIR}/Inputs/Runoff/runoff_NWA_daitren_clim.nc
-TIDESFILE=${DATADIR}/Inputs/Tides/NWA_tides_otps.nc
-SSSREFILE=${DATADIR}/Inputs/SSS/sss_monthly_climato_flooded.nc
+CLIMFILE=${DATADIR}/CLM-NWA/HYCOM_GLBa0.08_monthly_clim_NWA_2011.nc
+BRYFILE=${DATADIR}/BC-NWA/HYCOM_GLBa0.08_bdry_NWA_2011.nc
+RUNOFFILE=${DATADIR}/Runoff/runoff_NWA_daitren_clim.nc
+TIDESFILE=${DATADIR}/Tides/NWA_tides_otps.nc
+SSSREFILE=${DATADIR}/SSS/sss_monthly_climato_flooded.nc
 
 
 #-------------------------------------------------------
@@ -105,7 +105,7 @@ SSSREFILE=${DATADIR}/Inputs/SSS/sss_monthly_climato_flooded.nc
 
 if [ ${CLUSTER} = "triton" ] ; then
    SUBMIT=sbatch
-   RUN="srun --cpu_bind=rank"
+   RUN="srun --cpu_bind=rank -n $NCORES"
 elif [ ${CLUSTER} = "yellowstone" ] ; then
    SUBMIT=bsub
    RUN=mpirun.lsf

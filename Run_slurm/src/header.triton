@@ -1,5 +1,5 @@
 #SBATCH -n <NCORES>
-#SBATCH --time=<WALLTIME>
+#SBATCH --time=<WALLTIME>:00
 #SBATCH -J <JOBNAME>
 #SBATCH --dependency=afterok<DEPLIST>
 #SBATCH --error=<CURRENTDIR>/Logs/<LOGNAME>.%J.err

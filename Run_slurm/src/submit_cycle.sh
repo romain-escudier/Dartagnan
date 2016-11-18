@@ -29,7 +29,6 @@ listjobids=""
 for kmem in $( seq 1 $NMEMBERS ) ; do
 
    printf -v nnn "%03d" $kmem
-   
 
    cat ${SCRATCHDIR}/${SIMU}_roms_advance_member.sub | sed -e "s/<MEMBER>/$nnn/g" \
                                                            -e "s;<CYCLE>;${cycle};g" \
@@ -44,20 +43,24 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
                                                            -e "s;<PROJECTCODE>;${PROJECT};g" \
    > ${SCRATCHDIR}/Tempfiles/roms_advance_member_${nnn}.sub
    
+   # Get the id of the job and keep it in listjobids (for the dependency of the analysis)
    output=$( ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/roms_advance_member_${nnn}.sub )
    if [ ${CLUSTER} = "triton" ] ; then
       id=$( echo $output | awk '{ print $NF }' )
-   else
-      id=$( echo $output | awk '{ print 2 }' )
+      listjobids="$listjobids:$id"
+   elif [ ${CLUSTER} = "yellowstone" ] ; then
+      id=$( echo $output | awk '{ print $2 }' | awk -F "[<>]" '{print $2}')
+      listjobids="$listjobids\&\&done($id)"
    fi
-   listjobids="$listjobids:$id"
 
 done
+
+listjobids=${listjobids#"\&\&"}
 
 #---------------------------------------------------------------------------------------------#
 # 2. submit assimilation step
 
-cat ${SCRATCHDIR}/${SIMU}_analysis.sub | sed -e "s/<DEPLIST>/$listjobids/g" \
+cat ${SCRATCHDIR}/${SIMU}_analysis.sub | sed -e "s;<DEPLIST>;"$listjobids";g" \
                                              -e "s;<CYCLE>;${cycle};g" \
                                              -e "s;<DISPCYCLE>;${disp_cycle};g" \
                                              -e "s;<TYPENODE>;${TYPENODE_DART};g"\
@@ -69,13 +72,31 @@ cat ${SCRATCHDIR}/${SIMU}_analysis.sub | sed -e "s/<DEPLIST>/$listjobids/g" \
                                              -e "s;<QUEUE>;${QUEUE};g" \
                                              -e "s;<PROJECTCODE>;${PROJECT};g" \
 > ${SCRATCHDIR}/Tempfiles/analysis.sub
-${SUBMIT} < ${SCRATCHDIR}/Tempfiles/analysis.sub
+output=$( ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/analysis.sub )
+if [ ${CLUSTER} = "triton" ] ; then
+   dep_id=$( echo $output | awk '{ print $NF }' )
+elif [ ${CLUSTER} = "yellowstone" ] ; then
+   dep_id=$( echo $output | awk '{ print $2 }' | awk -F "[<>]" '{print $2}')
+   dep_id="done($dep_id)"
+fi
 
 
 
-
-
-
+#---------------------------------------------------------------------------------------------#
+# 3. submit script for the next step
+cat ${SCRATCHDIR}/${SIMU}_submit_next.sub | sed -e "s;<DEPLIST>;"$dep_id";g" \
+                                                -e "s;<CYCLE>;${cycle};g" \
+                                                -e "s;<DISPCYCLE>;${disp_cycle};g" \
+                                                -e "s;<NCORES>;1;g"\
+                                                -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
+                                                -e "s;<WALLTIME>;00:10;g" \
+                                                -e "s;<JOBNAME>;subnext_c${disp_cycle}_${SIMU};g" \
+                                                -e "s;<LOGNAME>;subnext_c${disp_cycle};g" \
+                                                -e "s;<QUEUE>;${QUEUE};g" \
+                                                -e "s;<PROJECTCODE>;${PROJECT};g" \
+                                                -e "s;"ptile=16";"ptile=1";g" \
+> ${SCRATCHDIR}/Tempfiles/submit_next.sub
+${SUBMIT} < ${SCRATCHDIR}/Tempfiles/submit_next.sub
 
 
 

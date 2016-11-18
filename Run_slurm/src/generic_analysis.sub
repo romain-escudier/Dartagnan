@@ -10,10 +10,12 @@ set -x
 # Get values of cycle and job id
 this_cycle=<CYCLE>
 disp_cycle=<DISPCYCLE>
-this_job_id=${SLURM_JOB_ID}
+NCORES=<NCORES>
 
 # Go to the root directory of the simulation (SCRATCHDIR)
 cd ${SCRATCHDIR}
+
+module load parallel
 
 # Only apply filter after a few days (defined in parameter: NSTART_ANA)
 if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
@@ -42,7 +44,6 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
        module load $mod
    done
    rm ${SCRATCHDIR}/Tempfiles/modules.dat
-   module load parallel
 
 #------------------------------------------------------------------------------------
 # Prepare the namelists
@@ -135,7 +136,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    > ${SCRATCHDIR}/input.nml
    
    # Run the Kalman filter
-   ${RUN} -n <NCORES> ${SCRATCHDIR}/Exe/filter
+   ${RUN} ${SCRATCHDIR}/Exe/filter
  
 
    # If successfully created restart files
@@ -154,6 +155,10 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 
    if [ "$success" = true ] ; then
  
+      # Dart need an existing reanalysis file (which is going to be overwritten)
+      seq -f %03g 1 $NMEMBERS | parallel \
+         "rsync -havz ${SCRATCHDIR}/Outputs/Prior/m{}/${SIMU}_rst_${date_cycle}.nc ${SCRATCHDIR}/Outputs/Reanalysis/m{}/${SIMU}_rstana_${date_cycle}.nc"
+
       for kmem in $( seq 1 $NMEMBERS ) ; do
       
          # Dart files have 4 digits in their name, our directories only 3 
@@ -164,8 +169,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
          roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
          dart_output=${Temp_dir}/dart.restart.${nnnn}
          
-         # Dart need an existing reanalysis file (which is going to be overwritten)
-         rsync -havz $roms_restart  $roms_reanaly
+#         # Dart need an existing reanalysis file (which is going to be overwritten)
+#         rsync -havz $roms_restart  $roms_reanaly
    
          # Create namelist for the dart2roms code
          cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTRSTFILE>;${dart_output};g" \
@@ -192,14 +197,18 @@ else
    date_cycle=$(get_date_from_cycle ${this_cycle} ${STARTDATE} ${DT_ANA})
 
    # Copy priors into reanalysis
-   for kmem in $( seq 1 $NMEMBERS ) ; do
+#   for kmem in $( seq 1 $NMEMBERS ) ; do
+#
+#      printf -v nnn "%03d" $kmem
+#      roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
+#      roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
+#      rsync -havz ${roms_restart} ${roms_reanaly}
+#
+#   done
 
-      printf -v nnn "%03d" $kmem
-      roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
-      roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
-      rsync -havz ${roms_restart} ${roms_reanaly}
-
-   done
+   # Copy priors into reanalysis
+   seq -f %03g 1 $NMEMBERS | parallel \
+      "rsync -havz ${SCRATCHDIR}/Outputs/Prior/m{}/${SIMU}_rst_${date_cycle}.nc ${SCRATCHDIR}/Outputs/Reanalysis/m{}/${SIMU}_rstana_${date_cycle}.nc"
    success=true
    
 fi
@@ -208,6 +217,15 @@ fi
 #------------------------------------------------------------------------------------
 # if analysis successful, submit next cycle
 #------------------------------------------------------------------------------------
+
+if [ "$success" = true ] ; then
+   echo "Assimilation cycle # $this_cycle successful"
+   exit 0
+else
+   echo "Assimilation cycle # $this_cycle failed"
+   exit 1
+fi
+
 
 if [ "$success" = true ] ; then
 
@@ -221,7 +239,18 @@ if [ "$success" = true ] ; then
    rm ${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}*;rm ${SCRATCHDIR}/Logs/DART/dart_r2d_c${disp_cycle}*;rm ${SCRATCHDIR}/Logs/DART/dart_filt_c${disp_cycle}*
    
    nextcycle=$(( $this_cycle + 1 ))
-   ssh node0 "cd ${SCRATCHDIR}/ ; ${SCRATCHDIR}/submit_cycle.sh $nextcycle >> ${SCRATCHDIR}/Logs/submit.log"
+   command="cd ${SCRATCHDIR}/ ; ${SCRATCHDIR}/submit_cycle.sh $nextcycle >> ${SCRATCHDIR}/Logs/submit.log"
+   Nlogin=1;ssh yslogin${Nlogin} "$command"
+   while (($? != 0)); do
+      echo "SSH to yslogin${Nlogin} failed. Trying the next one."
+      Nlogin=$((${Nlogin}+1))
+      if ((${Nlogin}>6)); then
+         break
+         echo "ERROR: The next job could not be launched!"
+      fi
+      ssh yslogin${Nlogin} "$command"
+   done
+   retun
 else 
    echo "Assimilation cycle # $this_cycle failed"
 fi

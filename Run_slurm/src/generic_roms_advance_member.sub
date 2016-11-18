@@ -10,7 +10,7 @@ this_member=<MEMBER>
 this_cycle=<CYCLE>
 disp_cycle=<DISPCYCLE>
 this_job_id=${SLURM_JOB_ID}
-
+NCORES=<NCORES>
 
 #------------------------------------------------------------------------------------
 # create all necessary inputs and namelists
@@ -126,7 +126,7 @@ rm ${SCRATCHDIR}/Tempfiles/m${this_member}/modules.dat
 # run the code
 #------------------------------------------------------------------------------------
 
-${RUN} -n <NCORES> <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTDIR>/Logs/ROMS/log.roms_fwd.c${disp_cycle}.m${this_member}
+${RUN} <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTDIR>/Logs/ROMS/log.roms_fwd.c${disp_cycle}.m${this_member}
 
 #sleep 1
 #exit 0

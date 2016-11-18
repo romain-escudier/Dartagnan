@@ -3,11 +3,10 @@
 #BSUB -q <QUEUE>
 #BSUB -N
 #BSUB -x
-#BSUB -a poe
 #BSUB -o <CURRENTDIR>/Logs/<LOGNAME>.%J.out
 #BSUB -e <CURRENTDIR>/Logs/<LOGNAME>.%J.err
 #BSUB -J <JOBNAME>
 #BSUB -W <WALLTIME>
-#BSUB -w "done(<DEPLIST>)"
+#BSUB -w '<DEPLIST>'
 #BSUB -P <PROJECTCODE>
 
