@@ -87,7 +87,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - SW+LW corrected -> NOCS
         -> No difference
 
--RE.REANA16 : As RE.REANA15 but with new wtype grid (see RE.REANA14) [7 jours]
+-RE.REANA16 : As RE.REANA15 but with new wtype grid (see RE.REANA14) [9 jours]
         - HYCOM + anomalie de ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
         - 1 jour freerun avec pert forcages
@@ -98,7 +98,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
 	   mask covering our region...
 
 -RE.REANA17 : As RE.REANA16 but with corrected atm fields (no land mask)
-               + increased variance atm pert + spatially variable WTYPE [90 jours]
+               + increased variance atm pert + spatially variable WTYPE [88 jours]
         - HYCOM + anomalie de ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
         - 1 jour freerun avec pert forcages
@@ -107,7 +107,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - Gridded WTYPE
         -> Much better!!! -> New reference
 
--RE.REANA18 : First test with GTSPP data                              [0 jours]
+-RE.REANA18 : First test with GTSPP data                              [58 jours]
         - HYCOM + anomalie de ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
         - 1 jour freerun avec pert forcages
@@ -117,7 +117,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - GTSPP data (Serr=0.05)
         -> Not enough salinity assimilated
 
--RE.REANA19 : First test with GTSPP data                              [0 jours]
+-RE.REANA19 : First test with GTSPP data                              [43 jours]
         - HYCOM + anomalie de ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
         - 1 jour freerun avec pert forcages
