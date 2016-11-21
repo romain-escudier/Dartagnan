@@ -44,6 +44,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
        module load $mod
    done
    rm ${SCRATCHDIR}/Tempfiles/modules.dat
+   module load parallel
 
 #------------------------------------------------------------------------------------
 # Prepare the namelists
