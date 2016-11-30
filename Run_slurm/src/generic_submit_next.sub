@@ -24,16 +24,15 @@ rm ${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}*;rm ${SCRATCHDIR}/Logs/DART/d
 
 nextcycle=$(( $this_cycle + 1 ))
 command=". /etc/bashrc; cd ${SCRATCHDIR}/ ; ${SCRATCHDIR}/submit_cycle.sh $nextcycle >> ${SCRATCHDIR}/Logs/submit.log"
-Nlogin=1;ssh yslogin${Nlogin} "$command"
-while (($? != 0)); do
-   echo "SSH to yslogin${Nlogin} failed. Trying the next one."
-   Nlogin=$((${Nlogin}+1))
-   if ((${Nlogin}>6)); then
+
+for fronti in "${frontnode[@]}"; do
+   ssh $fronti "$command"
+   if (($? == 0))
       break
-      echo "ERROR: The next job could not be launched!"
    fi
-   ssh yslogin${Nlogin} "$command"
+   echo "SSH to $fronti failed. Trying the next one."
 done
+
 retun
 
 

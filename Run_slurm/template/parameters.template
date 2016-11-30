@@ -89,6 +89,7 @@ FORCINGPREF=drowned_MERRA_
 FORCINGSUFF=_3hours_
 
 GRIDFILE=/t0/scratch/romain/inputs/NWA_grd_newwtypechl.nc
+NUDGCOEF=/t0/scratch/romain/inputs/NWA_nudging_coef.nc
 INITDIR=${DATADIR}/Inputs/Init/HYCOM_ClimCore2/
 INITFILE=HYCOM_GLBa0.08_2011_001_ClimCore2_NWA_init.nc
 
@@ -106,7 +107,9 @@ SSSREFILE=${DATADIR}/Inputs/SSS/sss_monthly_climato_flooded.nc
 if [ ${CLUSTER} = "triton" ] ; then
    SUBMIT=sbatch
    RUN="srun --cpu_bind=rank"
+   declare -a frontnode=(node0)
 elif [ ${CLUSTER} = "yellowstone" ] ; then
    SUBMIT=bsub
    RUN=mpirun.lsf
+   declare -a frontnode=(yslogin1 yslogin2 yslogin3 yslogin4 yslogin5 yslogin6)
 fi

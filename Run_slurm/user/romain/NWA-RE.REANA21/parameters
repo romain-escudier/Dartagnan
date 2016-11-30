@@ -1,7 +1,7 @@
 #!/bin/ksh
 
 # Directories
-WORKINGDIR=/home/romain/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA19/
+WORKINGDIR=/home/romain/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA21/
 DARTMNGDIR=/home/romain/Projects/dartagnan/Run_slurm/
 
 # Number of ensemble members to run
@@ -15,15 +15,15 @@ STARTDATE=20110101
 DT_ANA=1
 
 # Simulation name
-SIMU=NWA-RE.REANA19
+SIMU=NWA-RE.REANA21
 
 # start at cycle nstart
 NSTART=1
 # end at cycle ncycles
-NCYCLES=90
+NCYCLES=10
 
 # Computation directory
-SCRATCHDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.REANA19/
+SCRATCHDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.REANA21/
 DATADIR=/t0/scratch/romain/DART/Data/
 
 #-------------------------------------------------------
@@ -33,8 +33,8 @@ DATADIR=/t0/scratch/romain/DART/Data/
 CLUSTER=triton
 
 # Time limit
-TLIM_ROMS=3:00:00
-TLIM_DART=10:00:00
+TLIM_ROMS=3:00
+TLIM_DART=10:00
 
 # TRITON OPTIONS
 # Type of triton cores to use
@@ -57,7 +57,7 @@ NCORES_DART=72
 NSTART_ANA=2
 
 # Observation files
-OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/Serr05/
+OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/Serr02Terr08/
 OBS_PREF=obs_seq.sst_gtspp.
 
 #-------------------------------------------------------
@@ -89,7 +89,6 @@ FORCINGPREF=drowned_MERRA_
 FORCINGSUFF=_3hours_
 
 GRIDFILE=/t0/scratch/romain/inputs/NWA_grd_newwtypechl.nc
-NUDGCOEF=/t0/scratch/romain/inputs/NWA_nudging_coef.nc
 INITDIR=${DATADIR}/Inputs/Init/HYCOM_ClimCore2/
 INITFILE=HYCOM_GLBa0.08_2011_001_ClimCore2_NWA_init.nc
 
@@ -104,10 +103,13 @@ SSSREFILE=${DATADIR}/Inputs/SSS/sss_monthly_climato_flooded.nc
 # EXECUTABLES
 #-------------------------------------------------------
 
+
 if [ ${CLUSTER} = "triton" ] ; then
-   SUBMIT="sbatch --reservation=dart"
+   SUBMIT=sbatch
    RUN="srun --cpu_bind=rank"
+   declare -a frontnode=(node0)
 elif [ ${CLUSTER} = "yellowstone" ] ; then
    SUBMIT=bsub
    RUN=mpirun.lsf
+   declare -a frontnode=(yslogin1 yslogin2 yslogin3 yslogin4 yslogin5 yslogin6)
 fi

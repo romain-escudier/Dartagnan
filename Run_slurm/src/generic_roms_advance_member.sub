@@ -61,6 +61,7 @@ cat <CURRENTDIR>/ocean_${SIMU}.in | sed -e "s;<DT>;$DT;g"                       
                                         -e "s;<RESTART>;$restart;g"             \
                                         -e "s;<NTIMEOUT>;$ntimeout;g"              \
                                         -e "s;<GRID>;$GRIDFILE;g"                  \
+                                        -e "s;<NUDGCOEF>;$NUDGCOEF;g"                  \
                                         -e "s;<STARTDAY>;$startday;g"              \
                                         -e "s;<REFDATE>;$REFDATE;g"                \
                                         -e "s;<CLMFILE>;$CLIMFILE;g"               \

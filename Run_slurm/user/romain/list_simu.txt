@@ -117,7 +117,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - GTSPP data (Serr=0.05)
         -> Not enough salinity assimilated
 
--RE.REANA19 : First test with GTSPP data                              [43 jours]
+-RE.REANA19 : Increase S error in GTSPP                               [58 jours]
         - HYCOM + anomalie de ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
         - 1 jour freerun avec pert forcages
@@ -127,8 +127,25 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - GTSPP data (Serr=0.5)
         -> Too much error for salinity now?
 
+-RE.REANA20 : Same as RE.REANA19, test on Yellowstone                 [0 jour]
+        - HYCOM + anomalie de ClimCORE2 for initial conditions
+        - 0.3 Rep error for SST
+        - 1 jour freerun avec pert forcages
+        - Perturbation corrected + smaller (500km) + increased variance
+        - SW+LW corrected -> NOCS (no mask)
+        - Gridded WTYPE
+        - GTSPP data (Serr=0.5)
+        -> Segmentation fault...
 
-
+-RE.REANA19 : Change errors of GTSPP                            [58 jours]
+        - HYCOM + anomalie de ClimCORE2 for initial conditions
+        - 0.3 Rep error for SST
+        - 1 jour freerun avec pert forcages
+        - Perturbation corrected + smaller (500km) + increased variance
+        - SW+LW corrected -> NOCS (no mask)
+        - Gridded WTYPE
+        - GTSPP data (Serr=0.2, Terr=0.8)
+        -> 
 
 
 
