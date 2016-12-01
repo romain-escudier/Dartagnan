@@ -27,7 +27,7 @@ command=". /etc/bashrc; cd ${SCRATCHDIR}/ ; ${SCRATCHDIR}/submit_cycle.sh $nextc
 
 for fronti in "${frontnode[@]}"; do
    ssh $fronti "$command"
-   if (($? == 0))
+   if (($? == 0)); then
       break
    fi
    echo "SSH to $fronti failed. Trying the next one."
