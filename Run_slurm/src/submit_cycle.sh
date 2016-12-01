@@ -75,6 +75,7 @@ cat ${SCRATCHDIR}/${SIMU}_analysis.sub | sed -e "s;<DEPLIST>;"$listjobids";g" \
 output=$( ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/analysis.sub )
 if [ ${CLUSTER} = "triton" ] ; then
    dep_id=$( echo $output | awk '{ print $NF }' )
+   dep_id=":$dep_id"
 elif [ ${CLUSTER} = "yellowstone" ] ; then
    dep_id=$( echo $output | awk '{ print $2 }' | awk -F "[<>]" '{print $2}')
    dep_id="done($dep_id)"
@@ -87,6 +88,7 @@ fi
 cat ${SCRATCHDIR}/${SIMU}_submit_next.sub | sed -e "s;<DEPLIST>;"$dep_id";g" \
                                                 -e "s;<CYCLE>;${cycle};g" \
                                                 -e "s;<DISPCYCLE>;${disp_cycle};g" \
+                                                -e "s;<TYPENODE>;${TYPENODE_DART};g"\
                                                 -e "s;<NCORES>;1;g"\
                                                 -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
                                                 -e "s;<WALLTIME>;00:10;g" \
