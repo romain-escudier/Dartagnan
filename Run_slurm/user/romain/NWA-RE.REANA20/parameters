@@ -37,14 +37,18 @@ TLIM_ROMS=0:10
 TLIM_DART=0:30
 
 # TRITON OPTIONS
-# Type of triton cores to use
-# (Don't use generic -triton- for dart)
-TYPENODE_ROMS=triton24
-TYPENODE_DART=triton24
+if [ ${CLUSTER} = "triton" ] ; then
+   # Type of triton cores to use
+   # (Don't use generic -triton- for dart)
+   TYPENODE_ROMS=triton24
+   TYPENODE_DART=triton24
 
-# YELLOWSTONE OPTIONS
-PROJECT=URTG0011
-QUEUE=regular
+elif [ ${CLUSTER} = "yellowstone" ] ; then
+   # YELLOWSTONE OPTIONS
+   TYPENODE_DART=yellowstone
+   PROJECT=URTG0011
+   QUEUE=regular
+fi
 
 #-------------------------------------------------------
 # DART PARAMETERS

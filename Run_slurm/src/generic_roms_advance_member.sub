@@ -1,10 +1,10 @@
 #!/bin/bash
 <HEADER>
 
-set -x
-
 . <CURRENTDIR>/parameters
 . <CURRENTDIR>/functions.sh
+
+set -x
 
 this_member=<MEMBER>
 this_cycle=<CYCLE>

@@ -1,11 +1,11 @@
 #!/bin/bash
 <HEADER>
 
-set -x
-
 # Get parameters and useful functions
 . <CURRENTDIR>/parameters
 . <CURRENTDIR>/functions.sh
+
+set -x
 
 # Get values of cycle and job id
 this_cycle=<CYCLE>
@@ -15,7 +15,6 @@ NCORES=<NCORES>
 # Go to the root directory of the simulation (SCRATCHDIR)
 cd ${SCRATCHDIR}
 
-module load parallel
 
 # Only apply filter after a few days (defined in parameter: NSTART_ANA)
 if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
@@ -29,6 +28,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
        taskpernode=16
    elif [ '<TYPENODE>' == 'triton24' ] ; then
        taskpernode=24
+   elif [ '<TYPENODE>' == 'yellowstone' ] ; then
+       taskpernode=16
    else
        echo "Machine not supported"; exit 1
    fi
@@ -206,6 +207,8 @@ else
 #      rsync -havz ${roms_restart} ${roms_reanaly}
 #
 #   done
+
+   module load parallel
 
    # Copy priors into reanalysis
    seq -f %03g 1 $NMEMBERS | parallel \
