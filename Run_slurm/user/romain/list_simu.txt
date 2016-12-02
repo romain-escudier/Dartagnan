@@ -137,7 +137,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - GTSPP data (Serr=0.5)
         -> Segmentation fault...
 
--RE.REANA19 : Change errors of GTSPP                            [58 jours]
+-RE.REANA21 : Change errors of GTSPP                            [58 jours]
         - HYCOM + anomalie de ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
         - 1 jour freerun avec pert forcages
