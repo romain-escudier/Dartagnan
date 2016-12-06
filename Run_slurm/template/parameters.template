@@ -110,7 +110,7 @@ SSSREFILE=${DATADIR}/Inputs/SSS/sss_monthly_climato_flooded.nc
 
 if [ ${CLUSTER} = "triton" ] ; then
    SUBMIT=sbatch
-   RUN="srun --cpu_bind=rank -n $NCORES"
+   RUN="srun --cpu_bind=rank"
    declare -a frontnode=(node0)
 elif [ ${CLUSTER} = "yellowstone" ] ; then
    SUBMIT=bsub

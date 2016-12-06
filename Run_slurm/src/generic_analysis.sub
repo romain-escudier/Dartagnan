@@ -159,7 +159,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
  
       # Dart need an existing reanalysis file (which is going to be overwritten)
       seq -f %03g 1 $NMEMBERS | parallel \
-         "rsync -havz ${SCRATCHDIR}/Outputs/Prior/m{}/${SIMU}_rst_${date_cycle}.nc ${SCRATCHDIR}/Outputs/Reanalysis/m{}/${SIMU}_rstana_${date_cycle}.nc"
+         "rsync -havz ${SCRATCHDIR}/Outputs/Prior/m{}/${SIMU}_rst_${date_cycle}.nc \
+         ${SCRATCHDIR}/Outputs/Reanalysis/m{}/${SIMU}_rstana_${date_cycle}.nc"
 
       for kmem in $( seq 1 $NMEMBERS ) ; do
       
@@ -212,7 +213,8 @@ else
 
    # Copy priors into reanalysis
    seq -f %03g 1 $NMEMBERS | parallel \
-      "rsync -havz ${SCRATCHDIR}/Outputs/Prior/m{}/${SIMU}_rst_${date_cycle}.nc ${SCRATCHDIR}/Outputs/Reanalysis/m{}/${SIMU}_rstana_${date_cycle}.nc"
+      "rsync -havz ${SCRATCHDIR}/Outputs/Prior/m{}/${SIMU}_rst_${date_cycle}.nc \
+      ${SCRATCHDIR}/Outputs/Reanalysis/m{}/${SIMU}_rstana_${date_cycle}.nc"
    success=true
    
 fi

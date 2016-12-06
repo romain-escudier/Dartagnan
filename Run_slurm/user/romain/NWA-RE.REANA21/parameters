@@ -37,14 +37,18 @@ TLIM_ROMS=3:00
 TLIM_DART=10:00
 
 # TRITON OPTIONS
-# Type of triton cores to use
-# (Don't use generic -triton- for dart)
-TYPENODE_ROMS=triton24
-TYPENODE_DART=triton24
+if [ ${CLUSTER} = "triton" ] ; then
+   # Type of triton cores to use
+   # (Don't use generic -triton- for dart)
+   TYPENODE_ROMS=triton24
+   TYPENODE_DART=triton24
 
-# YELLOWSTONE OPTIONS
-PROJECT=URTG0011
-QUEUE=regular
+elif [ ${CLUSTER} = "yellowstone" ] ; then
+   # YELLOWSTONE OPTIONS
+   TYPENODE_DART=yellowstone
+   PROJECT=URTG0011
+   QUEUE=regular
+fi
 
 #-------------------------------------------------------
 # DART PARAMETERS
@@ -89,6 +93,7 @@ FORCINGPREF=drowned_MERRA_
 FORCINGSUFF=_3hours_
 
 GRIDFILE=/t0/scratch/romain/inputs/NWA_grd_newwtypechl.nc
+NUDGCOEF=/t0/scratch/romain/inputs/NWA_nudging_coef.nc
 INITDIR=${DATADIR}/Inputs/Init/HYCOM_ClimCore2/
 INITFILE=HYCOM_GLBa0.08_2011_001_ClimCore2_NWA_init.nc
 
@@ -103,9 +108,8 @@ SSSREFILE=${DATADIR}/Inputs/SSS/sss_monthly_climato_flooded.nc
 # EXECUTABLES
 #-------------------------------------------------------
 
-
 if [ ${CLUSTER} = "triton" ] ; then
-   SUBMIT=sbatch
+   SUBMIT="sbatch --reservation=dart"
    RUN="srun --cpu_bind=rank"
    declare -a frontnode=(node0)
 elif [ ${CLUSTER} = "yellowstone" ] ; then
