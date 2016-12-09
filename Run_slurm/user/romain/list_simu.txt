@@ -147,14 +147,14 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - GTSPP data (Serr=0.2, Terr=0.8)
         -> Better! Still could tune the errors a litte more?
 
--RE.REANA22 : Change errors of SST                              [0 jours]
+-RE.REANA22 : Change errors of GTSPP/SST                         [0 jours]
         - HYCOM + anomalie de ClimCORE2 for initial conditions
         - 0.15 Rep error for SST
         - 1 jour freerun avec pert forcages
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
-        - GTSPP data (Serr=0.25, Terr=0.75)
+        - GTSPP data (Serr=0.3, Terr=0.75)
         ->
 
 

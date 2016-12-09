@@ -10,7 +10,7 @@ ROMSAPP=NWA
 USERINI=RE
 
 # Simulation specific name
-SIMUSUFF=REANA21
+SIMUSUFF=REANA22
 
 # Application long name
 APPLONG="Northwest Atlantic 7km Grid"
