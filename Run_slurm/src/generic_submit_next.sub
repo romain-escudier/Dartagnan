@@ -33,7 +33,7 @@ for fronti in "${frontnode[@]}"; do
    echo "SSH to $fronti failed. Trying the next one."
 done
 
-retun
+return
 
 
 

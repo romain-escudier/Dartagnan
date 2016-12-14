@@ -244,19 +244,7 @@ if [ "$success" = true ] ; then
    tar -czf dart_log_c${disp_cycle}.tar.gz dart_*_c${disp_cycle}*
    rm ${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}*;rm ${SCRATCHDIR}/Logs/DART/dart_r2d_c${disp_cycle}*;rm ${SCRATCHDIR}/Logs/DART/dart_filt_c${disp_cycle}*
    
-   nextcycle=$(( $this_cycle + 1 ))
-   command="cd ${SCRATCHDIR}/ ; ${SCRATCHDIR}/submit_cycle.sh $nextcycle >> ${SCRATCHDIR}/Logs/submit.log"
-   Nlogin=1;ssh yslogin${Nlogin} "$command"
-   while (($? != 0)); do
-      echo "SSH to yslogin${Nlogin} failed. Trying the next one."
-      Nlogin=$((${Nlogin}+1))
-      if ((${Nlogin}>6)); then
-         break
-         echo "ERROR: The next job could not be launched!"
-      fi
-      ssh yslogin${Nlogin} "$command"
-   done
-   retun
+   return
 else 
    echo "Assimilation cycle # $this_cycle failed"
 fi
