@@ -32,7 +32,7 @@ In this directory, you have :
    parameters        -> parameters for the simulation to fill
    varinfo.dat       -> varinfo.dat to modify for the ROMS model
    src/              -> directory for the headers for the ROMS code
-   build.bash        -> script to compile the ROMS code
+   build_roms.bash   -> script to compile the ROMS code
    build_dart.bash   -> script to compile the DART code
    main.ksh          -> main script to launch the simulation
    clean.sh          -> script to clean the scratch directory
@@ -48,7 +48,7 @@ First you need to put in src/, the appropriate headers (e.g. nwa.h, ana_nudgcoef
 $ cp headers_source/*.h src/
 Then load the appropriate modules
 $ module load netcdf/4.3.0-gcc4.4.7 openmpi/1.8.5_gcc4.4.7
-$ ./build.bash -j 4
+$ ./build_roms.bash -j 4
 
 
 -----------------------------------------
@@ -84,7 +84,7 @@ Put the desired parameters for the DART assimilation
 -----------------------------------------
 Launch the simulation :
 -----------------------------------------
-$ ./main.ksh
+$ ./main.sh
 
 -----------------------------------------
 Look at results :

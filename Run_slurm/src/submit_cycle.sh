@@ -96,7 +96,6 @@ cat ${SCRATCHDIR}/${SIMU}_submit_next.sub | sed -e "s;<DEPLIST>;"$dep_id";g" \
                                                 -e "s;<LOGNAME>;subnext_c${disp_cycle};g" \
                                                 -e "s;<QUEUE>;${QUEUE};g" \
                                                 -e "s;<PROJECTCODE>;${PROJECT};g" \
-                                                -e "s;"ptile=16";"ptile=1";g" \
 > ${SCRATCHDIR}/Tempfiles/submit_next.sub
 ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/submit_next.sub
 
