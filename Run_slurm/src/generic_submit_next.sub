@@ -23,15 +23,14 @@ rm ${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}*;rm ${SCRATCHDIR}/Logs/DART/d
 #command="cd ${SCRATCHDIR}/ ; ${SCRATCHDIR}/submit_cycle.sh $nextcycle >> ${SCRATCHDIR}/Logs/submit.log"
 
 nextcycle=$(( $this_cycle + 1 ))
-command=". /etc/bashrc; cd ${SCRATCHDIR}/ ; ${SCRATCHDIR}/submit_cycle.sh $nextcycle >> ${SCRATCHDIR}/Logs/submit.log"
+command="cd ${SCRATCHDIR}/ ; ${SCRATCHDIR}/submit_cycle.sh $nextcycle >> ${SCRATCHDIR}/Logs/submit.log"
 
-for fronti in "${frontnode[@]}"; do
-   ssh $fronti "$command"
-   if (($? == 0)); then
-      break
-   fi
-   echo "SSH to $fronti failed. Trying the next one."
-done
+if [ ${CLUSTER} = "triton" ] ; then
+   ssh node0 "$command"
+else
+   cd ${SCRATCHDIR}/ 
+   ${SCRATCHDIR}/submit_cycle.sh $nextcycle >> ${SCRATCHDIR}/Logs/submit.log
+fi
 
 return
 
