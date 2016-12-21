@@ -168,7 +168,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         -> Finally debugged and working... Set up a new simulation to save
            the logs
 
--RE.REANA24 : Working simulation on yellowstone                  [15 jours]
+-RE.REANA24 : Working simulation on yellowstone                  [60 jours]
         - HYCOM + anomalie de ClimCORE2 for initial conditions
         - 0.15 Rep error for SST
         - 1 jour freerun avec pert forcages

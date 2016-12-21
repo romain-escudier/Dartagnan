@@ -15,7 +15,6 @@ NCORES=<NCORES>
 # Go to the root directory of the simulation (SCRATCHDIR)
 cd ${SCRATCHDIR}
 
-
 # Only apply filter after a few days (defined in parameter: NSTART_ANA)
 if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 
@@ -172,9 +171,6 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
          roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
          dart_output=${Temp_dir}/dart.restart.${nnnn}
          
-#         # Dart need an existing reanalysis file (which is going to be overwritten)
-#         rsync -havz $roms_restart  $roms_reanaly
-   
          # Create namelist for the dart2roms code
          cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTRSTFILE>;${dart_output};g" \
                                                  -e "s;<ROMSRSTNAME>;${roms_reanaly};g" \
@@ -198,16 +194,6 @@ else
 
    # Get the current date
    date_cycle=$(get_date_from_cycle ${this_cycle} ${STARTDATE} ${DT_ANA})
-
-   # Copy priors into reanalysis
-#   for kmem in $( seq 1 $NMEMBERS ) ; do
-#
-#      printf -v nnn "%03d" $kmem
-#      roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
-#      roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
-#      rsync -havz ${roms_restart} ${roms_reanaly}
-#
-#   done
 
    module load parallel
 

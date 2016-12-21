@@ -21,7 +21,6 @@ if ((${this_cycle} <= ${NCYCLES_SPIN})) ; then
    DT=${DT_SPIN}
 fi
 
-
 # Name of the ROMS namelist
 NAMELIST=${SCRATCHDIR}/Roms_files/ocean_${SIMU}_m${this_member}.in
 
@@ -128,9 +127,6 @@ rm ${SCRATCHDIR}/Tempfiles/m${this_member}/modules.dat
 #------------------------------------------------------------------------------------
 
 ${RUN} <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTDIR>/Logs/ROMS/log.roms_fwd.c${disp_cycle}.m${this_member}
-
-#sleep 1
-#exit 0
 
 #------------------------------------------------------------------------------------
 # check if the run finished OK
