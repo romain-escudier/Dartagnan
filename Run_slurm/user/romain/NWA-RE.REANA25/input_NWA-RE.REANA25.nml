@@ -51,7 +51,7 @@
    input_qc_threshold       =  3.0
    output_forward_op_errors = .false.
    output_timestamps        = .true.
-   inf_flavor                  = 0,                       0
+   inf_flavor                  = 2,                       0
    inf_initial_from_restart    = .true.,                 .false.
    inf_sd_initial_from_restart = .true.,                 .false.
    inf_output_restart          = .true.,                 .false.

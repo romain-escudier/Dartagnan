@@ -45,17 +45,13 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    
    # Get the id of the job and keep it in listjobids (for the dependency of the analysis)
    output=$( ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/roms_advance_member_${nnn}.sub )
-   if [ ${CLUSTER} = "triton" ] ; then
-      id=$( echo $output | awk '{ print $NF }' )
-      listjobids="$listjobids:$id"
-   elif [ ${CLUSTER} = "yellowstone" ] ; then
-      id=$( echo $output | awk '{ print $2 }' | awk -F "[<>]" '{print $2}')
-      listjobids="$listjobids\&\&done($id)"
+   listjobids=$(./get_id_dependency.sh "$output" "$listjobids" $CLUSTER)
+   if ! (( $? == 0 )); then
+      echo $listjobids
+      exit 1 
    fi
 
 done
-
-listjobids=${listjobids#"\&\&"}
 
 #---------------------------------------------------------------------------------------------#
 # 2. submit assimilation step
@@ -73,15 +69,7 @@ cat ${SCRATCHDIR}/${SIMU}_analysis.sub | sed -e "s;<DEPLIST>;"$listjobids";g" \
                                              -e "s;<PROJECTCODE>;${PROJECT};g" \
 > ${SCRATCHDIR}/Tempfiles/analysis.sub
 output=$( ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/analysis.sub )
-if [ ${CLUSTER} = "triton" ] ; then
-   dep_id=$( echo $output | awk '{ print $NF }' )
-   dep_id=":$dep_id"
-elif [ ${CLUSTER} = "yellowstone" ] ; then
-   dep_id=$( echo $output | awk '{ print $2 }' | awk -F "[<>]" '{print $2}')
-   dep_id="done($dep_id)"
-fi
-
-
+dep_id=$(./get_id_dependency.sh "$output" "" $CLUSTER)
 
 #---------------------------------------------------------------------------------------------#
 # 3. submit script for the next step
@@ -98,10 +86,6 @@ cat ${SCRATCHDIR}/${SIMU}_submit_next.sub | sed -e "s;<DEPLIST>;"$dep_id";g" \
                                                 -e "s;<PROJECTCODE>;${PROJECT};g" \
 > ${SCRATCHDIR}/Tempfiles/submit_next.sub
 ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/submit_next.sub
-
-
-
-
 
 
 

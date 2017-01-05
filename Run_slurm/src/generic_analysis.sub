@@ -83,6 +83,11 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    restart_in=${Temp_dir}/dart.ics
    restart_out=${Temp_dir}/dart.restart
    hc=$(get_param_from_nc ${GRIDFILE} hc) # ROMS critical depth
+   # Inflation file names
+   inf_in=${SCRATCHDIR}/Outputs/Prior/dart_inf_${date_cycle}
+   inf_out=${SCRATCHDIR}/Outputs/Prior/dart_inf_${date_cycle_next}
+   inf_diag=${SCRATCHDIR}/Outputs/Prior/dart_inf_diag_${date_cycle}
+
 
    # Create the temporary namelist 
    cat ${SCRATCHDIR}/input_${SIMU}.nml  | sed -e "s;<TIMEANA>;${date_cycle_next_std};g" \
@@ -98,7 +103,13 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
                                               -e "s;<FIRSTOBSDAY>;$(($jday-1));g" \
                                               -e "s;<LASTOBSDAY>;$(($jday+1));g" \
                                               -e "s;<DARTINITDAYS>;$jday;g" \
+                                              -e "s;<DARTINFIN>;$inf_in;g" \
+                                              -e "s;<DARTINFOUT>;$inf_out;g" \
+                                              -e "s;<DARTINFDIAG>;$inf_diag;g" \
    > ${SCRATCHDIR}/input.nml.temp
+
+
+
 
 #------------------------------------------------------------------------------------
 # Convert all members ROMS files to DART files
@@ -136,9 +147,14 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
                                           -e "s;<ROMSRSTNAME>;${roms_restart_file};g" \
    > ${SCRATCHDIR}/input.nml
    
+   # For the first cycle, create the inflation file
+   if (( $this_cycle == $NSTART_ANA )) ; then
+      echo 1.02 0.6 | ${SCRATCHDIR}/Exe/fill_inflation_restart
+      mv inflate_ics $inf_in
+   fi
+
    # Run the Kalman filter
    ${RUN} ${SCRATCHDIR}/Exe/filter
- 
 
    # If successfully created restart files
    if [ -f ${Temp_dir}/dart.restart.0001 ]; then

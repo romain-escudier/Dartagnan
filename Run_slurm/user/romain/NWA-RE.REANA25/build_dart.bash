@@ -1,8 +1,8 @@
 #!/bin/bash
 
-DARTDIR=<DARTDIR>
-WORKDIR=<WORKDIR>
-SCRATCHDIR=<SCRATCHDIR>
+DARTDIR=/glade/p/work/romaines/Tools/DART/trunk_new/
+WORKDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA25/
+SCRATCHDIR=/glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA25/
 
 MYDIR=$(pwd)
 
