@@ -92,6 +92,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    # Create the temporary namelist 
    cat ${SCRATCHDIR}/input_${SIMU}.nml  | sed -e "s;<TIMEANA>;${date_cycle_next_std};g" \
                                               -e "s;<DTANA>;${DT_ANA};g" \
+                                              -e "s;<DTANA_OBS>;${DT_OBS};g" \
                                               -e "s;<HC>;${hc};g" \
                                               -e "s;<GRIDNAME>;${GRIDFILE};g" \
                                               -e "s;<NMEMBERS>;${NMEMBERS};g" \

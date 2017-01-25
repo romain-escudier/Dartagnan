@@ -64,6 +64,10 @@ NSTART_ANA=2
 OBS_DIR=${DATADIR}/SST_GTSPP/obsSEQ/Serr05/
 OBS_PREF=obs_seq.sst_gtspp.
 
+# Inflation
+INFLATION=true
+
+
 #-------------------------------------------------------
 # ROMS PARAMETERS
 #-------------------------------------------------------

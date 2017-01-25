@@ -13,6 +13,7 @@ STARTDATE=20110101
 
 # Analysis step (days)
 DT_ANA=1
+DT_OBS=5
 
 # Simulation name
 SIMU=<SIMUNAME>

@@ -38,7 +38,7 @@
    first_obs_seconds        = 0
    last_obs_days            = <LASTOBSDAY>
    last_obs_seconds         = 86399
-   obs_window_days          = <DTANA>
+   obs_window_days          = <DTANA_OBS>
    obs_window_seconds       = 0
    enable_special_outlier_code = .false.
    num_output_state_members = 0
@@ -51,7 +51,7 @@
    input_qc_threshold       =  3.0
    output_forward_op_errors = .false.
    output_timestamps        = .true.
-   inf_flavor                  = 0,                       0
+   inf_flavor                  = 2,                       0
    inf_initial_from_restart    = .true.,                 .false.
    inf_sd_initial_from_restart = .true.,                 .false.
    inf_output_restart          = .true.,                 .false.
@@ -148,7 +148,7 @@
 &model_nml
    analysis_time                = '<TIMEANA>'
    output_state_vector          = .false.
-   assimilation_period_days     = <DTANA>
+   assimilation_period_days     = <DTANA_OBS>
    assimilation_period_seconds  = 0
    model_perturbation_amplitude = 0.2
    hc                           = <HC>

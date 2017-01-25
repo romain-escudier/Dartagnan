@@ -79,7 +79,7 @@ cat ${SCRATCHDIR}/${SIMU}_submit_next.sub | sed -e "s;<DEPLIST>;"$dep_id";g" \
                                                 -e "s;<TYPENODE>;${TYPENODE_DART};g"\
                                                 -e "s;<NCORES>;1;g"\
                                                 -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
-                                                -e "s;<WALLTIME>;00:10;g" \
+                                                -e "s;<WALLTIME>;00:05;g" \
                                                 -e "s;<JOBNAME>;subnext_c${disp_cycle}_${SIMU};g" \
                                                 -e "s;<LOGNAME>;subnext_c${disp_cycle};g" \
                                                 -e "s;<QUEUE>;${QUEUE};g" \
