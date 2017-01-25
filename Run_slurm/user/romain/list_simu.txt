@@ -189,7 +189,16 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - Inflation (Prior, ini=1.02/0.6, damp=0.9)
         -> Better for T/S
 
-
+-RE.REANA26 : Inflation/Spinup/HybridObs                          [15 jours]
+        - HYCOM + anomalie de ClimCORE2 for initial conditions
+        - 0.15 Rep error for SST (daily assim)
+        - 15 jour freerun avec pert forcages
+        - Perturbation corrected + smaller (500km) + increased variance
+        - SW+LW corrected -> NOCS (no mask)
+        - Gridded WTYPE
+        - GTSPP data (Serr=0.3, Terr=0.7) every 5 days
+        - Inflation (Prior, ini=1.02/0.6, damp=0.9)
+        -> 
 
 
 
