@@ -107,6 +107,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
                                               -e "s;<DARTINFIN>;$inf_in;g" \
                                               -e "s;<DARTINFOUT>;$inf_out;g" \
                                               -e "s;<DARTINFDIAG>;$inf_diag;g" \
+                                              -e "s;<INF_INI>;$INF_INI;g" \
+                                              -e "s;<INF_SD_INI>;$INF_SD_INI;g" \
    > ${SCRATCHDIR}/input.nml.temp
 
 

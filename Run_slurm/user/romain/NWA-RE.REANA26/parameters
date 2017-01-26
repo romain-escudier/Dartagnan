@@ -21,7 +21,7 @@ SIMU=NWA-RE.REANA26
 # start at cycle nstart
 NSTART=1
 # end at cycle ncycles
-NCYCLES=10
+NCYCLES=30
 
 # Computation directory
 SCRATCHDIR=/glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA26/
@@ -34,8 +34,8 @@ DATADIR=/glade/scratch/dussin/romain/
 CLUSTER=yellowstone
 
 # Time limit
-TLIM_ROMS=0:20
-TLIM_DART=0:30
+TLIM_ROMS=0:10
+TLIM_DART=1:00
 
 # TRITON OPTIONS
 if [ ${CLUSTER} = "triton" ] ; then
@@ -62,8 +62,12 @@ NCORES_DART=80
 NSTART_ANA=15
 
 # Observation files
-OBS_DIR=/glade/p/work/romaines/Data/ObsData/SST_GTSPP/obsSEQ/Serr03Terr07SSTerr015/
+OBS_DIR=/glade/p/work/romaines/Data/ObsData/SST_GTSPP/obsSEQ/Serr03Terr07SSTerr015_ST5days/
 OBS_PREF=obs_seq.sst.
+
+# Inflation
+INF_INI=1.02
+INF_SD_INI=0.6
 
 #-------------------------------------------------------
 # ROMS PARAMETERS
