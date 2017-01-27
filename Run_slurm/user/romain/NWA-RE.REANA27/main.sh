@@ -60,7 +60,7 @@ sed "/<HEADER>/r header.${CLUSTER}" generic_submit_next.sub \
         | sed -e "/<HEADER>/d" -e "/BSUB -N/d" \
         | sed -e "s;ptile=16;ptile=1;g" \
 > ${SCRATCHDIR}/${SIMU}_submit_next.sub
-
+cp roms2hpss.sub ${SCRATCHDIR}/roms2hpss.sub
 
 cd ${SCRATCHDIR}
 echo "Creating working directory : $(pwd)"

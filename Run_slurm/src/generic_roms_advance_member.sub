@@ -96,7 +96,7 @@ if (( $((${this_cycle}%${DT_FILT})) == 0 )) ; then # No filter files on cycle 1
        else
           for file_filt in ${SCRATCHDIR}/Outputs/Filtfiles/m${this_member}/ocean_fil*${date_cycle}.nc ; do
              file_filt_short=$(basename ${file_filt})
-             rsync -havz ${file_filt} ${file_filt_short%_${date_cycle}*}.nc
+             rsync -havz ${file_filt_short%_${date_cycle}*}.nc ${file_filt}
           done
        fi
    else
