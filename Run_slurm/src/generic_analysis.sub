@@ -69,6 +69,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    # jday = cumulative days from 1601.01.01
    day_zero=$(($(get_timediff_dates ${dart_ref_date} ${STARTDATE})-1))
    jday=$(( day_zero + $(($next_cycle/$DT_ANA))))
+   semi_period=$(($DT_OBS/2+1))
 
    ### Observations
    # Select the correct input observation files
@@ -101,8 +102,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
                                               -e "s;<TASKPERNODE>;${taskpernode};g" \
                                               -e "s;<DARTRSTIN>;${restart_in};g" \
                                               -e "s;<DARTRSTOUT>;${restart_out};g" \
-                                              -e "s;<FIRSTOBSDAY>;$(($jday-1));g" \
-                                              -e "s;<LASTOBSDAY>;$(($jday+1));g" \
+                                              -e "s;<FIRSTOBSDAY>;$(($jday-$semi_period));g" \
+                                              -e "s;<LASTOBSDAY>;$(($jday+$semi_period));g" \
                                               -e "s;<DARTINITDAYS>;$jday;g" \
                                               -e "s;<DARTINFIN>;$inf_in;g" \
                                               -e "s;<DARTINFOUT>;$inf_out;g" \
