@@ -11,7 +11,7 @@ cycle=$1
 . ./functions.sh
 . ./parameters
 
-echo "running cycle $cycle of $NCYCLES"
+echo "$(date) : running cycle $cycle of $NCYCLES"
 printf -v disp_cycle "%03d" ${cycle}
 
 # Check if finished + post-processing
@@ -85,7 +85,7 @@ cat ${SCRATCHDIR}/${SIMU}_submit_next.sub | sed -e "s;<DEPLIST>;"$dep_id";g" \
                                                 -e "s;<QUEUE>;${QUEUE};g" \
                                                 -e "s;<PROJECTCODE>;${PROJECT};g" \
 > ${SCRATCHDIR}/Tempfiles/submit_next.sub
-${SUBMIT} < ${SCRATCHDIR}/Tempfiles/submit_next.sub
+${SUBMIT} < ${SCRATCHDIR}/Tempfiles/submit_next.sub > /dev/null
 
 
 

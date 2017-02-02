@@ -200,7 +200,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - Inflation (Prior, ini=1.02/0.6, damp=0.9)
         -> Problem of cutoff =0.2... Removed all spread after 1st assimilation
 
--RE.REANA27 : Inflation/Spinup/HybridObs                          [15 jours]
+-RE.REANA27 : Inflation/Spinup/HybridObs                          [28 jours]
         - HYCOM + anomalie de ClimCORE2 for initial conditions
         - 0.15 Rep error for SST (daily assim)
         - 15 jour freerun avec pert forcages
@@ -210,9 +210,19 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - GTSPP data (Serr=0.3, Terr=0.7) every 5 days
         - Inflation (Prior, ini=1.02/0.6, damp=0.9)
         - Cutoff = 0.02
-        ->
+        -> Good stats for the first 20 days but inflation issues (too big) -> blow-up
 
-
+-RE.REANA28 : Inflation/Spinup/HybridObs + limiting inflation      [15 jours]
+        - HYCOM + anomalie de ClimCORE2 for initial conditions
+        - 0.15 Rep error for SST (daily assim)
+        - 15 jour freerun avec pert forcages
+        - Perturbation corrected + smaller (500km) + increased variance
+        - SW+LW corrected -> NOCS (no mask)
+        - Gridded WTYPE
+        - GTSPP data (Serr=0.3, Terr=0.7) every 5 days
+        - Inflation (Prior, ini=1.02/0.5, damp=0.8, max=2)
+        - Cutoff = 0.02
+        -> 
 
 
 
