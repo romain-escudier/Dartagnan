@@ -62,9 +62,9 @@
    inf_initial                 = <INF_INI>,               1.0
    inf_sd_initial              = <INF_SD_INI>,            0.0
    inf_lower_bound             = 1.0,                     1.0
-   inf_upper_bound             = 2.0,                     1000000.0
+   inf_upper_bound             = 1.3,                     1000000.0
    inf_sd_lower_bound          = 0.6,                     0.0
-   inf_damping                 = 0.9,                     1.0
+   inf_damping                 = 0.6,                     1.0
    output_inflation            = .true.
    silence                     = .false.
 /
