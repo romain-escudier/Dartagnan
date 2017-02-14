@@ -250,7 +250,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - Thinned (L=0.3,T=0.5) GTSPP data (Serr=0.3, Terr=0.7) every 5 days
         - Inflation (Prior, ini=1.02/0.6, damp=0.6, max=1.3)
         - Cutoff = 0.02
-        -> 
+        -> Not bad! Spread too low for SST?
 
 
 
