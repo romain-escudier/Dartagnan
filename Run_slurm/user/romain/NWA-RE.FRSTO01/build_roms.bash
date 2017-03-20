@@ -76,16 +76,18 @@ do
   esac
 done
 
+NCPUS="-j 6"
+
 # Set the CPP option defining the particular application. This will
 # determine the name of the ".h" header file with the application
 # CPP definitions.
 
-export   ROMS_APPLICATION=<ROMS_APP>
+export   ROMS_APPLICATION=NWA
 
 # Set a local environmental variable to define the path to the directories
 # where all this project's files are kept.
 
-export        MY_ROOT_DIR=<ROMS_DIR>
+export        MY_ROOT_DIR=/home/romain/Projects/ROMS-spoof/
 export     MY_PROJECT_DIR=${PWD}
 
 # The path to the user's local current ROMS source code.
@@ -150,6 +152,7 @@ export     MY_PROJECT_DIR=${PWD}
 export       USE_MY_LIBS=on            # use my library paths below
 
 export        USE_FFTW=on               # Use FFTW library
+
 
 # There are several MPI libraries available. Here, we set the desired
 # "mpif90" script to use during compilation. This only works if the make
@@ -384,7 +387,7 @@ fi
 
 # Put the binary to execute in the following directory.
 
- export            BINDIR=<MY_TMPDIR>
+ export            BINDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.FRSTO01/
 
 # Put the f90 files in a project specific Build directory to avoid conflict
 # with other projects.

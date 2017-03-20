@@ -80,12 +80,12 @@ done
 # determine the name of the ".h" header file with the application
 # CPP definitions.
 
-export   ROMS_APPLICATION=<ROMS_APP>
+export   ROMS_APPLICATION=NWA
 
 # Set a local environmental variable to define the path to the directories
 # where all this project's files are kept.
 
-export        MY_ROOT_DIR=<ROMS_DIR>
+export        MY_ROOT_DIR=/home/romain/Projects/ROMS-spoof/
 export     MY_PROJECT_DIR=${PWD}
 
 # The path to the user's local current ROMS source code.
@@ -384,7 +384,7 @@ fi
 
 # Put the binary to execute in the following directory.
 
- export            BINDIR=<MY_TMPDIR>
+ export            BINDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.FRSTO04/
 
 # Put the f90 files in a project specific Build directory to avoid conflict
 # with other projects.

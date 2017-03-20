@@ -8541,33 +8541,6 @@
   'r2dvar'
   1.0d0
 
-'pert_dx'                                        ! Input/Output
-  'zonal perturbation of T,S for EOS'
-  'grid point'                                        ! [Kelvin]
-  'dx, scalar, series'
-  'ocean_time'
-  'idpert_dx'
-  'r2dvar'
-  1.0d0
-
-'pert_dy'                                        ! Input/Output
-  'meridional perturbation of T,S for EOS'
-  'grid point'                                        ! [Kelvin]
-  'dy, scalar, series'
-  'ocean_time'
-  'idpert_dy'
-  'r2dvar'
-  1.0d0
-
-'pert_dz'                                        ! Input/Output
-  'vertical perturbation of T,S for EOS'
-  'grid point'                                        ! [Kelvin]
-  'dz, scalar, series'
-  'ocean_time'
-  'idpert_dz'
-  'r2dvar'
-  1.0d0
-
 !
 !-----------------------------------------------------------------------
 !  Forward trajectory variables for tangent linear and adjoint models.

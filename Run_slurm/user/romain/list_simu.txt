@@ -264,7 +264,24 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - Thinned (L=0.3,T=0.5) GTSPP data (Serr=0.3, Terr=0.7) (daily assim)
         - Inflation (Prior, ini=1.02/0.6, damp=0.9, max=2)
         - Cutoff = 0.02
-        -> 
+        -> 35000 PSU!!!!!!
+
+
+
+-----------------------------------------------------------------------------------------
+  Stochastic parametrization tests
+-----------------------------------------------------------------------------------------
+
+-NWA-RE.FRSTO01 : Freerun (1 membre) without stochastic parametrization
+
+-NWA-RE.FRSTO02 : Freerun (1 membre) with forcing perturbations
+
+-NWA-RE.FRSTO03 : Freerun (1 membre) with EOS perturbations
+
+-NWA-RE.FRSTO03 : Freerun (1 membre) with EOS perturbations (no spatial
+                  dependeny)
+
+
 
 
 

@@ -31,46 +31,20 @@
 ! USER may follow the above guidelines for specifying his/her values.  These  !
 ! parameters are marked by "==" plural symbol after the KEYWORD.              !
 !                                                                             !
-! Multiple NetCDF files are allowed for input field(s).  This is useful when  !
-! splitting input data (climatology,  boundary,  forcing)  time records into  !
-! several files (say monthly, annual, etc). In this case, each multiple file  !
-! entry line needs to be ended by the vertical bar (|) symbol. For example:   !
-!                                                                             !
-!    NFFILES == 7                          ! number of forcing files          !
-!                                                                             !
-!    FRCNAME == my_tides.nc       \                                           !
-!               my_lwrad_year1.nc |                                           !
-!               my_lwrad_year2.nc \                                           !
-!               my_swrad_year1.nc |                                           !
-!               my_swrad_year2.nc \                                           !
-!               my_winds_year1.nc |                                           !
-!               my_winds_year2.nc \                                           !
-!               my_Pair_year1.nc  |                                           !
-!               my_Pair_year2.nc  \                                           !
-!               my_Qair_year1.nc  |                                           !
-!               my_Qair_year2.nc  \                                           !
-!               my_Tair_year1.nc  |                                           !
-!               my_Tair_year2.nc                                              !
-!                                                                             !
-! Notice that NFFILES is 7 and not 13. There are 7 uniquely different fields  !
-! in the file list,  we  DO NOT  count file entries followed by the vertical  !
-! bar symbol.  This is because  multiple file  entries are processed in ROMS  !
-! with derived type structures.                                               !
-!                                                                             !
 !==============================================================================
 !
 ! Application title.
 
-       TITLE = <TITLESIMU>
+       TITLE = Northwest Atlantic 7km Grid
 
 ! C-preprocessing Flag.
 
-    MyAppCPP = <SIMUAPP>
+    MyAppCPP = NWA
 
 ! Input variable information file name.  This file needs to be processed
 ! first so all information arrays can be initialized properly.
 
-     VARNAME = <VARINFODIR>/varinfo.dat
+     VARNAME = /t0/scratch/romain/dart/tmpdir_NWA-RE.FRSTO01//varinfo.dat
 
 ! Number of nested grids.
 
@@ -157,8 +131,7 @@ GridsInLayer =  1
    LBC(isHice) ==   Clo     Clo     Clo     Clo         ! ice thickness
    LBC(isHsno) ==   Clo     Clo     Clo     Clo         ! snow thickness
    LBC(isTice) ==   Clo     Clo     Clo     Clo         ! ice temperature
-   LBC(isApond)==   Clo     Clo     Clo     Clo         ! surface water
-   LBC(isHpond)==   Clo     Clo     Clo     Clo         ! surface water
+   LBC(isSfwat)==   Clo     Clo     Clo     Clo         ! surface water
    LBC(isSig11)==   Clo     Clo     Clo     Clo         ! sigma-11
    LBC(isSig12)==   Clo     Clo     Clo     Clo         ! sigma-12
    LBC(isSig22)==   Clo     Clo     Clo     Clo         ! sigma-22
@@ -419,9 +392,9 @@ LtracerSponge == F F                            ! temperature, salinity, inert
 
           R0 == 1027.0d0                   ! kg/m3
           T0 == 10.0d0                     ! Celsius
-          S0 == 35.0d0                     ! nondimensional
+          S0 == 35.0d0                     ! PSU
        TCOEF == 1.7d-4                     ! 1/Celsius
-       SCOEF == 7.6d-4                     ! nondimensional
+       SCOEF == 7.6d-4                     ! 1/PSU
 
 ! Slipperiness parameter: 1.0 (free slip) or -1.0 (no slip)
 
@@ -516,25 +489,6 @@ SO_sdev(isUstr) == 1.0d0                   ! surface U-stress
 SO_sdev(isVstr) == 1.0d0                   ! surface V-stress
 SO_sdev(isTsur) == 1.0d0 1.0d0             ! NT surface tracers flux
 
-! Parameters for the stochastic perturbations
-
-         seed_user = <SEED>
-      grid_mean_dx = 7000.0d0
-      grid_mean_dy = 7000.0d0
-
- var_perturb_swrad = 4.0d0                  ! Variance of shortwave perturbations (in W/m2)
-  var_perturb_Tair = 0.36d0                 ! Variance of Tair perturbations (in degC)
- var_perturb_Uwind = 0.81d0                 ! Variance of Uwind perturbations (in m/s)
- var_perturb_Vwind = 0.81d0                 ! Variance of Vwind perturbations (in m/s)
-  force_pert_rcorr = 5.0d5                  ! Spatial correlation of perturbations
-  force_pert_tcorr = 5.0d0                  ! Temporal correlation of perturbations
-
-    var_perturb_dx = 1.0d0                 ! Variance of T,S perturbations for EOS (in grid point)
-    var_perturb_dy = 1.0d0                 ! Variance of T,S perturbations for EOS (in grid point)
-    var_perturb_dz = 0.64d0                 ! Variance of T,S perturbations for EOS (in grid point)
-    eos_pert_rcorr = 5.0d4                  ! Spatial correlation of perturbations
-    eos_pert_tcorr = 5.0d0                  ! Temporal correlation of perturbations
-
 ! Logical switches (TRUE/FALSE) to activate writing of fields into
 ! HISTORY output file.
 
@@ -552,11 +506,6 @@ Hout(idFsur) == T       ! zeta               free-surface
 Hout(idBath) == F       ! bath               time-dependent bathymetry
 
 Hout(idTvar) == T T     ! temp, salt         temperature and salinity
-
-Hout(idpthR) == F       ! z_rho              time-varying depths of RHO-points
-Hout(idpthU) == F       ! z_u                time-varying depths of U-points
-Hout(idpthV) == F       ! z_v                time-varying depths of V-points
-Hout(idpthW) == F       ! z_w                time-varying depths of W-points
 
 Hout(idUair) == F       ! Uwind              surface U-wind
 Hout(idVair) == F       ! Vwind              surface V-wind
@@ -606,8 +555,8 @@ Hout(idWorb) == F       ! Ub_swan            wave bottom orbital velocity
 Hout(idWdis) == F       ! Wave_dissip        wave dissipation
 
 Hout(idPair) == F       ! Pair               surface air pressure
-Hout(idTair) == F       ! Tair               surface air temperature
-Hout(idQair) == F       ! Qair               surface air humidity
+Hout(idTair) == F       ! Tair               air temperature
+Hout(idQair) == F       ! Qair               air humidity
 
 Hout(idTsur) == T T     ! shflux, ssflux     surface net heat and salt flux
 Hout(idLhea) == T       ! latent             latent heat flux
@@ -665,109 +614,44 @@ Hout(idBott) == T T T T T T T T T F F F F F F F
 Hout(idBeTvar) == T T T T T T
 
 ! Logical switches (TRUE/FALSE) to activate writing of fields into
-! QUICKSAVE output file.
+! surface output file.
 
-Qout(idUvel) == F       ! u                  3D U-velocity
-Qout(idVvel) == F       ! v                  3D V-velocity
-Qout(idu3dE) == F       ! u_eastward         3D U-eastward  at RHO-points
-Qout(idv3dN) == F       ! v_northward        3D V-northward at RHO-points
-Qout(idWvel) == F       ! w                  3D W-velocity
-Qout(idOvel) == F       ! omega              omega vertical velocity
-Qout(idUbar) == F       ! ubar               2D U-velocity
-Qout(idVbar) == F       ! vbar               2D V-velocity
-Qout(idu2dE) == F       ! ubar_eastward      2D U-eastward  at RHO-points
-Qout(idv2dN) == F       ! vbar_northward     2D V-northward at RHO-points
-Qout(idFsur) == F       ! zeta               free-surface
-Qout(idBath) == F       ! bath               time-dependent bathymetry
+Hout2(idUvel) == T       ! u                  3D U-velocity
+Hout2(idVvel) == T       ! v                  3D V-velocity
+Hout2(idu3dE) == T       ! u_eastward         3D U-eastward  at RHO-points
+Hout2(idv3dN) == T       ! v_northward        3D V-northward at RHO-points
+Hout2(idUbar) == T       ! ubar               2D U-velocity
+Hout2(idVbar) == T       ! vbar               2D V-velocity
+Hout2(idu2dE) == T       ! ubar_eastward      2D U-eastward  at RHO-points
+Hout2(idv2dN) == T       ! vbar_northward     2D V-northward at RHO-points
+Hout2(idFsur) == T       ! zeta               free-surface
 
-Qout(idTvar) == F F     ! temp, salt         temperature and salinity
+Hout2(idTvar) == T T                        ! temperature and salinity
 
-Qout(idUsur) == F       ! u_sur              surface U-velocity
-Qout(idVsur) == F       ! v_sur              surface V-velocity
-Qout(idUsuE) == F       ! u_sur_eastward     surface U-eastward  velocity
-Qout(idVsuN) == F       ! v_sur_northward    surface V-northward velocity
+Hout2(idUair) == T                          ! surface U-wind
+Hout2(idVair) == T                          ! surface V-wind
+Hout2(idUairE) == T                          ! surface U-wind
+Hout2(idVairN) == T                          ! surface V-wind
+Hout2(idUsms) == T                          ! surface U-stress
+Hout2(idVsms) == T                          ! surface V-stress
 
-Qout(idsurT) == F F     ! temp_sur, salt_sur surface temperature and salinity
-
-Qout(idpthR) == F       ! z_rho              time-varying depths of RHO-points
-Qout(idpthU) == F       ! z_u                time-varying depths of U-points
-Qout(idpthV) == F       ! z_v                time-varying depths of V-points
-Qout(idpthW) == F       ! z_w                time-varying depths of W-points
-
-Qout(idUsms) == F       ! sustr              surface U-stress
-Qout(idVsms) == F       ! svstr              surface V-stress
-Qout(idUbms) == F       ! bustr              bottom U-stress
-Qout(idVbms) == F       ! bvstr              bottom V-stress
-
-Qout(idUbrs) == F       ! bustrc             bottom U-current stress
-Qout(idVbrs) == F       ! bvstrc             bottom V-current stress
-Qout(idUbws) == F       ! bustrw             bottom U-wave stress
-Qout(idVbws) == F       ! bvstrw             bottom V-wave stress
-Qout(idUbcs) == F       ! bustrcwmax         bottom max wave-current U-stress
-Qout(idVbcs) == F       ! bvstrcwmax         bottom max wave-current V-stress
-
-Qout(idUbot) == F       ! Ubot               bed wave orbital U-velocity
-Qout(idVbot) == F       ! Vbot               bed wave orbital V-velocity
-Qout(idUbur) == F       ! Ur                 bottom U-velocity above bed
-Qout(idVbvr) == F       ! Vr                 bottom V-velocity above bed
-
-Qout(idW2xx) == F       ! Sxx_bar            2D radiation stress, Sxx component
-Qout(idW2xy) == F       ! Sxy_bar            2D radiation stress, Sxy component
-Qout(idW2yy) == F       ! Syy_bar            2D radiation stress, Syy component
-Qout(idU2rs) == F       ! Ubar_Rstress       2D radiation U-stress
-Qout(idV2rs) == F       ! Vbar_Rstress       2D radiation V-stress
-Qout(idU2Sd) == F       ! ubar_stokes        2D U-Stokes velocity
-Qout(idV2Sd) == F       ! vbar_stokes        2D V-Stokes velocity
-
-Qout(idW3xx) == F       ! Sxx                3D radiation stress, Sxx component
-Qout(idW3xy) == F       ! Sxy                3D radiation stress, Sxy component
-Qout(idW3yy) == F       ! Syy                3D radiation stress, Syy component
-Qout(idW3zx) == F       ! Szx                3D radiation stress, Szx component
-Qout(idW3zy) == F       ! Szy                3D radiation stress, Szy component
-Qout(idU3rs) == F       ! u_Rstress          3D U-radiation stress
-Qout(idV3rs) == F       ! v_Rstress          3D V-radiation stress
-Qout(idU3Sd) == F       ! u_stokes           3D U-Stokes velocity
-Qout(idV3Sd) == F       ! v_stokes           3D V-Stokes velocity
-
-Qout(idWamp) == F       ! Hwave              wave height
-Qout(idWlen) == F       ! Lwave              wave length
-Qout(idWdir) == F       ! Dwave              wave direction
-Qout(idWptp) == F       ! Pwave_top          wave surface period
-Qout(idWpbt) == F       ! Pwave_bot          wave bottom period
-Qout(idWorb) == F       ! Ub_swan            wave bottom orbital velocity
-Qout(idWdis) == F       ! Wave_dissip        wave dissipation
-
-Qout(idPair) == F       ! Pair               surface air pressure
-Qout(idUair) == F       ! Uair               surface U-wind component
-Qout(idVair) == F       ! Vair               surface V-wind component
-
-Qout(idTsur) == F F     ! shflux, ssflux     surface net heat and salt flux
-Qout(idLhea) == F       ! latent             latent heat flux
-Qout(idShea) == F       ! sensible           sensible heat flux
-Qout(idLrad) == F       ! lwrad              longwave radiation flux
-Qout(idSrad) == F       ! swrad              shortwave radiation flux
-Qout(idEmPf) == F       ! EminusP            E-P flux
-Qout(idevap) == F       ! evaporation        evaporation rate
-Qout(idrain) == F       ! rain               precipitation rate
-
-Qout(idDano) == F       ! rho                density anomaly
-Qout(idVvis) == F       ! AKv                vertical viscosity
-Qout(idTdif) == F       ! AKt                vertical T-diffusion
-Qout(idSdif) == F       ! AKs                vertical Salinity diffusion
-Qout(idHsbl) == F       ! Hsbl               depth of surface boundary layer
-Qout(idHbbl) == F       ! Hbbl               depth of bottom boundary layer
-Qout(idMtke) == F       ! tke                turbulent kinetic energy
-Qout(idMtls) == F       ! gls                turbulent length scale
+Hout2(idTsur) == T T                        ! surface net heat and salt flux
+Hout2(idLhea) == T                          ! latent heat flux
+Hout2(idShea) == T                          ! sensible heat flux
+Hout2(idLrad) == T                          ! longwave radiation flux
+Hout2(idSrad) == T                          ! shortwave radiation flux
+Hout2(idEmPf) == F                          ! E-P flux
+Hout2(idevap) == T                          ! evaporation rate
+Hout2(idrain) == T                          ! precipitation rate
 
 ! Logical switches (TRUE/FALSE) to activate writing of extra inert passive
-! tracers other than biological and sediment tracers into the QUICKSAVE
-! output file. An inert passive tracer is one that it is only advected and
-! diffused. Other processes are ignored. These tracers include, for example,
-! dyes, pollutants, oil spills, etc. NPT values are expected. However, these
-! switches can be activated using compact parameter specification.
+! tracers other than biological and sediment tracers. An inert passive tracer
+! is one that it is only advected and diffused. Other processes are ignored.
+! These tracers include, for example, dyes, pollutants, oil spills, etc.
+! NPT values are expected. However, these switches can be activated using
+! compact parameter specification.
 
- Qout(inert) == F       ! dye_01, ...        inert passive tracers
- Qout(Snert) == F       ! dye_01, ...        surface inert passive tracers
+Hout2(inert) == F                           ! inert passive tracers
 
 ! Logical switches (TRUE/FALSE) to activate writing of fields into
 ! secondary Averages output file.
@@ -855,8 +739,8 @@ Aout(idU3Sd) == F       ! u_stokes           3D U-Stokes velocity
 Aout(idV3Sd) == F       ! v_stokes           3D V-Stokes velocity
 
 Aout(idPair) == T       ! Pair               surface air pressure
-Aout(idTair) == T       ! Tair               surface air temperature
-Aout(idQair) == T       ! Qair               surface air humidity
+Aout(idTair) == T       ! Tair               surface U-wind component
+Aout(idQair) == T       ! Qair               surface V-wind component
 
 Aout(idTsur) == T T     ! shflux, ssflux     surface net heat and salt flux
 Aout(idLhea) == T       ! latent             latent heat flux
@@ -998,7 +882,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
 ! Input Sources/Sinks forcing (like river runoff) file name.
 
-     SSFNAME == null
+     SSFNAME == ocean_sources.nc
 
 ! Input forcing NetCDF file name(s).  The USER has the option to enter
 ! several files names per each nested grid.  For example, the USER may
@@ -1050,7 +934,6 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
      PREDNAME == <OUTPUTDIR>/<CONFCASE>_pred.nc
      FLEETNAME == <OUTPUTDIR>/<CONFCASE>_fleet.nc
      TMSNAME == <OUTPUTDIR>/<CONFCASE>_tms.nc
-     QCKNAME == <OUTPUTDIR>/<CONFCASE>_qck.nc
 
 ! Input ASCII parameter filenames.
 
@@ -1289,8 +1172,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !  LBC(isHice) Ice thickness,     [1:4, Ngrids] values are expected.
 !  LBC(isHsno) Snow thickness,    [1:4, Ngrids] values are expected.
 !  LBC(isTice) Ice temperature,   [1:4, Ngrids] values are expected.
-!  LBC(isApond)Surface water,     [1:4, Ngrids] values are expected.
-!  LBC(isHpond)Surface water,     [1:4, Ngrids] values are expected.
+!  LBC(isSfwat)Surface water,     [1:4, Ngrids] values are expected.
 !  LBC(isSig11)Sigma-11,          [1:4, Ngrids] values are expected.
 !  LBC(isSig12)Sigma-12,          [1:4, Ngrids] values are expected.
 !  LBC(isSig22)Sigma-22,          [1:4, Ngrids] values are expected.
@@ -1789,24 +1671,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! Jerlow Water type.
 !------------------------------------------------------------------------------
 !
-! WTYPE        Jerlov water type array index used to model the light absorption
-!                with a double exponential function (Paulson and Simpson,
-!                1977).  The classification ranges from clear open ocean
-!                waters (type I) to dark turbulent coastal waters (type 7).
-!
-!              Array     Jerlov
-!              Index   Water Type   Examples
-!              -----   ----------   --------
-!
-!                1         I        Open Pacific
-!                2         IA       Eastern Mediterranean, Indian Ocean
-!                3         IB       Western Mediterranean, Open Atlantic
-!                4         II       Coastal waters, Azores
-!                5         III      Coastal waters, North Sea
-!                6         1        Skagerrak Strait
-!                7         3        Baltic
-!                8         5        Black Sea
-!                9         7        Dark coastal water
+!  WTYPE       Jerlov water type: an integer value from 1 to 5.
 !
 !------------------------------------------------------------------------------
 ! Body-force parameters. Used when CPP option BODYFORCE is activated.
@@ -1850,17 +1715,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !
 !                      Zo(x,y,s)=[hc*s(k)+h(x,y)*C(k)]/[hc+h(x,y)]
 !
-!                    The true sigma-coordinate system is recovered as hc goes
-!                    to INFINITY. This is useful when configuring applications
-!                    with flat bathymetry and uniform level thickness.
-!                    Practically, you can achieve this by setting:
-!
-!                      THETA_S = 0.0d0
-!                      THETA_B = 0.0d0
-!                      TCLINE  = 1.0d+17       (a large number)
-!
-!
-! Vstretching  Vertical stretching function, C(s):
+!  Vstretching Vertical stretching function, C(s):
 !
 !                (1) Original function (Song and Haidvogel, 1994),
 !                    Vstretching=1
@@ -1898,23 +1753,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !
 !                      Cweight=0.5*(1-TANH(Hscale*(s+0.5))
 !
-!                (4) A. Shchepetkin (2010) improved double stretching function,
-!                    Vstretching=4
-!
-!                      C(s)=[1-COSH(theta_s*s)]/[COSH(theta_s)-1]
-!
-!                    with bottom refinement
-!
-!                      C(s)=[EXP(theta_b*C(s))-1]/[1-EXP(-theta_b)]
-!
-!                    The resulting double transformation is continuous with
-!                    respect control parameters theta_s and theta_b with a
-!                    meaningful range of:
-!
-!                      0 <  theta_s <= 10.0
-!                      0 <= theta_b <=  4.0
-!
-!              Many other stretching functions (Vstretching>4) are possible
+!              Many other stretching functions (Vstretching>3) are possible
 !              provided that:
 !
 !                * C(s) is a dimensionless, nonlinear, monotonic function.
@@ -1929,23 +1768,16 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 !
 !              These functions are coded in routine "Utility/set_scoord.F".
 !
-! Due to its functionality and properties, the default and recommended vertical
-! coordinates transformation is:
+!  THETA_S     S-coordinate surface control parameter. The range of optimal
+!              values depends on the vertical stretching function, C(s).
 !
-!              Vtransform  = 2
-!              Vstretching = 4
+!  THETA_B     S-coordinate bottom  control parameter. The range of optimal
+!              values depends on the vertical stretching function, C(s).
 !
-!
-! THETA_S      S-coordinate surface control parameter. The range of optimal
-!                values depends on the vertical stretching function, C(s).
-!
-! THETA_B      S-coordinate bottom  control parameter. The range of optimal
-!                values depends on the vertical stretching function, C(s).
-!
-! TCLINE       Critical depth (hc) in meters (positive) controlling the
-!                stretching. It can be interpreted as the width of surface or
-!                bottom boundary layer in which higher vertical resolution
-!                (levels) is required during stretching.
+!  TCLINE      Critical depth (hc) in meters (positive) controlling the
+!              stretching. It can be interpreted as the width of surface or
+!              bottom boundary layer in which higher vertical resolution
+!              (levels) is required during stretching.
 !
 !------------------------------------------------------------------------------
 ! Mean Density and background Brunt-Vaisala frequency.

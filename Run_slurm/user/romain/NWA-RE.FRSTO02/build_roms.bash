@@ -75,17 +75,18 @@ do
       ;;
   esac
 done
+NCPUS="-j 6"
 
 # Set the CPP option defining the particular application. This will
 # determine the name of the ".h" header file with the application
 # CPP definitions.
 
-export   ROMS_APPLICATION=<ROMS_APP>
+export   ROMS_APPLICATION=NWA
 
 # Set a local environmental variable to define the path to the directories
 # where all this project's files are kept.
 
-export        MY_ROOT_DIR=<ROMS_DIR>
+export        MY_ROOT_DIR=/home/romain/Projects/ROMS-spoof/
 export     MY_PROJECT_DIR=${PWD}
 
 # The path to the user's local current ROMS source code.
@@ -142,7 +143,7 @@ export     MY_PROJECT_DIR=${PWD}
  export              FORT=gfortran
 #export              FORT=pgi
 
-# export         USE_DEBUG=on            # use Fortran debugging flags
+# export         USE_DEBUG=on            # use Fortran debugging flag
  export         USE_LARGE=on            # activate 64-bit compilation
  export       USE_NETCDF4=on            # compile with NetCDF-4 library
 #export   USE_PARALLEL_IO=on            # Parallel I/O with Netcdf-4/HDF5
@@ -384,7 +385,7 @@ fi
 
 # Put the binary to execute in the following directory.
 
- export            BINDIR=<MY_TMPDIR>
+ export            BINDIR=/t0/scratch/romain/dart/tmpdir_NWA-RE.FRSTO02/
 
 # Put the f90 files in a project specific Build directory to avoid conflict
 # with other projects.

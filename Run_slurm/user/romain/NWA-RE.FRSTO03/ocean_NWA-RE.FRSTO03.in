@@ -61,16 +61,16 @@
 !
 ! Application title.
 
-       TITLE = <TITLESIMU>
+       TITLE = Northwest Atlantic 7km Grid
 
 ! C-preprocessing Flag.
 
-    MyAppCPP = <SIMUAPP>
+    MyAppCPP = NWA
 
 ! Input variable information file name.  This file needs to be processed
 ! first so all information arrays can be initialized properly.
 
-     VARNAME = <VARINFODIR>/varinfo.dat
+     VARNAME = /t0/scratch/romain/dart/tmpdir_NWA-RE.FRSTO03//varinfo.dat
 
 ! Number of nested grids.
 
@@ -529,10 +529,10 @@ SO_sdev(isTsur) == 1.0d0 1.0d0             ! NT surface tracers flux
   force_pert_rcorr = 5.0d5                  ! Spatial correlation of perturbations
   force_pert_tcorr = 5.0d0                  ! Temporal correlation of perturbations
 
-    var_perturb_dx = 1.0d0                 ! Variance of T,S perturbations for EOS (in grid point)
-    var_perturb_dy = 1.0d0                 ! Variance of T,S perturbations for EOS (in grid point)
-    var_perturb_dz = 0.64d0                 ! Variance of T,S perturbations for EOS (in grid point)
-    eos_pert_rcorr = 5.0d4                  ! Spatial correlation of perturbations
+    var_perturb_dx = 1.96d0                 ! Variance of T,S perturbations for EOS (in grid point)
+    var_perturb_dy = 1.96d0                 ! Variance of T,S perturbations for EOS (in grid point)
+    var_perturb_dz = 0.49d0                 ! Variance of T,S perturbations for EOS (in grid point)
+    eos_pert_rcorr = 5.0d5                  ! Spatial correlation of perturbations
     eos_pert_tcorr = 5.0d0                  ! Temporal correlation of perturbations
 
 ! Logical switches (TRUE/FALSE) to activate writing of fields into

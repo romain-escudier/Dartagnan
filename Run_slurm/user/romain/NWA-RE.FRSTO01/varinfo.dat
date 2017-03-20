@@ -2,19 +2,11 @@
 !  ROMS/TOMS IO NetCDF variables.
 !
 !========================================================= Hernan G. Arango ===
-!  Copyright (c) 2002-2016 The ROMS/TOMS Group                                !
+!  Copyright (c) 2002-2013 The ROMS/TOMS Group                                !
 !    Licensed under a MIT/X style license                                     !
 !    See License_ROMS.txt                                                     !
 !==============================================================================
-!
-! Note! This file contains some Tclm entries for historic reasons.
-! These will no longer be read, but contain information on the
-! climatology nudging used in CoSine. Many fields are using the same
-! values since there is so little data.
-! For instance, idTclm(iS1_N) points to NH4.
-!
-!==============================================================================
-!
+!                                                                             !
 !  This file contains all ROMS/TOMS Input/Output variables information.  It   !
 !  is used to manage NetCDF files.  The following information is needed for   !
 !  any IO variable:                                                           !
@@ -176,42 +168,6 @@
   'r3dvar'
   1.0d0
 
-'u_sur'                                            ! Output
-  'model surface u-momentum component'
-  'meter second-1'                                 ! [m/s]
-  'u_sur, scalar, series'
-  'ocean_time'
-  'idUsur'
-  'u2dvar'
-  1.0d0
-
-'v_sur'                                            ! Output
-  'model surface v-momentum component'
-  'meter second-1'                                 ! [m/s]
-  'v_sur, scalar, series'
-  'ocean_time'
-  'idVsur'
-  'v2dvar'
-  1.0d0
-
-'u_sur_eastward'                                   ! Output
-  'model surface eastward momentum component at RHO-points'
-  'meter second-1'                                 ! [m/s]
-  'u_sur_eastward, scalar, series'
-  'ocean_time'
-  'idUsuE'
-  'r2dvar'
-  1.0d0
-
-'v_sur_northward'                                  ! Output
-  'model surface northward momentum component at RHO-points'
-  'meter second-1'                                 ! [m/s]
-  'v_sur_northward, scalar, series'
-  'ocean_time'
-  'idVsuN'
-  'r2dvar'
-  1.0d0
-
 'w'                                                ! Output
   'vertical momentum component'
   'meter second-1'                                 ! [m/s]
@@ -266,74 +222,11 @@
   'r3dvar'
   1.0d0
 
-'temp_sur'                                         ! Output
-  'model surface potential temperature'
-  'Celsius'                                        ! [Celsius]
-  'temp_sur, scalar, series'
-  'ocean_time'
-  'idsurT(itemp)'
-  'r2dvar'
-  1.0d0
-
-'salt_sur'                                         ! Output
-  'model surface salinity'
-  'nondimensional'                                 ! [PSU]
-  'salinity, scalar, series'
-  'ocean_time'
-  'idsurT(isalt)'
-  'r2dvar'
-  1.0d0
-
-'z_rho'                                            ! Output
-  'depth of RHO-points'
-  'meter'                                          ! [meter]
-  'z_rho, scalar, series'
-  'ocean_time'
-  'idpthR'
-  'r3dvar'
-  1.0d0
-
-'z_u'                                              ! Output
-  'depth of U-points'
-  'meter'                                          ! [meter]
-  'z_u, scalar, series'
-  'ocean_time'
-  'idpthU'
-  'u3dvar'
-  1.0d0
-
-'z_v'                                              ! Output
-  'depth of V-points'
-  'meter'                                          ! [meter]
-  'z_v, scalar, series'
-  'ocean_time'
-  'idpthV'
-  'v3dvar'
-  1.0d0
-
-'z_w'                                              ! Output
-  'depth of W-points'
-  'meter'                                          ! [meter]
-  'z_w, scalar, series'
-  'ocean_time'
-  'idpthW'
-  'w3dvar'
-  1.0d0
-
 !
 !------------------------------------------------------------------------------
 !  Wet/dry masks.
 !------------------------------------------------------------------------------
 !
-
-'wetdry_mask_psi'                                  ! Input/Output
-  'wet/dry mask on PSI-points'
-  'nondimensional'
-  'wetdry_mask_psi, scalar, series'
-  'ocean_time'
-  'idPwet'
-  'p2dvar'
-  1.0d0
 
 'wetdry_mask_rho'                                  ! Input/Output
   'wet/dry mask on RHO-points'
@@ -773,7 +666,7 @@
   'bwf_time'
   'idTbot(isalt)'
   'r2dvar'
-  1.157407d-7                                      ! 0.01/86400
+  1.157407d-7                                     ! 0.01/86400
 
 !
 !------------------------------------------------------------------------------
@@ -907,15 +800,6 @@
   'r2dvar'
   1.0d0
 
-'snow_thick'
-  'thickness of snow cover'
-  'meter'
-  'snow thickness, scalar, series'
-  'ocean_time'
-  'idHSNclm'
-  'r2dvar'
-  1.0d0
-
 'tisrf'
   'temperature of ice surface'
   'degrees Celcius'
@@ -931,15 +815,6 @@
   'interior temperature, scalar, series'
   'ocean_time'
   'idTimid'
-  'r2dvar'
-  1.0d0
-
-'t2'
-  'top of ice temperature'
-  'degrees Celcius'
-  'top of ice temperature, scalar, series'
-  'ocean_time'
-  'idT2ice'
   'r2dvar'
   1.0d0
 
@@ -1024,30 +899,12 @@
   'r2dvar'
   1.0d0
 
-'wdiv'
-  'rate of ice divergence'
-  'm^3 s-1'
-  'ice divergence rate, scalar, series'
-  'ocean_time'
-  'idWdiv'
-  'r2dvar'
-  1.0d0
-
-'apond'
-  'surface melt water fraction on ice'
-  'meter'
-  'melt water fraction, scalar, series'
-  'ocean_time'
-  'idApond'
-  'r2dvar'
-  1.0d0
-
-'hpond'
+'sfwat'
   'surface melt water thickness on ice'
   'meter'
   'melt water thickness, scalar, series'
   'ocean_time'
-  'idHpond'
+  'idSfwat'
   'r2dvar'
   1.0d0
 
@@ -1093,177 +950,6 @@
   'ice stress 12, scalar, series'
   'ocean_time'
   'idSig12'
-  'r2dvar'
-  1.0d0
-
-'sig11'
-  'internal ice stress 11 component'
-  'Newton meter-1'
-  'ice stress 11, scalar, series'
-  'ocean_time'
-  'idS11clm'
-  'r2dvar'
-  1.0d0
-
-'sig22'
-  'internal ice stress 22 component'
-  'Newton meter-1'
-  'ice stress 22, scalar, series'
-  'ocean_time'
-  'idS22clm'
-  'r2dvar'
-  1.0d0
-
-'sig12'
-  'internal ice stress 12 component'
-  'Newton meter-1'
-  'ice stress 12, scalar, series'
-  'ocean_time'
-  'idS12clm'
-  'r2dvar'
-  1.0d0
-
-'albedo_ice'
-  'ice albedo'
-  'fraction'
-  'ice albedo, scalar, series'
-  'ocean_time'
-  'idAlbI'
-  'r2dvar'
-  1.0d0
-
-'LW_down'
-  'downward longwave radiation'
-  'W m-2'
-  'LW_down, scalar, series'
-  'ocean_time'
-  'idLWdn'
-  'r2dvar'
-  1.0d0
-
-'SW_down'
-  'downward shortwave radiation'
-  'W m-2'
-  'SW_down, scalar, series'
-  'ocean_time'
-  'idSWdn'
-  'r2dvar'
-  1.0d0
-
-'lat_ice'
-  'latent heat flux over ice'
-  'W m-2'
-  'lat_ice, scalar, series'
-  'ocean_time'
-  'idLatI'
-  'r2dvar'
-  1.0d0
-
-'sens_ice'
-  'sensible heat flux over ice'
-  'W m-2'
-  'sens_ice, scalar, series'
-  'ocean_time'
-  'idSenI'
-  'r2dvar'
-  1.0d0
-
-'LW_up_ice'
-  'upward longwave radiation over ice'
-  'W m-2'
-  'LW_up_ice, scalar, series'
-  'ocean_time'
-  'idLWupI'
-  'r2dvar'
-  1.0d0
-
-'SW_up_ice'
-  'upward shortwave radiation over ice'
-  'W m-2'
-  'SW_up_ice, scalar, series'
-  'ocean_time'
-  'idSWupI'
-  'r2dvar'
-  1.0d0
-
-'SW_in_ice'
-  'shortwave radiation into ice'
-  'W m-2'
-  'SW_in_ice, scalar, series'
-  'ocean_time'
-  'idSWinI'
-  'r2dvar'
-  1.0d0
-
-'SW_thru_ice'
-  'shortwave radiation through ice'
-  'W m-2'
-  'SW_thru_ice, scalar, series'
-  'ocean_time'
-  'idSWthruI'
-  'r2dvar'
-  1.0d0
-
-'saltflux_ice'
-  'salt flux under ice'
-  'meter second-1'                                 ! [PSU m/s]
-  'saltflux_ice, scalar, series'
-  'ocean_time'
-  'idSaltI'
-  'r2dvar'
-  1.0d0
-
-'saltflux_leads'
-  'salt flux in leads'
-  'meter second-1'                                 ! [PSU m/s]
-  'saltflux_leads, scalar, series'
-  'ocean_time'
-  'idSaltL'
-  'r2dvar'
-  1.0d0
-
-'qao'
-  'air-ocean heat flux'
-  'W m-2'
-  'qao, scalar, series'
-  'ocean_time'
-  'idQao'
-  'r2dvar'
-  1.0d0
-
-'qai'
-  'ice-air heat flux'
-  'W m-2'
-  'qai, scalar, series'
-  'ocean_time'
-  'idQai'
-  'r2dvar'
-  1.0d0
-
-'qio'
-  'ice-ocean heat flux'
-  'W m-2'
-  'qio, scalar, series'
-  'ocean_time'
-  'idQio'
-  'r2dvar'
-  1.0d0
-
-'qi2'
-  'ice heat flux'
-  'W m-2'
-  'qi2, scalar, series'
-  'ocean_time'
-  'idQi2'
-  'r2dvar'
-  1.0d0
-
-'snoice'
-  'snow-ice conversion'
-  'm s-1'
-  'snoice, scalar, series'
-  'ocean_time'
-  'idSnoI'
   'r2dvar'
   1.0d0
 
@@ -1855,75 +1541,39 @@
   'nulvar'
   1.0d0
 
-'apond_west'
-  'surface meltwater fraction western boundary condition'
-  ' '
-  'apond_west, scalar, series'
-  'bry_time'
-  'idApdbc(iwest)'
-  'nulvar'
-  1.0d0
-
-'apond_east'
-  'surface meltwater fraction eastern boundary condition'
-  ' '
-  'apond_east, scalar, series'
-  'bry_time'
-  'idApdbc(ieast)'
-  'nulvar'
-  1.0d0
-
-'apond_north'
-  'surface meltwater fraction northern boundary condition'
-  ' '
-  'apond_north, scalar, series'
-  'bry_time'
-  'idApdbc(inorth)'
-  'nulvar'
-  1.0d0
-
-'apond_south'
-  'surface meltwater fraction southern boundary condition'
-  ' '
-  'apond_south, scalar, series'
-  'bry_time'
-  'idApdbc(isouth)'
-  'nulvar'
-  1.0d0
-
-'hpond_west'
+'sfwat_west'
   'surface meltwater thickness western boundary condition'
   'meter'
-  'hpond_west, scalar, series'
+  'sfwat_west, scalar, series'
   'bry_time'
-  'idHpdbc(iwest)'
+  'idSfwbc(iwest)'
   'nulvar'
   1.0d0
 
-'hpond_east'
+'sfwat_east'
   'surface meltwater thickness eastern boundary condition'
   'meter'
-  'hpond_east, scalar, series'
+  'sfwat_east, scalar, series'
   'bry_time'
-  'idHpdbc(ieast)'
+  'idSfwbc(ieast)'
   'nulvar'
   1.0d0
 
-'hpond_north'
+'sfwat_north'
   'surface meltwater thickness northern boundary condition'
   'meter'
-  'hpond_north, scalar, series'
+  'sfwat_north, scalar, series'
   'bry_time'
-  'idHpdbc(inorth)'
+  'idSfwbc(inorth)'
   'nulvar'
   1.0d0
 
-'hpond_south'
+'sfwat_south'
   'surface meltwater thickness southern boundary condition'
   'meter'
-  'hpond_south, scalar, series'
+  'sfwat_south, scalar, series'
   'bry_time'
-  'idHpdbc(isouth)'
+  'idSfwbc(isouth)'
   'nulvar'
   1.0d0
 
@@ -2167,8 +1817,6 @@
   'r2dvar'
   1.0d0
 
-! atmospheric forcing for Cobalt BGC model
-
 'atmCO2'                                           ! Input
   'atmCO2'
   'ppmv'                                           ! Input: [ppmv]
@@ -2184,15 +1832,6 @@
   'ironsed, scalar, series'                        ! [mol.m-2.s-1]
   'ironsed_time'                                   ! Output: []
   'idIronSed'
-  'r2dvar'
-  1.0d0
-
-'fecoast'                                          ! Input
-  'fecoast'
-  'mol Fe m kg-1 s-1'                              ! Input: [mol Fe m kg-1 s-1]
-  'fecoast, scalar, series'                        ! [mol Fe m kg-1 s-1]
-  'fecoast_time'                                   ! Output: []
-  'idFeCoast'
   'r2dvar'
   1.0d0
 
@@ -2213,8 +1852,6 @@
   'idMineralFe'
   'r2dvar'
   1.0d0
-
-! end atmospheric forcing for Cobalt BGC model
 
 'lwrad_down'                                       ! Input
   'downwelling longwave radiation flux'
@@ -2258,15 +1895,6 @@
   'rain, scalar, series'
   'rain_time'
   'idrain'
-  'r2dvar'
-  1.0d0                                            ! 1/rhow (0.001 m3/kg) if m/s
-
-'snow'                                             ! Input
-  'snow fall rate'
-  'kilogram meter-2 second-1'                      ! [kg m2/s]
-  'snow, scalar, series'
-  'snow_time'
-  'idsnow'
   'r2dvar'
   1.0d0                                            ! 1/rhow (0.001 m3/kg) if m/s
 
@@ -2343,7 +1971,7 @@
   1.0
 
 'Pwave_top'                                        ! Input
-  'wind-induced peak surface wave Period'
+  'wind-induced surface wave Period'
   'second'                                         ! [s]
   'Pwave_top, scalar, series'
   'wave_time'
@@ -2741,441 +2369,8 @@
   'nulvar'
   1.0d0
 
-'river_NO3'                                        ! Input
-  'river runoff NO3'
-  'millimole_nitrogen meter-3'                     ! [millimole/m3]
-  'river_NO3, scalar, series'
-  'river_time'
-  'idRtrc(iNO3_)'
-  'nulvar'
-  1.0d0
-
-'river_nanophytoplankton'                          ! Input
-  'river runoff nanophytoplankton'
-  'millimole_nitrogen meter-3'                     ! [millimole/m3]
-  'river_nanophytoplankton, scalar, series'
-  'river_time'
-  'idRtrc(iSphy)'
-  'nulvar'
-  1.0d0
-
-'river_diatom'                                     ! Input
-  'river runoff diatom'
-  'millimole_nitrogen meter-3'                     ! [millimole/m3]
-  'river_diatom, scalar, series'
-  'river_time'
-  'idRtrc(iLphy)'
-  'nulvar'
-  1.0d0
-
-'river_microzooplankton'                           ! Input
-  'river runoff microzooplankton'
-  'millimole_nitrogen meter-3'                     ! [millimole/m3]
-  'river_microzooplankton, scalar, series'
-  'river_time'
-  'idRtrc(iSzoo)'
-  'nulvar'
-  1.0d0
-
-'river_mesozooplankton'                            ! Input
-  'river runoff mesozooplankton'
-  'millimole_nitrogen meter-3'                     ! [millimole/m3]
-  'river_mesozooplankton, scalar, series'
-  'river_time'
-  'idRtrc(iLzoo)'
-  'nulvar'
-  1.0d0
-
-'river_SiOH4'                                      ! Input
-  'river runoff SiOH4'
-  'millimole_silica meter-3'                       ! [millimole/m3]
-  'river_SiOH4, scalar, series'
-  'river_time'
-  'idRtrc(iSiOH)'
-  'nulvar'
-  1.0d0
-
-'river_opal'                                       ! Input
-  'river runoff opal'
-  'millimole_silica meter-3'                       ! [millimole/m3]
-  'river_opal, scalar, series'
-  'river_time'
-  'idRtrc(iopal)'
-  'nulvar'
-  1.0d0
-
-'river_PO4'                                        ! Input
-  'river runoff PO4'
-  'millimole_P meter-3'                            ! [millimole/m3]
-  'river_PO4, scalar, series'
-  'river_time'
-  'idRtrc(iPO4_)'
-  'nulvar'
-  1.0d0
-
-'river_NH4'                                        ! Input
-  'river runoff NH4'
-  'millimole_nitrogen meter-3'                     ! [millimole/m3]
-  'river_NH4, scalar, series'
-  'river_time'
-  'idRtrc(iNH4_)'
-  'nulvar'
-  1.0d0
-
-'river_DON'                                        ! Input
-  'river runoff dissolved organic nitrogen'
-  'millimole_nitrogen meter-3'                     ! [millimole/m3]
-  'river_DON, scalar, series'
-  'river_time'
-  'idRtrc(iDON_)'
-  'nulvar'
-  1.0d0
-
-'river_PON'                                        ! Input
-  'river runoff particulate organic nitrogen'
-  'millimole_nitrogen meter-3'                     ! [millimole/m3]
-  'river_DON, scalar, series'
-  'river_time'
-  'idRtrc(iDON_)'
-  'nulvar'
-  1.0d0
-
-'river_detritus'                                   ! Input
-  'river runoff detritus'
-  'millimole_nitrogen meter-3'                     ! [millimole/m3]
-  'river_detritus, scalar, series'
-  'river_time'
-  'idRtrc(iSDet)'
-  'nulvar'
-  1.0d0
-
-'river_SDeN'                                       ! Input
-  'river runoff SDeN'
-  'millimole_nitrogen meter-3'                     ! [millimole/m3]
-  'river_SDeN, scalar, series'
-  'river_time'
-  'idRtrc(iSDeN)'
-  'nulvar'
-  1.0d0
-
-'river_SDeC'                                       ! Input
-  'river runoff SDeC'
-  'millimole meter-3'                              ! [millimole/m3]
-  'river_SDeC, scalar, series'
-  'river_time'
-  'idRtrc(iSDeC)'
-  'nulvar'
-  1.0d0
-
-'river_TIC'                                        ! Input
-  'river runoff TIC'
-  'millimole_carbon meter-3'                       ! [millimole/m3]
-  'river_TIC, scalar, series'
-  'river_time'
-  'idRtrc(iTIC_)'
-  'nulvar'
-  1.0d0
-
-'river_alkalinity'                                 ! Input
-  'river runoff alkalinity'
-  'milliequivalents meter-3'                       ! [milliequivalens/m3]
-  'river_alkalinity, scalar, series'
-  'river_time'
-  'idRtrc(iTAlk)'
-  'nulvar'
-  1.0d0
-
-'river_Oxyg'                                       ! Input
-  'river runoff oxygen'
-  'millimole_oxygen meter-3'                       ! [millimole/m3]
-  'river_Oxyg, scalar, series'
-  'river_time'
-  'idRtrc(iOxyg)'
-  'nulvar'
-  1.0d0
-
-!--------------------------UMAINE variables
-'river_NO3_'                                        ! Input
-  'river runoff NO3'
-  'millimole_nitrogen meter-3'                     ! [millimole/m3]
-  'river_NO3, scalar, series'
-  'river_time'
-  'idRtrc(iNO3_)'
-  'nulvar'
-  1.0d0
-
-'river_Nh4_'                                        ! Input
-  'river runoff NH4'
-  'millimole_nitrogen meter-3'                     ! [millimole/m3]
-  'river_NH4, scalar, series'
-  'river_time'
-  'idRtrc(iNH4_)'
-  'nulvar'
-  1.0d0
-
-'river_SiOH'                                        ! Input
-  'river runoff SiOH'
-  'millimole_silica meter-3'                     ! [millimole/m3]
-  'river_SiOH, scalar, series'
-  'river_time'
-  'idRtrc(iSiOH)'
-  'nulvar'
-  1.0d0
-
-'river_PO4_'                                        ! Input
-  'river runoff PO4'
-  'millimole_phosphorus meter-3'                     ! [millimole/m3]
-  'river_PO4, scalar, series'
-  'river_time'
-  'idRtrc(iPO4_)'
-  'nulvar'
-  1.0d0
-
-'river_S1_N'                                        ! Input
-  'river runoff S1_N'
-  'millimole_N meter-3'                     ! [millimole/m3]
-  'river_S1_N, scalar, series'
-  'river_time'
-  'idRtrc(iS1_N)'
-  'nulvar'
-  1.0d0
-
-'river_S1_C'                                        ! Input
-  'river runoff S1_C'
-  'millimole_C meter-3'                     ! [millimole/m3]
-  'river_S1_C, scalar, series'
-  'river_time'
-  'idRtrc(iS1_C)'
-  'nulvar'
-  1.0d0
-
-'river_S1CH'                                        ! Input
-  'river runoff S1CH'
-  'milligram_CHL meter-3'                     ! [millimole/m3]
-  'river_S1CH, scalar, series'
-  'river_time'
-  'idRtrc(iS1CH)'
-  'nulvar'
-  1.0d0
-
-'river_S2_N'                                        ! Input
-  'river runoff S2_N'
-  'millimole_N meter-3'                     ! [millimole/m3]
-  'river_S2_N, scalar, series'
-  'river_time'
-  'idRtrc(iS2_N)'
-  'nulvar'
-  1.0d0
-
-'river_S2_C'                                        ! Input
-  'river runoff S2_C'
-  'millimole_C meter-3'                     ! [millimole/m3]
-  'river_S2_C, scalar, series'
-  'river_time'
-  'idRtrc(iS2_C)'
-  'nulvar'
-  1.0d0
-
-'river_S2CH'                                        ! Input
-  'river runoff S2CH'
-  'milligram_CHL meter-3'                     ! [millimole/m3]
-  'river_S2CH, scalar, series'
-  'river_time'
-  'idRtrc(iS2CH)'
-  'nulvar'
-  1.0d0
-
-'river_S3_N'                                        ! Input
-  'river runoff S3_N'
-  'millimole_N meter-3'                     ! [millimole/m3]
-  'river_S3_N, scalar, series'
-  'river_time'
-  'idRtrc(iS3_N)'
-  'nulvar'
-  1.0d0
-
-'river_S3_C'                                        ! Input
-  'river runoff S3_C'
-  'millimole_C meter-3'                     ! [millimole/m3]
-  'river_S3_C, scalar, series'
-  'river_time'
-  'idRtrc(iS3_C)'
-  'nulvar'
-  1.0d0
-
-'river_S3CH'                                        ! Input
-  'river runoff S3CH'
-  'milligram_CHL meter-3'                     ! [millimole/m3]
-  'river_S3CH, scalar, series'
-  'river_time'
-  'idRtrc(iS3CH)'
-  'nulvar'
-  1.0d0
-
-'river_Z1_N'                                        ! Input
-  'river runoff Z1_N'
-  'millimole_N meter-3'                     ! [millimole/m3]
-  'river_Z1_N, scalar, series'
-  'river_time'
-  'idRtrc(iZ1_N)'
-  'nulvar'
-  1.0d0
-
-'river_Z1_C'                                        ! Input
-  'river runoff Z1_C'
-  'millimole_C meter-3'                     ! [millimole/m3]
-  'river_Z1_C, scalar, series'
-  'river_time'
-  'idRtrc(iZ1_C)'
-  'nulvar'
-  1.0d0
-
-'river_Z2_C'                                        ! Input
-  'river runoff Z2_C'
-  'millimole_C meter-3'                     ! [millimole/m3]
-  'river_Z2_C, scalar, series'
-  'river_time'
-  'idRtrc(iZ2_C)'
-  'nulvar'
-  1.0d0
-
-'river_Z2_N'                                        ! Input
-  'river runoff Z2_N'
-  'millimole_N meter-3'                     ! [millimole/m3]
-  'river_Z2_N, scalar, series'
-  'river_time'
-  'idRtrc(iZ2_N)'
-  'nulvar'
-  1.0d0
-
-'river_BAC_'                                        ! Input
-  'river runoff BAC'
-  'millimole_N meter-3'                     ! [millimole/m3]
-  'river_BAC, scalar, series'
-  'river_time'
-  'idRtrc(iBAC_)'
-  'nulvar'
-  1.0d0
-
-'river_DD_N'                                        ! Input
-  'river runoff DD_N'
-  'millimole_N meter-3'                     ! [millimole/m3]
-  'river_DD_N, scalar, series'
-  'river_time'
-  'idRtrc(iDD_N)'
-  'nulvar'
-  1.0d0
-
-'river_DD_C'                                        ! Input
-  'river runoff DD_C'
-  'millimole_C meter-3'                     ! [millimole/m3]
-  'river_DD_C, scalar, series'
-  'river_time'
-  'idRtrc(iDD_C)'
-  'nulvar'
-  1.0d0
-
-'river_DDCA'                                        ! Input
-  'river runoff DDCA'
-  'millimole_C meter-3'                     ! [millimole/m3]
-  'river_DDCA, scalar, series'
-  'river_time'
-  'idRtrc(iDDCA)'
-  'nulvar'
-  1.0d0
-
-'river_DDSi'                                        ! Input
-  'river runoff DDSi'
-  'millimole_Si meter-3'                     ! [millimole/m3]
-  'river_DDSi, scalar, series'
-  'river_time'
-  'idRtrc(iDDSi)'
-  'nulvar'
-  1.0d0
-
-'river_LDON'                                        ! Input
-  'river runoff LDON'
-  'millimole_N meter-3'                     ! [millimole/m3]
-  'river_LDON, scalar, series'
-  'river_time'
-  'idRtrc(iLDON)'
-  'nulvar'
-  1.0d0
-
-'river_LDOC'                                        ! Input
-  'river runoff LDOC'
-  'millimole_C meter-3'                     ! [millimole/m3]
-  'river_LDOC, scalar, series'
-  'river_time'
-  'idRtrc(iLDOC)'
-  'nulvar'
-  1.0d0
-
-'river_SDON'                                        ! Input
-  'river runoff SDON'
-  'millimole_N meter-3'                     ! [millimole/m3]
-  'river_SDON, scalar, series'
-  'river_time'
-  'idRtrc(iSDON)'
-  'nulvar'
-  1.0d0
-
-'river_SDOC'                                        ! Input
-  'river runoff SDOC'
-  'millimole_C meter-3'                     ! [millimole/m3]
-  'river_SDOC, scalar, series'
-  'river_time'
-  'idRtrc(iSDOC)'
-  'nulvar'
-  1.0d0
-
-'river_CLDC'                                        ! Input
-  'river runoff CLDC'
-  'millimole_C meter-3'                     ! [millimole/m3]
-  'river_CLDC, scalar, series'
-  'river_time'
-  'idRtrc(iCLDC)'
-  'nulvar'
-  1.0d0
-
-'river_CSDC'                                        ! Input
-  'river runoff CSDC'
-  'millimole_C meter-3'                     ! [millimole/m3]
-  'river_CSDC, scalar, series'
-  'river_time'
-  'idRtrc(iCSDC)'
-  'nulvar'
-  1.0d0
-
-'river_Oxyg'                                        ! Input
-  'river runoff Oxyg'
-  'millimole meter-3'                     ! [millimole/m3]
-  'river_Oxyg, scalar, series'
-  'river_time'
-  'idRtrc(iOxyg)'
-  'nulvar'
-  1.0d0
-
-  'river_Talk'                                        ! Input
-  'river runoff Talk'
-  'millimole meter-3'                     ! [millimole/m3]
-  'river_Talk, scalar, series'
-  'river_time'
-  'idRtrc(iTAlk)'
-  'nulvar'
-  1.0d0
-
-  'river_TIC'                                        ! Input
-  'river runoff TIC'
-  'millimole_C meter-3'                     ! [millimole/m3]
-  'river_TIC, scalar, series'
-  'river_time'
-  'idRtrc(iTIC_)'
-  'nulvar'
-  1.0d0
-
 !------------------------------------------------------------------------------
-! Cobalt river input, river discharge are added on the top layer (like precip)
+! Cobalt river input
 !------------------------------------------------------------------------------
 
 'river_ldon'
@@ -3259,15 +2454,6 @@
   'r2dvar'
   1.0d0
 
-'river_fed'
-  'fed river source'
-  'mol.m-2.s-1'
-  'river_fed, scalar, series'
-  'runoff_time'
-  'idriver_fed'
-  'r2dvar'
-  1.0d0
-
 !
 !------------------------------------------------------------------------------
 !  Boundary layer variables.
@@ -3294,8 +2480,7 @@
 
 !
 !------------------------------------------------------------------------------
-!  Climatotogy variables.  Active and passive climatology tracers variable
-!  metadata is set internally in "mod_ncparam".
+!  Climatotogy variables.
 !------------------------------------------------------------------------------
 !
 
@@ -3371,39 +2556,21 @@
   'r2dvar'
   1.0d0
 
-!
-!------------------------------------------------------------------------------
-!  Nudging to climatology time scales. We can have a generic variable for all
-!  tracer nudging time scales or individual variables for each active and
-!  passive tracer. The metadata for the individual variables is set internally
-!  in "mod_ncparam".
-!------------------------------------------------------------------------------
-!
-
-'M2_NudgeCoef'                                     ! Input
-  '2D momentum inverse nudging coefficients'
-  'day-1'                                          ! [1/s]
-  'M2_NudgeCoef, scalar'
-  'nulvar'
-  'idM2nc'
-  'r2dvar'
-  1.0d0
-
-'M3_NudgeCoef'                                     ! Input
-  '3D momentum inverse nudging coefficients'
-  'day-1'                                          ! [1/s]
-  'M3_NudgeCoef, scalar'
-  'nulvar'
-  'idM3nc'
+'temp'                                             ! Input
+  'potential temperature climatology'
+  'Celsius'                                        ! [Celsius]
+  'temp, scalar, series'
+  'ocean_time'
+  'idTclm(itemp)'
   'r3dvar'
   1.0d0
 
-'tracer_NudgeCoef'                                 ! Input
-  'generic tracer inverse nudging coefficients'
-  'day-1'                                          ! [1/s]
-  'tracer_NudgeCoef, scalar'
-  'nulvar'
-  'idgTnc'
+'salt'                                             ! Input
+  'salinity climatology'
+  'nondimensional'                                 ! [PSU]
+  'salt, scalar, series'
+  'ocean_time'
+  'idTclm(isalt)'
   'r3dvar'
   1.0d0
 
@@ -3708,7 +2875,7 @@
   'dye concentration western boundary condition'
   'kilogram meter-3'                               ! [kg/m3]
   'dye_west_, scalar, series'
-  'ocean_time'
+  'dye_time'
   'idTbry(iwest,inert(i))'
   'nulvar'
   1.0d0
@@ -3717,7 +2884,7 @@
   'dye concentration eastern boundary condition'
   'kilogram meter-3'                               ! [kg/m3]
   'dye_east_, scalar, series'
-  'ocean_time'
+  'dye_time'
   'idTbry(ieast,inert(i))'
   'nulvar'
   1.0d0
@@ -3726,7 +2893,7 @@
   'dye concentration southern boundary condition'
   'kilogram meter-3'                               ! [kg/m3]
   'dye_south_, scalar, series'
-  'ocean_time'
+  'dye_time'
   'idTbry(isouth,inert(i))'
   'nulvar'
   1.0d0
@@ -3735,7 +2902,7 @@
   'dye concentration northern boundary condition'
   'kilogram meter-3'                               ! [kg/m3]
   'dye_north_, scalar, series'
-  'ocean_time'
+  'dye_time'
   'idTbry(inorth,inert(i))'
   'nulvar'
   1.0d0
@@ -4095,15 +3262,6 @@
   'r2dvar'
   1.0d0
 
-'wavedrag'                                         ! Input/Output
-  'linear bottom drag coefficient'
-  'meter second-1'                                 ! [m/s]
-  'wavedrag, scalar, series'
-  'ocean_time'
-  'idragW'
-  'r2dvar'
-  1.0d0
-
 'ZoBot'                                            ! Input/Output
   'time invariant, bottom roughness length'
   'meter'                                          ! [m]
@@ -4317,23 +3475,6 @@
 !---------------------------------------------------------------------
 !
 
-'temp'                                             ! Input
-  'potential temperature climatology'
-  'Celsius'                                        ! [Celsius]
-  'temp, scalar, series'
-  'ocean_time'
-  'idTclm(itemp)'
-  'r3dvar'
-  1.0d0
-
-'salt'                                             ! Input
-  'salinity climatology'
-  'nondimensional'                                 ! [PSU]
-  'salt, scalar, series'
-  'ocean_time'
-  'idTclm(isalt)'
-  'r3dvar'
-  1.0d0
 
 'alk'
   'Alkalinity'
@@ -4961,62 +4102,6 @@
   'r3dvar'
   1.0d0
 
-! coastal diatoms (NVO)
-
-'nmd'
-  'medium Phytoplankton Nitrogen'
-  'mol/kg'
-  'nmd, scalar, series'
-  'ocean_time'
-  'idTvar(inmd)'
-  'r3dvar'
-  1.0d0
-
-'nmd'
-  'medium Phytoplankton Nitrogen'
-  'mol/kg'
-  'nmd, scalar, series'
-  'ocean_time'
-  'idTclm(inmd)'
-  'r3dvar'
-  1.0d0
-
-'simd'
-  'medium Phytoplankton Silicon'
-  'mol/kg'
-  'simd, scalar, series'
-  'ocean_time'
-  'idTvar(isimd)'
-  'r3dvar'
-  1.0d0
-
-'simd'
-  'medium Phytoplankton Silicon'
-  'mol/kg'
-  'simd, scalar, series'
-  'ocean_time'
-  'idTclm(isimd)'
-  'r3dvar'
-  1.0d0
-
-'femd'
-  'medium Phytoplankton Iron'
-  'mol/kg'
-  'femd, scalar, series'
-  'ocean_time'
-  'idTvar(ifemd)'
-  'r3dvar'
-  1.0d0
-
-'femd'
-  'medium Phytoplankton Iron'
-  'mol/kg'
-  'femd, scalar, series'
-  'ocean_time'
-  'idTclm(ifemd)'
-  'r3dvar'
-  1.0d0
-
 ! Other BGC for Cobalt
 
 'chl'
@@ -5079,15 +4164,6 @@
   'mu_mem_lg, scalar, series'
   'ocean_time'
   'iDobgc(iomu_mem_lg)'
-  'r3dvar'
-  1.0d0
-
-'mu_mem_md'
-  'Aggreg memory medium phyto'
-  ''
-  'mu_mem_md, scalar, series'
-  'ocean_time'
-  'iDobgc(iomu_mem_md)'
   'r3dvar'
   1.0d0
 
@@ -5326,358 +4402,6 @@
   'iDbio2(imesozoo_200)'
   'r2dvar'
   1.0d0
-
-'prod_n_100_sm'
-  'nitrogen production for small phyto upper 100m'
-  'mol.m-2.s-1'
-  'prod_n_100_sm, scalar, series'
-  'ocean_time'
-  'iDbio2(iprod_n_100_sm)'
-  'r2dvar'
-  1.0d0
-
-'aggloss_n_100_sm'
-  'loss to aggregation for small phyto upper 100m'
-  'mol.m-2.s-1'
-  'aggloss_n_100_sm, scalar, series'
-  'ocean_time'
-  'iDbio2(iaggloss_n_100_sm)'
-  'r2dvar'
-  1.0d0
-
-'zloss_n_100_sm'
-  'loss to zooplankton for small phyto upper 100m'
-  'mol.m-2.s-1'
-  'zloss_n_100_sm, scalar, series'
-  'ocean_time'
-  'iDbio2(izloss_n_100_sm)'
-  'r2dvar'
-  1.0d0
-
-'prod_n_100_lg'
-  'nitrogen production for large phyto upper 100m'
-  'mol.m-2.s-1'
-  'prod_n_100_lg, scalar, series'
-  'ocean_time'
-  'iDbio2(iprod_n_100_lg)'
-  'r2dvar'
-  1.0d0
-
-'aggloss_n_100_lg'
-  'loss to aggregation for large phyto upper 100m'
-  'mol.m-2.s-1'
-  'aggloss_n_100_lg, scalar, series'
-  'ocean_time'
-  'iDbio2(iaggloss_n_100_lg)'
-  'r2dvar'
-  1.0d0
-
-'zloss_n_100_lg'
-  'loss to zooplankton for large phyto upper 100m'
-  'mol.m-2.s-1'
-  'zloss_n_100_lg, scalar, series'
-  'ocean_time'
-  'iDbio2(izloss_n_100_lg)'
-  'r2dvar'
-  1.0d0
-
-'prod_n_100_di'
-  'nitrogen production for diazo phyto upper 100m'
-  'mol.m-2.s-1'
-  'prod_n_100_di, scalar, series'
-  'ocean_time'
-  'iDbio2(iprod_n_100_di)'
-  'r2dvar'
-  1.0d0
-
-'aggloss_n_100_di'
-  'loss to aggregation for diazo phyto upper 100m'
-  'mol.m-2.s-1'
-  'aggloss_n_100_di, scalar, series'
-  'ocean_time'
-  'iDbio2(iaggloss_n_100_di)'
-  'r2dvar'
-  1.0d0
-
-'zloss_n_100_di'
-  'loss to zooplankton for diazo phyto upper 100m'
-  'mol.m-2.s-1'
-  'zloss_n_100_di, scalar, series'
-  'ocean_time'
-  'iDbio2(izloss_n_100_di)'
-  'r2dvar'
-  1.0d0
-
-'prod_n_100_smz'
-  'nitrogen production for small zoo upper 100m'
-  'mol.m-2.s-1'
-  'prod_n_100_smz, scalar, series'
-  'ocean_time'
-  'iDbio2(iprod_n_100_smz)'
-  'r2dvar'
-  1.0d0
-
-'ingest_n_100_smz'
-  'ingestion for small zoo upper 100m'
-  'mol.m-2.s-1'
-  'ingest_n_100_smz, scalar, series'
-  'ocean_time'
-  'iDbio2(iingest_n_100_smz)'
-  'r2dvar'
-  1.0d0
-
-'zloss_n_100_smz'
-  'loss to zooplankton for small zoo upper 100m'
-  'mol.m-2.s-1'
-  'zloss_n_100_smz, scalar, series'
-  'ocean_time'
-  'iDbio2(izloss_n_100_smz)'
-  'r2dvar'
-  1.0d0
-
-'hploss_n_100_smz'
-  'loss to highe predators for small zoo upper 100m'
-  'mol.m-2.s-1'
-  'hploss_n_100_smz, scalar, series'
-  'ocean_time'
-  'iDbio2(ihploss_n_100_smz)'
-  'r2dvar'
-  1.0d0
-
-'prod_ndet_100_smz'
-  'detrital production for small zoo upper 100m'
-  'mol.m-2.s-1'
-  'prod_ndet_100_smz, scalar, series'
-  'ocean_time'
-  'iDbio2(iprod_ndet_100_smz)'
-  'r2dvar'
-  1.0d0
-
-'prod_n_100_mdz'
-  'nitrogen production for medium zoo upper 100m'
-  'mol.m-2.s-1'
-  'prod_n_100_mdz, scalar, series'
-  'ocean_time'
-  'iDbio2(iprod_n_100_mdz)'
-  'r2dvar'
-  1.0d0
-
-'ingest_n_100_mdz'
-  'ingestion for medium zoo upper 100m'
-  'mol.m-2.s-1'
-  'ingest_n_100_mdz, scalar, series'
-  'ocean_time'
-  'iDbio2(iingest_n_100_mdz)'
-  'r2dvar'
-  1.0d0
-
-'zloss_n_100_mdz'
-  'loss to zooplankton for medium zoo upper 100m'
-  'mol.m-2.s-1'
-  'zloss_n_100_mdz, scalar, series'
-  'ocean_time'
-  'iDbio2(izloss_n_100_mdz)'
-  'r2dvar'
-  1.0d0
-
-'hploss_n_100_mdz'
-  'loss to highe predators for medium zoo upper 100m'
-  'mol.m-2.s-1'
-  'hploss_n_100_mdz, scalar, series'
-  'ocean_time'
-  'iDbio2(ihploss_n_100_mdz)'
-  'r2dvar'
-  1.0d0
-
-'prod_ndet_100_mdz'
-  'detrital production for medium zoo upper 100m'
-  'mol.m-2.s-1'
-  'prod_ndet_100_mdz, scalar, series'
-  'ocean_time'
-  'iDbio2(iprod_ndet_100_mdz)'
-  'r2dvar'
-  1.0d0
-
-'prod_n_100_lgz'
-  'nitrogen production for large zoo upper 100m'
-  'mol.m-2.s-1'
-  'prod_n_100_lgz, scalar, series'
-  'ocean_time'
-  'iDbio2(iprod_n_100_lgz)'
-  'r2dvar'
-  1.0d0
-
-'ingest_n_100_lgz'
-  'ingestion for large zoo upper 100m'
-  'mol.m-2.s-1'
-  'ingest_n_100_lgz, scalar, series'
-  'ocean_time'
-  'iDbio2(iingest_n_100_lgz)'
-  'r2dvar'
-  1.0d0
-
-'zloss_n_100_lgz'
-  'loss to zooplankton for large zoo upper 100m'
-  'mol.m-2.s-1'
-  'zloss_n_100_lgz, scalar, series'
-  'ocean_time'
-  'iDbio2(izloss_n_100_lgz)'
-  'r2dvar'
-  1.0d0
-
-'hploss_n_100_lgz'
-  'loss to higher predators for large zoo upper 100m'
-  'mol.m-2.s-1'
-  'hploss_n_100_lgz, scalar, series'
-  'ocean_time'
-  'iDbio2(ihploss_n_100_lgz)'
-  'r2dvar'
-  1.0d0
-
-'prod_ndet_100_lgz'
-  'detrital production for large zoo upper 100m'
-  'mol.m-2.s-1'
-  'prod_ndet_100_lgz, scalar, series'
-  'ocean_time'
-  'iDbio2(iprod_ndet_100_lgz)'
-  'r2dvar'
-  1.0d0
-
-'prod_n_100_bact'
-  'nitrogen production for bacteria upper 100m'
-  'mol.m-2.s-1'
-  'prod_n_100_bact, scalar, series'
-  'ocean_time'
-  'iDbio2(iprod_n_100_bact)'
-  'r2dvar'
-  1.0d0
-
-'zloss_n_100_bact'
-  'loss to zooplankton for bacteria upper 100m'
-  'mol.m-2.s-1'
-  'zloss_n_100_bact, scalar, series'
-  'ocean_time'
-  'iDbio2(izloss_n_100_bact)'
-  'r2dvar'
-  1.0d0
-
-'prod_n_100_md'
-  'nitrogen production for medium phyto upper 100m'
-  'mol.m-2.s-1'
-  'prod_n_100_md, scalar, series'
-  'ocean_time'
-  'iDbio2(iprod_n_100_md)'
-  'r2dvar'
-  1.0d0
-
-'aggloss_n_100_md'
-  'loss to aggregation for medium phyto upper 100m'
-  'mol.m-2.s-1'
-  'aggloss_n_100_md, scalar, series'
-  'ocean_time'
-  'iDbio2(iaggloss_n_100_md)'
-  'r2dvar'
-  1.0d0
-
-'zloss_n_100_md'
-  'loss to zooplankton for medium phyto upper 100m'
-  'mol.m-2.s-1'
-  'zloss_n_100_md, scalar, series'
-  'ocean_time'
-  'iDbio2(izloss_n_100_md)'
-  'r2dvar'
-  1.0d0
-
-'mesozooprod_200'
-  'mesozoo production over top 200m'
-  'mgC m-2 day-1'
-  'mesozooprod_200, scalar, series'
-  'ocean_time'
-  'iDbio2(imesozooprod_200)'
-  'r2dvar'
-  1.0d0
-
-'uptake_din_100'
-  'uptake DIN over top 100m'
-  'mgC m-2 day-1'
-  'uptake_din_100, scalar, series'
-  'ocean_time'
-  'iDbio2(iuptake_din_100)'
-  'r2dvar'
-  1.0d0
-
-'uptake_no3_n2_100'
-  'uptake NO3+N2 over top 100m'
-  'mgC m-2 day-1'
-  'uptake_no3_n2_100, scalar, series'
-  'ocean_time'
-  'iDbio2(iuptake_no3_n2_100)'
-  'r2dvar'
-  1.0d0
-
-'prod_mesozoo_100'
-  'mesozoo production over top 100m'
-  'mgC m-2 day-1'
-  'prod_mesozoo_100, scalar, series'
-  'ocean_time'
-  'iDbio2(iprod_mesozoo_100)'
-  'r2dvar'
-  1.0d0
-
-'z_ratio_100'
-  'Z-ratio'
-  ''
-  'z_ratio_100, scalar, series'
-  'ocean_time'
-  'iDbio2(iz_ratio_100)'
-  'r2dvar'
-  1.0d0
-
-'pe_ratio_100'
-  'pe-ratio'
-  ''
-  'pe_ratio_100, scalar, series'
-  'ocean_time'
-  'iDbio2(ipe_ratio_100)'
-  'r2dvar'
-  1.0d0
-
-'f_ratio_100'
-  'f-ratio'
-  ''
-  'f_ratio_100, scalar, series'
-  'ocean_time'
-  'iDbio2(if_ratio_100)'
-  'r2dvar'
-  1.0d0
-
-'prod_don_100_smz'
-  'production DON by small zoo over top 100m'
-  'mol.m-2.s-1'
-  'prod_don_100_smz, scalar, series'
-  'ocean_time'
-  'iDbio2(iprod_don_100_smz)'
-  'r2dvar'
-  1.0d0
-
-'prod_don_100_mdz'
-  'production DON by medium zoo over top 100m'
-  'mol.m-2.s-1'
-  'prod_don_100_mdz, scalar, series'
-  'ocean_time'
-  'iDbio2(iprod_don_100_mdz)'
-  'r2dvar'
-  1.0d0
-
-'prod_don_100_lgz'
-  'production DON by large zoo over top 100m'
-  'mol.m-2.s-1'
-  'prod_don_100_lgz, scalar, series'
-  'ocean_time'
-  'iDbio2(iprod_don_100_lgz)'
-  'r2dvar'
-  1.0d0
-
 
 'chl'                                      
   'Chlorophyll'
@@ -6048,15 +4772,6 @@
   'r3dvar'
   1.0d0
 
-'mu_mem_md'
-  'aggregation memory medium phyto '
-  '[]'
-  'mu_mem_md, scalar, series'
-  'ocean_time'
-  'iDbio3(imu_mem_md)'
-  'r3dvar'
-  1.0d0
-
 'agg_lim_sm'
   'aggregation limitation small phyto'
   '[]'
@@ -6138,15 +4853,6 @@
   'r3dvar'
   1.0d0
 
-'virloss_md'
-  'losses to viruses medium phyto '
-  'mol/kg'
-  'virloss_md, scalar, series'
-  'ocean_time'
-  'iDbio3(ivirloss_md)'
-  'r3dvar'
-  1.0d0
-
 'zloss_lg'
   'losses to zoo large phyto '
   'mol/kg'
@@ -6174,277 +4880,9 @@
   'r3dvar'
   1.0d0
 
-'zloss_md'
-  'losses to zoo medium phyto '
-  'mol/kg'
-  'zloss_md, scalar, series'
-  'ocean_time'
-  'iDbio3(izloss_md)'
-  'r3dvar'
-  1.0d0
 
-'agg_lim_md'
-  'aggregation limitation medium phyto '
-  '[]'
-  'agg_lim_md, scalar, series'
-  'ocean_time'
-  'iDbio3(iagg_lim_md)'
-  'r3dvar'
-  1.0d0
 
-'def_fe_sm'
-  ''
-  '[]'
-  'def_fe_sm, scalar, series'
-  'ocean_time'
-  'iDbio3(idef_fe_sm)'
-  'r3dvar'
-  1.0d0
 
-'def_fe_di'
-  ''
-  '[]'
-  'def_fe_di, scalar, series'
-  'ocean_time'
-  'iDbio3(idef_fe_di)'
-  'r3dvar'
-  1.0d0
-
-'def_fe_lg'
-  ''
-  '[]'
-  'def_fe_lg, scalar, series'
-  'ocean_time'
-  'iDbio3(idef_fe_lg)'
-  'r3dvar'
-  1.0d0
-
-'def_fe_md'
-  ''
-  '[]'
-  'def_fe_md, scalar, series'
-  'ocean_time'
-  'iDbio3(idef_fe_md)'
-  'r3dvar'
-  1.0d0
-
-'felim_sm'
-  ''
-  '[]'
-  'felim_sm, scalar, series'
-  'ocean_time'
-  'iDbio3(ifelim_sm)'
-  'r3dvar'
-  1.0d0
-
-'felim_di'
-  ''
-  '[]'
-  'felim_di, scalar, series'
-  'ocean_time'
-  'iDbio3(ifelim_di)'
-  'r3dvar'
-  1.0d0
-
-'felim_lg'
-  ''
-  '[]'
-  'felim_lg, scalar, series'
-  'ocean_time'
-  'iDbio3(ifelim_lg)'
-  'r3dvar'
-  1.0d0
-
-'felim_md'
-  ''
-  '[]'
-  'felim_md, scalar, series'
-  'ocean_time'
-  'iDbio3(ifelim_md)'
-  'r3dvar'
-  1.0d0
-
-'no3lim_sm'
-  ''
-  '[]'
-  'no3lim_sm, scalar, series'
-  'ocean_time'
-  'iDbio3(ino3lim_sm)'
-  'r3dvar'
-  1.0d0
-
-'no3lim_di'
-  ''
-  '[]'
-  'no3lim_di, scalar, series'
-  'ocean_time'
-  'iDbio3(ino3lim_di)'
-  'r3dvar'
-  1.0d0
-
-'no3lim_lg'
-  ''
-  '[]'
-  'no3lim_lg, scalar, series'
-  'ocean_time'
-  'iDbio3(ino3lim_lg)'
-  'r3dvar'
-  1.0d0
-
-'no3lim_md'
-  ''
-  '[]'
-  'no3lim_md, scalar, series'
-  'ocean_time'
-  'iDbio3(ino3lim_md)'
-  'r3dvar'
-  1.0d0
-
-'nh4lim_sm'
-  ''
-  '[]'
-  'nh4lim_sm, scalar, series'
-  'ocean_time'
-  'iDbio3(inh4lim_sm)'
-  'r3dvar'
-  1.0d0
-
-'nh4lim_di'
-  ''
-  '[]'
-  'nh4lim_di, scalar, series'
-  'ocean_time'
-  'iDbio3(inh4lim_di)'
-  'r3dvar'
-  1.0d0
-
-'nh4lim_lg'
-  ''
-  '[]'
-  'nh4lim_lg, scalar, series'
-  'ocean_time'
-  'iDbio3(inh4lim_lg)'
-  'r3dvar'
-  1.0d0
-
-'nh4lim_md'
-  ''
-  '[]'
-  'nh4lim_md, scalar, series'
-  'ocean_time'
-  'iDbio3(inh4lim_md)'
-  'r3dvar'
-  1.0d0
-
-'po4lim_sm'
-  ''
-  '[]'
-  'po4lim_sm, scalar, series'
-  'ocean_time'
-  'iDbio3(ipo4lim_sm)'
-  'r3dvar'
-  1.0d0
-
-'po4lim_di'
-  ''
-  '[]'
-  'po4lim_di, scalar, series'
-  'ocean_time'
-  'iDbio3(ipo4lim_di)'
-  'r3dvar'
-  1.0d0
-
-'po4lim_lg'
-  ''
-  '[]'
-  'po4lim_lg, scalar, series'
-  'ocean_time'
-  'iDbio3(ipo4lim_lg)'
-  'r3dvar'
-  1.0d0
-
-'po4lim_md'
-  ''
-  '[]'
-  'po4lim_md, scalar, series'
-  'ocean_time'
-  'iDbio3(ipo4lim_md)'
-  'r3dvar'
-  1.0d0
-
-'chl_di'
-  ''
-  '[ug/kg]'
-  'chl_di, scalar, series'
-  'ocean_time'
-  'iDbio3(ichl_di)'
-  'r3dvar'
-  1.0d0
-
-'chl_sm'
-  ''
-  '[ug/kg]'
-  'chl_sm, scalar, series'
-  'ocean_time'
-  'iDbio3(ichl_sm)'
-  'r3dvar'
-  1.0d0
-
-'chl_lg'
-  ''
-  '[ug/kg]'
-  'chl_lg, scalar, series'
-  'ocean_time'
-  'iDbio3(ichl_lg)'
-  'r3dvar'
-  1.0d0
-
-'chl_md'
-  ''
-  '[ug/kg]'
-  'chl_md, scalar, series'
-  'ocean_time'
-  'iDbio3(ichl_md)'
-  'r3dvar'
-  1.0d0
-
-'C_2_chl_di'
-  ''
-  '[ug/kg]'
-  'C_2_chl_di, scalar, series'
-  'ocean_time'
-  'iDbio3(iC_2_chl_di)'
-  'r3dvar'
-  1.0d0
-
-'C_2_chl_sm'
-  ''
-  '[ug/kg]'
-  'C_2_chl_sm, scalar, series'
-  'ocean_time'
-  'iDbio3(iC_2_chl_sm)'
-  'r3dvar'
-  1.0d0
-
-'C_2_chl_lg'
-  ''
-  '[ug/kg]'
-  'C_2_chl_lg, scalar, series'
-  'ocean_time'
-  'iDbio3(iC_2_chl_lg)'
-  'r3dvar'
-  1.0d0
-
-'C_2_chl_md'
-  ''
-  '[ug/kg]'
-  'C_2_chl_md, scalar, series'
-  'ocean_time'
-  'iDbio3(iC_2_chl_md)'
-  'r3dvar'
-  1.0d0
-
-!
 !
 !---------------------------------------------------------------------
 !  Cobalt Boundary variables.
@@ -7672,115 +6110,9 @@
   'nulvar'
   1.0d0
 
-! Coastal diatoms (NVO)
 
-'nmd_east'
-  'Medium Phytoplankton Nitrogen eastern boundary condition'
-  'mol/kg'
-  'nmd_east, scalar, series'
-  'ocean_time'
-  'idTbry(ieast,inmd)'
-  'nulvar'
-  1.0d0
 
-'nmd_west'
-  'Medium Phytoplankton Nitrogen western boundary condition'
-  'mol/kg'
-  'nmd_west, scalar, series'
-  'ocean_time'
-  'idTbry(iwest,inmd)'
-  'nulvar'
-  1.0d0
 
-'nmd_north'
-  'Medium Phytoplankton Nitrogen northern boundary condition'
-  'mol/kg'
-  'nmd_north, scalar, series'
-  'ocean_time'
-  'idTbry(inorth,inmd)'
-  'nulvar'
-  1.0d0
-
-'nmd_south'
-  'Medium Phytoplankton Nitrogen southern boundary condition'
-  'mol/kg'
-  'nmd_south, scalar, series'
-  'ocean_time'
-  'idTbry(isouth,inmd)'
-  'nulvar'
-  1.0d0
-
-'simd_east'
-  'Medium Phytoplankton Silicon eastern boundary condition'
-  'mol/kg'
-  'simd_east, scalar, series'
-  'ocean_time'
-  'idTbry(ieast,isimd)'
-  'nulvar'
-  1.0d0
-
-'simd_west'
-  'Medium Phytoplankton Silicon western boundary condition'
-  'mol/kg'
-  'simd_west, scalar, series'
-  'ocean_time'
-  'idTbry(iwest,isimd)'
-  'nulvar'
-  1.0d0
-
-'simd_north'
-  'Medium Phytoplankton Silicon northern boundary condition'
-  'mol/kg'
-  'simd_north, scalar, series'
-  'ocean_time'
-  'idTbry(inorth,isimd)'
-  'nulvar'
-  1.0d0
-
-'simd_south'
-  'Medium Phytoplankton Silicon southern boundary condition'
-  'mol/kg'
-  'simd_south, scalar, series'
-  'ocean_time'
-  'idTbry(isouth,isimd)'
-  'nulvar'
-  1.0d0
-
-'femd_east'
-  'Medium Phytoplankton Iron eastern boundary condition'
-  'mol/kg'
-  'femd_east, scalar, series'
-  'ocean_time'
-  'idTbry(ieast,ifemd)'
-  'nulvar'
-  1.0d0
-
-'femd_west'
-  'Medium Phytoplankton Iron western boundary condition'
-  'mol/kg'
-  'femd_west, scalar, series'
-  'ocean_time'
-  'idTbry(iwest,ifemd)'
-  'nulvar'
-  1.0d0
-
-'femd_north'
-  'Medium Phytoplankton Iron northern boundary condition'
-  'mol/kg'
-  'femd_north, scalar, series'
-  'ocean_time'
-  'idTbry(inorth,ifemd)'
-  'nulvar'
-  1.0d0
-
-'femd_south'
-  'Medium Phytoplankton Iron southern boundary condition'
-  'mol/kg'
-  'femd_south, scalar, series'
-  'ocean_time'
-  'idTbry(isouth,ifemd)'
-  'nulvar'
-  1.0d0
 
 !
 !-----------------------------------------------------------------------
@@ -8502,74 +6834,6 @@
 
 !
 !-----------------------------------------------------------------------
-!  Stochastic perturbations
-!-----------------------------------------------------------------------
-!
-'pert_Tair'                                        ! Input/Output
-  'perturbation of surface air temperature'
-  'Celsius'                                        ! [Kelvin]
-  'Tair, scalar, series'
-  'tair_time'
-  'idpert_Tair'
-  'r2dvar'
-  1.0d0
-
-'pert_Srad'                                       ! Input/Output
-  'perturbation of solar shortwave radiation flux'
-  'watt meter-2'                                   ! Input:  [Watt/m2]
-  'shortwave radiation, scalar, series'            ! [Celsius m/s]
-  'srf_time'                                       ! Output: [Watt/m2]
-  'idpert_Srad'
-  'r2dvar'
-  1.0d0
-
-'pert_Uwind'                                       ! Input/Output
-  'perturbation of surface u-wind component'
-  'meter second-1'                                 ! [m/s]
-  'u-wind, scalar, series'
-  'wind_time'
-  'idpert_Uwind'
-  'r2dvar'
-  1.0d0
-
-'pert_Vwind'                                       ! Input/Output
-  'perturbation of surface v-wind component'
-  'meter second-1'                                 ! [m/s]
-  'v-wind, scalar, series'
-  'wind_time'
-  'idpert_Vwind'
-  'r2dvar'
-  1.0d0
-
-'pert_dx'                                        ! Input/Output
-  'zonal perturbation of T,S for EOS'
-  'grid point'                                        ! [Kelvin]
-  'dx, scalar, series'
-  'ocean_time'
-  'idpert_dx'
-  'r2dvar'
-  1.0d0
-
-'pert_dy'                                        ! Input/Output
-  'meridional perturbation of T,S for EOS'
-  'grid point'                                        ! [Kelvin]
-  'dy, scalar, series'
-  'ocean_time'
-  'idpert_dy'
-  'r2dvar'
-  1.0d0
-
-'pert_dz'                                        ! Input/Output
-  'vertical perturbation of T,S for EOS'
-  'grid point'                                        ! [Kelvin]
-  'dz, scalar, series'
-  'ocean_time'
-  'idpert_dz'
-  'r2dvar'
-  1.0d0
-
-!
-!-----------------------------------------------------------------------
 !  Forward trajectory variables for tangent linear and adjoint models.
 !-----------------------------------------------------------------------
 !
@@ -8706,39 +6970,12 @@
   'nulvar'
   1.0d0
 
-'obs_provenance'                                   ! Input
-  'observation origin'
-  'nondimensional'                                 ! [nondimensional]
-  'nulvar'
-  'datum'
-  'idOpro'
-  'nulvar'
-  1.0d0
-
 'obs_time'                                         ! Input
   'time of observation'
   'day'                                            ! [day]
   'nulvar'
   'datum'
   'idObsT'
-  'nulvar'
-  1.0d0
-
-'obs_lon'                                         ! Input
-  'observation longitude'
-  'degrees_east'                                  ! [degrees_east]
-  'nulvar'
-  'datum'
-  'idOlon'
-  'nulvar'
-  1.0d0
-
-'obs_lat'                                         ! Input
-  'observation latitude'
-  'degrees_north'                                 ! [degrees_north]
-  'nulvar'
-  'datum'
-  'idOlat'
   'nulvar'
   1.0d0
 
@@ -9043,7 +7280,7 @@
 'Ice Algae_west'
   'Ice algae concentration western boundary condition'
   'meter'
-  'Ice_algae_thick_west, scalar, series'
+  'snow_thick_west, scalar, series'
   'bry_time'
   'idIcePhLbc(iwest)'
   'nulvar'
@@ -9052,7 +7289,7 @@
 'Ice Algae_east'
   'Ice algae concentration eastern boundary condition'
   'meter'
-  'Ice_algae_thick_east, scalar, series'
+  'snow_thick_east, scalar, series'
   'bry_time'
   'idIcePhLbc(ieast)'
   'nulvar'
@@ -9061,7 +7298,7 @@
 'Ice Algae_north'
   'Ice algae concentration northern boundary condition'
   'meter'
-  'Ice_algae_thick_north, scalar, series'
+  'snow_thick_north, scalar, series'
   'bry_time'
   'idIcePhLbc(inorth)'
   'nulvar'
@@ -9070,7 +7307,7 @@
 'Ice Algae_south'
   'Ice algae concentration southern boundary condition'
   'meter'
-  'Ice_algae_thick_south, scalar, series'
+  'snow_thick_south, scalar, series'
   'bry_time'
   'idIcePhLbc(isouth)'
   'nulvar'
@@ -9524,4 +7761,41 @@
   'idTS2var(i2Stat8)'
   'r2dvar'
   1.0d0
+
+!
+!------------------------------------------------------------------------------
+!  Nudging to climatology time scales. We can have a generic variable for all
+!  tracer nudging time scales or individual variables for each active and
+!  passive tracer. The metadata for the individual variables is set internally
+!  in "mod_ncparam".
+!------------------------------------------------------------------------------
+!
+
+'M2_NudgeCoef'                                     ! Input
+  '2D momentum inverse nudging coefficients'
+  'day-1'                                          ! [1/s]
+  'M2_NudgeCoef, scalar'
+  'nulvar'
+  'idM2nc'
+  'r2dvar'
+  1.0
+
+'M3_NudgeCoef'                                     ! Input
+  '3D momentum inverse nudging coefficients'
+  'day-1'                                          ! [1/s]
+  'M3_NudgeCoef, scalar'
+  'nulvar'
+  'idM3nc'
+  'r3dvar'
+  1.0
+
+'tracer_NudgeCoef'                                 ! Input
+  'generic tracer inverse nudging coefficients'
+  'day-1'                                          ! [1/s]
+  'tracer_NudgeCoef, scalar'
+  'nulvar'
+  'idgTnc'
+  'r3dvar'
+  1.0
+
 

@@ -53,16 +53,21 @@ averagefile=${SCRATCHDIR}/Outputs/Average/m${this_member}/${SIMU}_avg_${date_cyc
 # Forcing directory
 forcing_dir_mem=${FORCINGDIR}/m${this_member}/
 
+# Seed for perturbations
+seed_value=$(( $this_member + $this_cycle*100 ))
+
+
 # Create the namelist
 cat <CURRENTDIR>/ocean_${SIMU}.in | sed -e "s;<DT>;$DT;g"                          \
+                                        -e "s;<SEED>;$seed_value;g"                \
                                         -e "s;<ITILE>;$ITILE;g"                    \
                                         -e "s;<JTILE>;$JTILE;g"                    \
                                         -e "s;<NSTEPS>;$time_end;g"                \
                                         -e "s;<NRESTART>;$ntimeana;g"              \
-                                        -e "s;<RESTART>;$restart;g"             \
+                                        -e "s;<RESTART>;$restart;g"                \
                                         -e "s;<NTIMEOUT>;$ntimeout;g"              \
                                         -e "s;<GRID>;$GRIDFILE;g"                  \
-                                        -e "s;<NUDGCOEF>;$NUDGCOEF;g"                  \
+                                        -e "s;<NUDGCOEF>;$NUDGCOEF;g"              \
                                         -e "s;<STARTDAY>;$startday;g"              \
                                         -e "s;<REFDATE>;$REFDATE;g"                \
                                         -e "s;<CLMFILE>;$CLIMFILE;g"               \
