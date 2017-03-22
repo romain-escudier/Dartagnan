@@ -10,6 +10,7 @@ echo $(date)
 
 this_member=<MEMBER>
 this_cycle=<CYCLE>
+this_cycle=$(str2num $this_cycle)
 disp_cycle=<DISPCYCLE>
 this_job_id=${SLURM_JOB_ID}
 NCORES=<NCORES>
@@ -50,12 +51,8 @@ restartfile=${SCRATCHDIR}/Outputs/Prior/m${this_member}//${SIMU}_rst_${date_cycl
 historyfile=${SCRATCHDIR}/Outputs/History/m${this_member}/${SIMU}_his_${date_cycle}.nc
 averagefile=${SCRATCHDIR}/Outputs/Average/m${this_member}/${SIMU}_avg_${date_cycle}.nc
 
-# Forcing directory
-forcing_dir_mem=${FORCINGDIR}/m${this_member}/
-
 # Seed for perturbations
-seed_value=$(( $this_member + $this_cycle*100 ))
-
+seed_value=$(( $(str2num $this_member) + $this_cycle*100 ))
 
 # Create the namelist
 cat <CURRENTDIR>/ocean_${SIMU}.in | sed -e "s;<DT>;$DT;g"                          \
@@ -79,7 +76,7 @@ cat <CURRENTDIR>/ocean_${SIMU}.in | sed -e "s;<DT>;$DT;g"                       
                                         -e "s;<SSS_RESTORING_FILE>;$SSSREFILE;g"   \
                                         -e "s;<RUNOFF_FILE>;$RUNOFFILE;g"          \
                                         -e "s;<TIDES_FILE>;$TIDESFILE;g"           \
-                                        -e "s;<FORCINGDIR>;$forcing_dir_mem;g"     \
+                                        -e "s;<FORCINGDIR>;${FORCINGDIR};g"     \
                                         -e "s;<FORCINGPREF>;$FORCINGPREF;g"        \
                                         -e "s;<FORCINGSUFF>;$FORCINGSUFF;g"        \
                                         -e "s;<OUTPUTDIR>;${SCRATCHDIR}/Outputs/;g"\

@@ -1,0 +1,47 @@
+#!/bin/bash
+
+#BSUB -n 16
+#BSUB -q geyser
+#BSUB -N
+#BSUB -o <CURRENTDIR>/Logs/roms_diags_preDA_<SIMU>.%J.out
+#BSUB -e <CURRENTDIR>/Logs/roms_diags_preDA_<SIMU>.%J.err
+#BSUB -J roms_diags_preDA_<SIMU>
+#BSUB -W 00:30
+#BSUB -P <PROJECTCODE>
+
+CASE=<SIMU>
+ACCOUNT=<PROJECTCODE>
+
+# Load simulation parameters
+. ./parameters
+. ./functions.sh
+
+# Python code location
+DIR_PYTHON=/glade/p/work/romaines/Tools/Python/
+cp ${DIR_PYTHON}/rt_dart_tools.py ${SCRATCHDIR}/Tempfiles/
+
+# Load modules
+module load python netcdf4python numpy parallel
+
+# Create temporary python codes
+for this_cycle in $( seq $NSTART $NSTART_ANA ) ; do
+   next_cycle=$(( this_cycle + 1 ))
+   date_cycle=$(get_date_from_cycle ${this_cycle} ${STARTDATE} ${DT_ANA})
+   # Dart reference is January 1st, 1601
+   dart_ref_date=16010101
+   # jday = cumulative days from 1601.01.01
+   day_zero=$(($(get_timediff_dates ${dart_ref_date} ${STARTDATE})-1))
+   jday=$(( day_zero + $(($next_cycle/$DT_ANA))))
+   cat ${DIR_PYTHON}/Compute_spread_day.py | sed -e "s;<MYSIMU>;${SIMU};g"              \
+                                                 -e "s;<DIRDATA>;${SCRATCHDIR%/*/};g" \
+                                                 -e "s;<CURRENTDATE>;${date_cycle};g" \
+                                                 -e "s;<NMEMBERS>;${NMEMBERS};g"      \
+                                                 -e "s;<DARTCURRENTDATE>;${jday};g"   \
+   > ${SCRATCHDIR}/Tempfiles/Compute_spread_${this_cycle}.py
+done
+
+seq 1 $NSTART $NSTART_ANA | parallel "python ${SCRATCHDIR}/Tempfiles/Compute_spread_{}.py"
+
+
+
+

@@ -266,6 +266,26 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - Cutoff = 0.02
         -> 35000 PSU!!!!!!
 
+-RE.REANA32 : First test with EOS+Force inside ROMS perturbations       [15 jours]
+        - HYCOM + anomalie de ClimCORE2 for initial conditions
+        - 15 jour freerun avec pert forcages
+        - Forcing perturbations (500km and increased variance)
+        - SW+LW corrected -> NOCS (no mask)
+        - Gridded WTYPE
+        - ROMS temperature clamp (>-1.8)
+        - 0.15 Rep error for SST (daily assim)
+        - Thinned (L=0.3,T=0.5) GTSPP data (Serr=0.3, Terr=0.7) (daily assim)
+        - No Inflation
+        - Cutoff = 0.02
+        - EOS perturbations (horiz:0.5,vert:0.3,clampT=0.8,clampS=0.3)
+        -> 
+
+
+
+-----------------------------------------------------------------------------------------
+  Stochastic parametrization tests
+-----------------------------------------------------------------------------------------
+
 
 
 -----------------------------------------------------------------------------------------
