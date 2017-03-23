@@ -9,6 +9,7 @@ set -x
 
 # Get values of cycle and job id
 this_cycle=<CYCLE>
+this_cycle=$(str2num $this_cycle)
 disp_cycle=<DISPCYCLE>
 NCORES=<NCORES>
 
