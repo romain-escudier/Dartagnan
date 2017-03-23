@@ -1,96 +1,110 @@
+
+-----------------------------------------------------------------------------------------
+  First tests with SST, discovering DART-ROMS
+-----------------------------------------------------------------------------------------
+
+
 NWA-RE.REANA0[1-3] : First tests to make the system work (can be deleted)
 
-NWA-RE.REANA04 : premiere simu "longue" 			   [63 jours] (30 membres)
+NWA-RE.REANA04 : First "long" simulation 			   [63 days] (30 membres)
 	- ClimCORE2 initial conditions
 	- 0.3 Rep error for SST
-	- 10 jours freerun avec pert forcages
+	- 10 days freerun with forcing pert
 	-> Probleme de biais => * changer init/bnd?
 				* changer Rep error
 
-NWA-RE.REANA05 : test avec meme init pour tous les membres 	   [9 jours]
+-----------------------------------------------------------------------------------------
+  Initial condition/errors of SST
+-----------------------------------------------------------------------------------------
+
+NWA-RE.REANA05 : test avec meme init pour tous les membres	   [9 days]
 	- HYCOM initial conditions
 	- 0.3 Rep error for SST
-        - 10 jours freerun avec pert forcages
+        - 10 days freerun with forcing pert
 	-> Pas assez de spread!
 
-NWA-RE.REANA06 : test avec perturbed init pour tous les membres    [0 jours]
+NWA-RE.REANA06 : test avec perturbed init pour tous les membres    [0 days]
 	- HYCOM perturbed initial conditions (BJ code)
         - 0.3 Rep error for SST
-        - 3 jours freerun avec pert forcages
+        - 3 days freerun with forcing pert
         -> MPI error!
 
-NWA-RE.REANA07 : test avec 0.6 de rep error sur obs 		   [23 jours]
+NWA-RE.REANA07 : test avec 0.6 de rep error sur obs 		   [23 days]
         - ClimCORE2 initial conditions
         - 0.6 Rep error for SST
-        - 10 jours freerun avec pert forcages
+        - 10 days freerun with forcing pert
         -> No real effect
 
-NWA-RE.REANA08 : test avec new init 				   [18 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+NWA-RE.REANA08 : test avec new init 				   [18 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
-        - 5 jours freerun avec pert forcages
+        - 5 days freerun with forcing pert
         -> Better at beginning but still problematic drift
 
-NWA-RE.REANA09 : same as NWA-RE.REANA08 but with new coding 	   [42 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+NWA-RE.REANA09 : same as NWA-RE.REANA08 but with new coding 	   [42 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
-        - 2 jours freerun avec pert forcages
+        - 2 days freerun with forcing pert
         -> Same as NWA-RE.REANA08, the init is now confirmed to be good but drift
 
-NWA-RE.REANA10 : combination new init + 0.6 de rep error sur obs    [14 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+NWA-RE.REANA10 : combination new init + 0.6 de rep error sur obs    [14 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.6 (14 days) then 0.3 Rep error for SST
-        - 2 jours freerun avec pert forcages
+        - 2 days freerun with forcing pert
         -> No change
 
-NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+-----------------------------------------------------------------------------------------
+  Correction of perturbed atmospheric field + spatially variant WTYPE
+-----------------------------------------------------------------------------------------
+
+NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
-        - 1 jour freerun avec pert forcages
+        - 1 days freerun with forcing pert
         - Perturbation corrected
         -> No change :D
 
 -RE.REANA12 : Test with corrected atmo perturbed fields 
-              + corrected SW 					    [64 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+              + corrected SW 					    [64 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
-        - 1 jour freerun avec pert forcages
+        - 1 days freerun with forcing pert
         - Perturbation corrected
         - SW corrected -> NOCS
         -> Much better! But still some drift (weaker)
 
 -RE.REANA13 : Test with corrected atmo perturbed fields
-              + corrected SW and LW!                                [45 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+              + corrected SW and LW!                                [45 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
-        - 1 jour freerun avec pert forcages
+        - 1 days freerun with forcing pert
         - Perturbation corrected
         - SW+LW corrected -> NOCS
         -> No more bias? Still pb in Gulf of Mexico but not in global
 
 -RE.REANA14 : As RE.REANA13 mais new grid avec wtype from mean SeaWiFS chloro
-              + test roms2dart/dart2roms en parallele               [1 jour]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+              + test roms2dart/dart2roms en parallele               [1 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
-        - 1 jour freerun avec pert forcages
+        - 1 days freerun with forcing pert
         - Perturbation corrected
         - SW+LW corrected -> NOCS
         - Gridded WTYPE
         -> No difference
 
 -RE.REANA15 : As RE.REANA13 but with corrected atm pert fields (dx was 7km instead of 60km
-                -> now structures are smaller ~ 500km really)        [28 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+                -> now structures are smaller ~ 500km really)        [28 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
-        - 1 jour freerun avec pert forcages
+        - 1 days freerun with forcing pert
         - Perturbation corrected + smaller (500km)
         - SW+LW corrected -> NOCS
         -> No difference
 
--RE.REANA16 : As RE.REANA15 but with new wtype grid (see RE.REANA14) [9 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+-RE.REANA16 : As RE.REANA15 but with new wtype grid (see RE.REANA14) [9 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
-        - 1 jour freerun avec pert forcages
+        - 1 days freerun with forcing pert
         - Perturbation corrected + smaller (500km)
         - SW+LW corrected -> NOCS
         - Gridded WTYPE
@@ -98,69 +112,77 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
 	   mask covering our region...
 
 -RE.REANA17 : As RE.REANA16 but with corrected atm fields (no land mask)
-               + increased variance atm pert + spatially variable WTYPE [88 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+               + increased variance atm pert + spatially variable WTYPE [88 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
-        - 1 jour freerun avec pert forcages
+        - 1 days freerun with forcing pert
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
         -> Much better!!! -> New reference
 
--RE.REANA18 : First test with GTSPP data                              [58 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+-----------------------------------------------------------------------------------------
+  Adding GTSPP : what errors?
+-----------------------------------------------------------------------------------------
+
+-RE.REANA18 : First test with GTSPP data                              [58 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
-        - 1 jour freerun avec pert forcages
+        - 1 days freerun with forcing pert
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
         - GTSPP data (Serr=0.05, Terr=0.5)
         -> Not enough salinity assimilated
 
--RE.REANA19 : Increase S error in GTSPP                               [58 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+-RE.REANA19 : Increase S error in GTSPP                               [58 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
-        - 1 jour freerun avec pert forcages
+        - 1 days freerun with forcing pert
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
         - GTSPP data (Serr=0.5, Terr=0.5)
         -> Too much error for salinity now?
 
--RE.REANA20 : Same as RE.REANA19, test on Yellowstone                 [0 jour]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+-RE.REANA20 : Same as RE.REANA19, test on Yellowstone                 [0 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
-        - 1 jour freerun avec pert forcages
+        - 1 days freerun with forcing pert
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
         - GTSPP data (Serr=0.5, Terr=0.5)
         -> Segmentation fault...
 
--RE.REANA21 : Change errors of GTSPP/SST                        [15 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+-RE.REANA21 : Change errors of GTSPP/SST                        [15 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.2 Rep error for SST
-        - 1 jour freerun avec pert forcages
+        - 1 days freerun with forcing pert
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
         - GTSPP data (Serr=0.2, Terr=0.8)
         -> Better! Still could tune the errors a litte more?
 
--RE.REANA22 : Change errors of GTSPP/SST                         [15 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+-RE.REANA22 : Change errors of GTSPP/SST                         [15 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.15 Rep error for SST
-        - 1 jour freerun avec pert forcages
+        - 1 days freerun with forcing pert
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
         - GTSPP data (Serr=0.3, Terr=0.75)
         -> Not bad!
 
--RE.REANA23 : Tests/Debug on yellowstone                         [3 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+-----------------------------------------------------------------------------------------
+  Moving to Yellowstone
+-----------------------------------------------------------------------------------------
+
+-RE.REANA23 : Tests/Debug on yellowstone                         [3 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.15 Rep error for SST
-        - 1 jour freerun avec pert forcages
+        - 1 days freerun with forcing pert
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
@@ -168,20 +190,24 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         -> Finally debugged and working... Set up a new simulation to save
            the logs
 
--RE.REANA24 : Working simulation on yellowstone                  [60 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+-RE.REANA24 : Working simulation on yellowstone                  [60 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.15 Rep error for SST
-        - 1 jour freerun avec pert forcages
+        - 1 days freerun with forcing pert
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
         - GTSPP data (Serr=0.3, Terr=0.7)
         -> Looking good
 
--RE.REANA25 : Test with inflation                                [15 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+-----------------------------------------------------------------------------------------
+  Adding inflation : Problems!
+-----------------------------------------------------------------------------------------
+
+-RE.REANA25 : Test with inflation                                [15 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.15 Rep error for SST
-        - 1 jour freerun avec pert forcages
+        - 1 days freerun with forcing pert
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
@@ -189,10 +215,10 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - Inflation (Prior, ini=1.02/0.6, damp=0.9)
         -> Better for T/S
 
--RE.REANA26 : Inflation/Spinup/HybridObs                          [15 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+-RE.REANA26 : Inflation/Spinup/HybridObs                          [15 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.15 Rep error for SST (daily assim)
-        - 15 jour freerun avec pert forcages
+        - 15 days freerun with forcing pert
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
@@ -200,10 +226,10 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - Inflation (Prior, ini=1.02/0.6, damp=0.9)
         -> Problem of cutoff =0.2... Removed all spread after 1st assimilation
 
--RE.REANA27 : Inflation/Spinup/HybridObs                          [28 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
+-RE.REANA27 : Inflation/Spinup/HybridObs                          [28 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.15 Rep error for SST (daily assim)
-        - 15 jour freerun avec pert forcages
+        - 15 days freerun with forcing pert
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
@@ -212,9 +238,9 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - Cutoff = 0.02
         -> Good stats for the first 20 days but inflation issues (too big) -> blow-up
 
--RE.REANA28 : Inflation/Spinup/HybridObs + limiting inflation      [15 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
-        - 15 jour freerun avec pert forcages
+-RE.REANA28 : Inflation/Spinup/HybridObs + limiting inflation      [47 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
+        - 15 days freerun with forcing pert
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
@@ -225,9 +251,9 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - ROMS temperature clamp (>-1.8)
         -> Better but still spread too high in moorings locations...
 
--RE.REANA29 : Test with thinned GTSPP (remove moorings too many points) [116 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
-        - 15 jour freerun avec pert forcages
+-RE.REANA29 : Test with thinned GTSPP (remove moorings too many points) [116 days]
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
+        - 15 days freerun with forcing pert
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
@@ -238,10 +264,10 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - Cutoff = 0.02
         -> Still blowing up but later (116 days)
 
--RE.REANA30 : As RE.REANA29 but less max inflation/more damping         [15 jours]
+-RE.REANA30 : As RE.REANA29 but less max inflation/more damping         [151 days]
         - Started from day 80 of RE.REANA29
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
-        - 15 jour freerun avec pert forcages
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
+        - 15 days freerun with forcing pert
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
@@ -252,10 +278,10 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - Cutoff = 0.02
         -> Not bad! Spread too low for SST?
 
--RE.REANA31 : Starting from day 80 RE.REANA29, daily assimilation T,S   [15 jours]
+-RE.REANA31 : Starting from day 80 RE.REANA29, daily assimilation T,S   [147 days]
         - Started from day 80 of RE.REANA29
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
-        - 15 jour freerun avec pert forcages
+        - HYCOM + anomaly of ClimCORE2 for initial conditions
+        - 15 days freerun with forcing pert
         - Perturbation corrected + smaller (500km) + increased variance
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
@@ -266,9 +292,26 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - Cutoff = 0.02
         -> 35000 PSU!!!!!!
 
--RE.REANA32 : First test with EOS+Force inside ROMS perturbations       [15 jours]
-        - HYCOM + anomalie de ClimCORE2 for initial conditions
-        - 15 jour freerun avec pert forcages
+-----------------------------------------------------------------------------------------
+  Stochastic parametrization tests
+-----------------------------------------------------------------------------------------
+
+-NWA-RE.FRSTO01 : Freerun (membre #1) without stochastic parametrization  [30 days]
+
+-NWA-RE.FRSTO02 : Freerun (membre #1) with forcing perturbations          [5 days]
+
+-NWA-RE.FRSTO03 : Freerun (membre #1) with EOS perturbations              [5 days]
+
+-NWA-RE.FRSTO03 : Freerun (membre #1) with EOS perturbations (no spatial  [5 days]
+                  dependency)
+
+-----------------------------------------------------------------------------------------
+  Stochastic parametrization operational
+-----------------------------------------------------------------------------------------
+
+-RE.REANA32 : First test with EOS+Force inside ROMS perturbations       [52 days]
+        - HYCOM
+        - 50 days freerun with forcing pert/EOS
         - Forcing perturbations (500km and increased variance)
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
@@ -278,28 +321,17 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 jours]
         - No Inflation
         - Cutoff = 0.02
         - EOS perturbations (horiz:0.5,vert:0.3,clampT=0.8,clampS=0.3)
-        -> 
+        -> Good spread but insufficient for 1rst assimilation?
 
+-RE.REANA33 : First test with EOS inside ROMS perturbations (no DA)      [30 days]
+        - HYCOM
+        - 30 days freerun avec pert EOS
+        - SW+LW corrected -> NOCS (no mask)
+        - Gridded WTYPE
+        - ROMS temperature clamp (>-1.8)
+        - Cutoff = 0.02
+        - EOS perturbations (horiz:0.5,vert:0.3,clampT=0.8,clampS=0.3)
 
-
------------------------------------------------------------------------------------------
-  Stochastic parametrization tests
------------------------------------------------------------------------------------------
-
-
-
------------------------------------------------------------------------------------------
-  Stochastic parametrization tests
------------------------------------------------------------------------------------------
-
--NWA-RE.FRSTO01 : Freerun (1 membre) without stochastic parametrization
-
--NWA-RE.FRSTO02 : Freerun (1 membre) with forcing perturbations
-
--NWA-RE.FRSTO03 : Freerun (1 membre) with EOS perturbations
-
--NWA-RE.FRSTO03 : Freerun (1 membre) with EOS perturbations (no spatial
-                  dependeny)
 
 
 
