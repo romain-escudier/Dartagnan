@@ -61,16 +61,16 @@
 !
 ! Application title.
 
-       TITLE = <TITLESIMU>
+       TITLE = Northwest Atlantic 7km Grid
 
 ! C-preprocessing Flag.
 
-    MyAppCPP = <SIMUAPP>
+    MyAppCPP = NWA
 
 ! Input variable information file name.  This file needs to be processed
 ! first so all information arrays can be initialized properly.
 
-     VARNAME = <VARINFODIR>/varinfo.dat
+     VARNAME = /glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA36//varinfo.dat
 
 ! Number of nested grids.
 

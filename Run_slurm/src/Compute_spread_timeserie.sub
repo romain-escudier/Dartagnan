@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#BSUB -n 40
+#BSUB -n 30
 #BSUB -q geyser
 #BSUB -N
 #BSUB -o <CURRENTDIR>/Logs/roms_diags_preDA_<SIMU>.%J.out

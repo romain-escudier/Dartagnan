@@ -1,41 +1,41 @@
 #!/bin/ksh
 
 # Directories
-WORKINGDIR=<WORKINGDIR>
-DARTMNGDIR=<DARTMNGDIR>
+WORKINGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA36/
+DARTMNGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/
 
 # Number of ensemble members to run
 NMEMBERS=30
 
 # Starting date
 REFDATE=19000101
-STARTDATE=20110101
+STARTDATE=20100901
 
 # Analysis step (days)
 DT_ANA=1
 DT_OBS=5
 
 # Simulation name
-SIMU=<SIMUNAME>
+SIMU=NWA-RE.REANA36
 
 # start at cycle nstart
 NSTART=1
 # end at cycle ncycles
-NCYCLES=10
+NCYCLES=122
 
 # Computation directory
-SCRATCHDIR=<SCRATCHDIR>
-DATADIR=/t0/scratch/romain/DART/Data/
+SCRATCHDIR=/glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA36/
+DATADIR=/glade/scratch/dussin/romain/
 
 #-------------------------------------------------------
 # QUEUEING SYSTEM PARAMETERS
 #-------------------------------------------------------
 
-CLUSTER=triton
+CLUSTER=yellowstone
 
 # Time limit
-TLIM_ROMS=3:00
-TLIM_DART=10:00
+TLIM_ROMS=0:20
+TLIM_DART=0:10
 
 # TRITON OPTIONS
 if [ ${CLUSTER} = "triton" ] ; then
@@ -47,7 +47,7 @@ if [ ${CLUSTER} = "triton" ] ; then
 elif [ ${CLUSTER} = "yellowstone" ] ; then
    # YELLOWSTONE OPTIONS
    TYPENODE_DART=yellowstone
-   PROJECT=URTG0011
+   PROJECT=URTG0008
    QUEUE=regular
 fi
 
@@ -56,14 +56,14 @@ fi
 #-------------------------------------------------------
 
 # Number of core for analysis
-NCORES_DART=72
+NCORES_DART=80
 
 # start analysis at cycle nstart_ana
-NSTART_ANA=2
+NSTART_ANA=123
 
 # Observation files
-OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/
-OBS_PREF=obs_seq.sst_gtspp.
+OBS_DIR=/glade/p/work/romaines/Data/ObsData/SST_GTSPP/obsSEQ/Serr03Terr07thinSSTerr015_ST5days/
+OBS_PREF=obs_seq.sst.
 
 # Inflation
 INF_INI=1.02
@@ -74,9 +74,9 @@ INF_SD_INI=0.6
 #-------------------------------------------------------
 
 # Number of core for forward
-NCORES_ROMS=72
-ITILE=12
-JTILE=6
+NCORES_ROMS=80
+ITILE=10
+JTILE=8
 
 # Time step
 DT=200
@@ -93,21 +93,20 @@ DT_FILT=1
 
 
 # File parameters
-FORCINGDIR=${DATADIR}/Inputs/Forcings/Perturbed/CorrectDx/
+FORCINGDIR=${DATADIR}/Forcings/
 FORCINGPREF=drowned_MERRA_
 FORCINGSUFF=_3hours_
 
-GRIDFILE=/t0/scratch/romain/inputs/NWA_grd_newwtypechl.nc
-NUDGCOEF=/t0/scratch/romain/inputs/NWA_nudging_coef.nc
-INITDIR=${DATADIR}/Inputs/Init/HYCOM_ClimCore2/
-INITFILE=HYCOM_GLBa0.08_2011_001_ClimCore2_NWA_init.nc
+GRIDFILE=${DATADIR}/NWA_grd_newwtypechl.nc
+NUDGCOEF=${DATADIR}/NWA_nudging_coef.nc
+INITDIR=/glade/p/work/romaines/Data/Init/
+INITFILE=HYCOM_GLBa0.08_2010_244_ic_NWA.nc
 
-CLIMFILE=${DATADIR}/Inputs/CLM-NWA/HYCOM_GLBa0.08_monthly_clim_NWA_<YEAR>.nc
-BRYFILE=${DATADIR}/Inputs/BC-NWA/HYCOM_GLBa0.08_bdry_NWA_<YEAR>.nc
-RUNOFFILE=${DATADIR}/Inputs/Runoff/runoff_NWA_daitren_clim.nc
-TIDESFILE=${DATADIR}/Inputs/Tides/NWA_tides_otps.nc
-SSSREFILE=${DATADIR}/Inputs/SSS/sss_monthly_climato_flooded.nc
-
+CLIMFILE=/glade/p/work/romaines/Data/Clim/HYCOM_GLBa0.08_monthly_clim_NWA_\<YEAR\>.nc
+BRYFILE=/glade/p/work/romaines/Data/OBC/HYCOM_GLBa0.08_bdry_NWA_\<YEAR\>.nc
+RUNOFFILE=${DATADIR}/Runoff/runoff_NWA_daitren_clim.nc
+TIDESFILE=${DATADIR}/Tides/NWA_tides_otps.nc
+SSSREFILE=${DATADIR}/SSS/sss_monthly_climato_flooded.nc
 
 #-------------------------------------------------------
 # EXECUTABLES

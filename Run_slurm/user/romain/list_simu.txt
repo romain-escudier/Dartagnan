@@ -332,21 +332,18 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
         - Cutoff = 0.02
         - EOS perturbations (horiz:0.5,vert:0.3,clampT=0.8,clampS=0.3)
 
--RE.REANA34 : As RE.REANA32 but with stronger pert on forcings         [5 days]
+-RE.REANA34 : As RE.REANA32 but with stronger pert on forcings          [48 days]
         - HYCOM
         - 50 days freerun with forcing pert/EOS
         - Forcing perturbations (500km and increased variance)
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
         - ROMS temperature clamp (>-1.8)
-        - 0.15 Rep error for SST (daily assim)
-        - Thinned (L=0.3,T=0.5) GTSPP data (Serr=0.3, Terr=0.7) (daily assim)
-        - No Inflation
         - Cutoff = 0.02
         - EOS perturbations (horiz:0.5,vert:0.3,clampT=0.8,clampS=0.3)
         -> 
 
--RE.REANA35 : As RE.REANA34 but with stronger pert on EOS              [5 days]
+-RE.REANA35 : As RE.REANA34 but with stronger pert on EOS               [19 days]
         - HYCOM
         - 50 days freerun with forcing pert/EOS
         - Forcing perturbations (500km and increased variance)

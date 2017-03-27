@@ -76,12 +76,13 @@ cat <CURRENTDIR>/ocean_${SIMU}.in | sed -e "s;<DT>;$DT;g"                       
                                         -e "s;<SSS_RESTORING_FILE>;$SSSREFILE;g"   \
                                         -e "s;<RUNOFF_FILE>;$RUNOFFILE;g"          \
                                         -e "s;<TIDES_FILE>;$TIDESFILE;g"           \
-                                        -e "s;<FORCINGDIR>;${FORCINGDIR};g"     \
+                                        -e "s;<FORCINGDIR>;${FORCINGDIR};g"        \
                                         -e "s;<FORCINGPREF>;$FORCINGPREF;g"        \
                                         -e "s;<FORCINGSUFF>;$FORCINGSUFF;g"        \
                                         -e "s;<OUTPUTDIR>;${SCRATCHDIR}/Outputs/;g"\
                                         -e "s;<CONFCASE>;${SIMU};g"                \
                                         -e "s;<VARINFODIR>;${SCRATCHDIR};g"        \
+                                        -e "s;<YEAR>;$yyyy;g"                      \
                                         -e "s;<YYYY2>;$yyyy;g"                     \
                                         -e "s;<YYYY1>;$(($yyyy-1));g"              \
 > ${NAMELIST}
@@ -91,7 +92,7 @@ mkdir -p ${SCRATCHDIR}/Tempfiles/m${this_member}/
 cd ${SCRATCHDIR}/Tempfiles/m${this_member}/
 
 # Save filtering files every month (before computing the first day of the month)
-if (( $((${this_cycle}%${DT_FILT})) == 0 )) ; then # No filter files on cycle 1
+if (( ${this_cycle}  > 1 )) ; then # No filter files on cycle 1
    file_filt_tmp=${SCRATCHDIR}/Outputs/Filtfiles/m${this_member}/ocean_filw_01_${date_cycle}.nc
    # If the filtering file already exist, check if it is the same
    if [ -f ${file_filt_tmp} ] ; then
@@ -108,8 +109,10 @@ if (( $((${this_cycle}%${DT_FILT})) == 0 )) ; then # No filter files on cycle 1
          rsync -havz ${file_filt} ${SCRATCHDIR}/Outputs/Filtfiles/m${this_member}/${file_filt%.*}_${date_cycle}.nc
       done
    fi
+   if (( $((${prev_cycle}%${DT_FILT})) != 0 )) ; then # No filter files on cycle 1
+      rm ${SCRATCHDIR}/Outputs/Filtfiles/m${this_member}/ocean_fil*${date_prev_cycle}.nc
+   fi
 fi
-
 echo $(date)
 
 #------------------------------------------------------------------------------------

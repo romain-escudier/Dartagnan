@@ -518,22 +518,22 @@ SO_sdev(isTsur) == 1.0d0 1.0d0             ! NT surface tracers flux
 
 ! Parameters for the stochastic perturbations
 
-         seed_user = <SEED>
-      grid_mean_dx = 7000.0d0
-      grid_mean_dy = 7000.0d0
+         seed_user == <SEED>
+      grid_mean_dx == 7000.0d0
+      grid_mean_dy == 7000.0d0
 
- var_perturb_swrad = 4.0d0                  ! Variance of shortwave perturbations (in W/m2)
-  var_perturb_Tair = 0.36d0                 ! Variance of Tair perturbations (in degC)
- var_perturb_Uwind = 0.81d0                 ! Variance of Uwind perturbations (in m/s)
- var_perturb_Vwind = 0.81d0                 ! Variance of Vwind perturbations (in m/s)
-  force_pert_rcorr = 5.0d5                  ! Spatial correlation of perturbations
-  force_pert_tcorr = 5.0d0                  ! Temporal correlation of perturbations
+ var_perturb_swrad == 4.0d0                  ! Variance of shortwave perturbations (in W/m2) -> 2W/m2
+  var_perturb_Tair == 0.36d0                 ! Variance of Tair perturbations (in degC)      -> 0.6degC
+ var_perturb_Uwind == 0.81d0                 ! Variance of Uwind perturbations (in m/s)      -> 0.9m/s
+ var_perturb_Vwind == 0.81d0                 ! Variance of Vwind perturbations (in m/s)      -> 0.9m/s
+  force_pert_rcorr == 5.0d5                  ! Spatial correlation of perturbations
+  force_pert_tcorr == 5.0d0                  ! Temporal correlation of perturbations
 
-    var_perturb_dx = 0.49d0                 ! Variance of T,S perturbations for EOS (in grid point)
-    var_perturb_dy = 0.49d0                 ! Variance of T,S perturbations for EOS (in grid point)
-    var_perturb_dz = 0.25d0                 ! Variance of T,S perturbations for EOS (in grid point)
-    eos_pert_rcorr = 1.0d5                  ! Spatial correlation of perturbations
-    eos_pert_tcorr = 5.0d0                  ! Temporal correlation of perturbations
+    var_perturb_dx == 0.49d0                 ! Variance of T,S perturbations for EOS (in grid point)
+    var_perturb_dy == 0.49d0                 ! Variance of T,S perturbations for EOS (in grid point)
+    var_perturb_dz == 0.25d0                 ! Variance of T,S perturbations for EOS (in grid point)
+    eos_pert_rcorr == 1.0d5                  ! Spatial correlation of perturbations
+    eos_pert_tcorr == 5.0d0                  ! Temporal correlation of perturbations
 
 ! Logical switches (TRUE/FALSE) to activate writing of fields into
 ! HISTORY output file.
