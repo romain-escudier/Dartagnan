@@ -20,7 +20,7 @@
 #   - compute_eq_integer_result(eq)               : Compute truncated result of equation
 #   - comp_files_md5sum(file1,file2)              : Compare md5sum of two files
 #   - str2num(str)                                : Convert string (with padded 0) to num
-
+#   - prog_bar(i,N)                               : Display a progress bar for loop in codes
 
 
 nb_days_months=(31 28 31 30 31 30 31 31 30 31 30 31)
@@ -38,24 +38,98 @@ echo ${TOTAL}
 
 }
 
-
 #---------------------------------------------------------------------------------------------#
 # Compute date from cycle and start date
 
 get_date_from_cycle() { CYCLE=$1 ; STARTDATE=$2 ; DTCYCLE=$3
 
+   if (( ${CYCLE}<0 )); then
+      get_date_from_cycle_neg ${CYCLE} ${STARTDATE} ${DTCYCLE}
+   elif (( ${CYCLE}==0 )); then
+      echo ${STARTDATE}
+   else
+
+      # Local variable
+      declare -i ISTP_TMP=$(( ${CYCLE}*$DTCYCLE )) # Remaining number of days
+      declare -i YEAR_START=$(str2num ${STARTDATE:0:4})
+      declare -i YEAR_TMP=$(str2num ${YEAR_START})
+      declare -i MONT_TMP=$(str2num ${STARTDATE:4:2})
+      declare -i DAYS_TMP=$(str2num ${STARTDATE:6:2})
+      
+      #######################################################
+      #           FIND WHICH YEAR FOR CYCLE
+      #######################################################
+      
+      while ((${ISTP_TMP}>=0))
+      do
+         declare -i NDAYS=365
+         # check if it is a leap year
+         IS_LEAP=$(is_leap_year ${YEAR_TMP})
+         if [ "${IS_LEAP}" = true ] ; then
+            NDAYS=366
+         fi
+      
+         # Different if it is the first year (may not start on Jan 1st)
+         if ((${YEAR_TMP} == ${YEAR_START})) ; then
+            if ((${MONT_TMP}>3)) || [ "${IS_LEAP}" = false ]; then
+               NDAYS=$(get_sum_from_array ${nb_days_months[*]:${MONT_TMP}-1})-${DAYS_TMP}+1
+            else
+               NDAYS=$(get_sum_from_array ${nb_days_months[*]:${MONT_TMP}-1})-${DAYS_TMP}+2
+            fi
+         fi
+         ISTP_TMP=${ISTP_TMP}-${NDAYS}
+         YEAR_TMP=YEAR_TMP+1
+      done
+   
+      YEAR_TMP=YEAR_TMP-1
+      if ((${YEAR_TMP} != ${YEAR_START})) ; then
+         MONT_TMP=1
+         DAYS_TMP=1
+      fi
+   
+      ISTP_TMP=$((${ISTP_TMP}+${NDAYS}+$DAYS_TMP))
+       
+      #######################################################
+      #           FIND WHICH MONTH FOR CYCLE
+      #######################################################
+      
+      while ((${ISTP_TMP}>0))
+      do
+         NDAYS=${nb_days_months[${MONT_TMP}-1]}
+         if ((${MONT_TMP} == 2)) ; then
+            if [ "${IS_LEAP}" = true ] ; then
+               NDAYS=29
+            fi
+         fi
+         ISTP_TMP=${ISTP_TMP}-${NDAYS}
+         MONT_TMP=MONT_TMP+1
+      done
+      
+      MONT_TMP=MONT_TMP-1
+      declare -i DAYS_TMP=$((${ISTP_TMP}+${NDAYS}))
+      
+      MONT_DISP=$( printf "%02d" ${MONT_TMP} )
+      DAYS_DISP=$( printf "%02d" ${DAYS_TMP} )
+      echo "${YEAR_TMP}${MONT_DISP}${DAYS_DISP}"
+   fi
+
+}
+
+get_date_from_cycle_neg() { CYCLE=$1 ; STARTDATE=$2 ; DTCYCLE=$3
+
    # Local variable
    declare -i ISTP_TMP=$(( ${CYCLE}*$DTCYCLE )) # Remaining number of days
-   declare -i YEAR_START=${STARTDATE:0:4}
-   declare -i YEAR_TMP=${YEAR_START}
-   declare -i MONT_TMP=${STARTDATE:4:2}
-   declare -i DAYS_TMP=${STARTDATE:6:2}
-   
+   declare -i YEAR_START=$(str2num ${STARTDATE:0:4})
+   declare -i YEAR_TMP=$(str2num ${YEAR_START})
+   declare -i MONT_START=$(str2num ${STARTDATE:4:2})
+   declare -i MONT_TMP=$(str2num ${MONT_START})
+   declare -i DAYS_TMP=$(str2num ${STARTDATE:6:2})
+
    #######################################################
    #           FIND WHICH YEAR FOR CYCLE
    #######################################################
-   
-   while ((${ISTP_TMP}>0))
+
+   while ((${ISTP_TMP}<=0))
    do
       declare -i NDAYS=365
       # check if it is a leap year
@@ -63,51 +137,57 @@ get_date_from_cycle() { CYCLE=$1 ; STARTDATE=$2 ; DTCYCLE=$3
       if [ "${IS_LEAP}" = true ] ; then
          NDAYS=366
       fi
-   
+
       # Different if it is the first year (may not start on Jan 1st)
       if ((${YEAR_TMP} == ${YEAR_START})) ; then
          if ((${MONT_TMP}>3)) || [ "${IS_LEAP}" = false ]; then
-            NDAYS=$(get_sum_from_array ${nb_days_months[*]:${MONT_TMP}-1})-${DAYS_TMP}+1
+            NDAYS=$(get_sum_from_array ${nb_days_months[*]:0:${MONT_TMP}-1})+${DAYS_TMP}
          else
-            NDAYS=$(get_sum_from_array ${nb_days_months[*]:${MONT_TMP}-1})-${DAYS_TMP}+2
+            NDAYS=$(get_sum_from_array ${nb_days_months[*]:0:${MONT_TMP}-1})+${DAYS_TMP}-1
          fi
       fi
-      ISTP_TMP=${ISTP_TMP}-${NDAYS}
-      YEAR_TMP=YEAR_TMP+1
+      ISTP_TMP=${ISTP_TMP}+${NDAYS}
+      YEAR_TMP=YEAR_TMP-1
    done
 
-   YEAR_TMP=YEAR_TMP-1
+   YEAR_TMP=YEAR_TMP+1
    if ((${YEAR_TMP} != ${YEAR_START})) ; then
-      MONT_TMP=1
-      DAYS_TMP=1
+      MONT_TMP=12
+      DAYS_TMP=31
    fi
 
-   ISTP_TMP=$((${ISTP_TMP}+${NDAYS}+$DAYS_TMP-1))
-    
+   ISTP_TMP=$((${ISTP_TMP}-${NDAYS}))
+
    #######################################################
    #           FIND WHICH MONTH FOR CYCLE
    #######################################################
-   
-   while ((${ISTP_TMP}>0))
+
+   while ((${ISTP_TMP}<=0))
    do
       NDAYS=${nb_days_months[${MONT_TMP}-1]}
-      if ((${MONT_TMP} == 2)) ; then
-         if [ "${IS_LEAP}" = true ] ; then
-            NDAYS=29
+      if ((${MONT_TMP} == ${MONT_START})) ; then
+         NDAYS=${DAYS_TMP}
+      else
+         if ((${MONT_TMP} == 2)) ; then
+            if [ "${IS_LEAP}" = true ] ; then
+               NDAYS=29
+            fi
          fi
       fi
-      ISTP_TMP=${ISTP_TMP}-${NDAYS}
-      MONT_TMP=MONT_TMP+1
+      ISTP_TMP=${ISTP_TMP}+${NDAYS}
+      MONT_TMP=MONT_TMP-1
    done
-   
-   MONT_TMP=MONT_TMP-1
-   declare -i DAYS_TMP=$((${ISTP_TMP}+${NDAYS}))
-   
+
+   MONT_TMP=MONT_TMP+1
+   declare -i DAYS_TMP=${ISTP_TMP}
+
    MONT_DISP=$( printf "%02d" ${MONT_TMP} )
    DAYS_DISP=$( printf "%02d" ${DAYS_TMP} )
    echo "${YEAR_TMP}${MONT_DISP}${DAYS_DISP}"
 
 }
+
+
 
 #---------------------------------------------------------------------------------------------#
 # Compute difference in days between two dates
@@ -218,9 +298,8 @@ get_timediff_dates_std() { DATE1=$1 ; DATE2=$2
 
 get_param_from_nc() { FILENAME=$1 ; VARNAME=$2
 
-   VARVALUE=$(ncdump -v ${VARNAME} ${FILENAME}  | awk '{FS="data:"; RS="ceci1est8une9valeur5impossible"; print $2}');
-   VARVALUE=${VARVALUE#*=}; VARVALUE=${VARVALUE%;*\}}
-   
+   VARVALUE=$(ncdump -v ${VARNAME} ${FILENAME}  | awk -F "data:" 'RS="ceci1est8une9valeur5impossible" {print $2}' | \
+              awk -F "[=,;]" '{print $2}' | xargs);
    echo ${VARVALUE}
 
 }
@@ -230,9 +309,12 @@ get_param_from_nc() { FILENAME=$1 ; VARNAME=$2
 
 get_ndim_from_nc() { FILENAME=$1 ; DIMNAME=$2
 
-   NDIM=$(ncdump -h /t0/scratch/romain/inputs/NWA_grd.nc | awk \
-        '{FS="variables:"; RS="ceci1est8une9valeur5impossible"; print $1}' | grep ${DIMNAME})
-   NDIM=${NDIM#*=}; NDIM=${NDIM%;*}
+   DIMLINE=$(ncdump -h ${FILENAME} | awk -F "variables:" 'RS="ceci1est8une9valeur5impossible" {print $1}' | \
+          grep ${DIMNAME})
+   NDIM=$(awk -F "[=,;]" '{print $2}' <<< $DIMLINE | xargs)
+   if [ "$NDIM" == "UNLIMITED" ]; then
+      NDIM=$(awk -F "[(,)]" '{print $2}' <<< $DIMLINE | awk '{print $1}' | xargs)
+   fi
    echo ${NDIM}
 
 }
@@ -329,6 +411,33 @@ comp_files_md5sum() { FILE1=$1 ; FILE2=$2
 str2num() { STR=$1
 
 echo $(( 10#$STR ))
+
+}
+
+
+
+#---------------------------------------------------------------------------------------------#
+# Disp progress bar
+
+plot_bar() { I=$1; N_TOT=$2
+
+repl() { printf "$1"'%.s' $(eval "echo {1.."$(($2))"}"); }
+
+if (( $I % $(($N_TOT/100)) == 0 )); then
+   perc=$(($I*100/$N_TOT))
+   size=$(($(tput cols)*6/10))
+   if (( perc > 0 )); then
+      size_bar=$(($size*perc/100))
+      bar=$(repl "#" $size_bar )
+      size_blank=$(($size-$size_bar))
+      blank=$(repl "_" $size_blank)
+      disp="["$bar$blank"]\t($perc%)\t                                    \r"
+    else
+      blank=$(repl "_" $size)
+      disp="["$blank"]\t($perc%)\t                                     \r"
+   fi
+   echo -ne $disp
+fi
 
 }
 
