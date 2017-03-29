@@ -58,10 +58,9 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 
    ### Get dates
    # for this cycle
-   date_cycle=$(get_date_from_cycle ${this_cycle} $STARTDATE $DT_ANA)
+   date_cycle=$(get_date_from_cycle $(( ${this_cycle} -1 )) $STARTDATE $DT_ANA)
    # For next cycle
-   next_cycle=$(( this_cycle + 1 ))
-   date_cycle_next=$(get_date_from_cycle ${next_cycle} $STARTDATE $DT_ANA)
+   date_cycle_next=$(get_date_from_cycle ${this_cycle} $STARTDATE $DT_ANA)
    date_cycle_next_std=$(print_time_dart $date_cycle_next)
 
    ### Get the associate Dart day
@@ -214,7 +213,7 @@ else
 #------------------------------------------------------------------------------------
 
    # Get the current date
-   date_cycle=$(get_date_from_cycle ${this_cycle} ${STARTDATE} ${DT_ANA})
+   date_cycle=$(get_date_from_cycle $(( ${this_cycle} -1 )) ${STARTDATE} ${DT_ANA})
 
    module load parallel
 

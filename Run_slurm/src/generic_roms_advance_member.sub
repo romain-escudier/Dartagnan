@@ -32,8 +32,10 @@ ntimeana=$(compute_eq_integer_result ${DT_ANA}*86400/$DT) # Number of steps betw
 ntimeout=$(compute_eq_integer_result ${DT_OUT}*86400/$DT) # Number of steps between outputs files
 time_end=$(( ${this_cycle} * ${ntimeana})) # Number of steps to reach before stopping
 startday=$(get_timediff_dates ${REFDATE} ${STARTDATE}) # Starting date (in days since reference)
-date_cycle=$(get_date_from_cycle ${this_cycle} ${STARTDATE} ${DT_ANA}) # Date of cycle YYYYMMDD
+date_cycle=$(get_date_from_cycle $(( $this_cycle - 1 )) ${STARTDATE} ${DT_ANA}) # Date of cycle YYYYMMDD
 declare -i yyyy=${date_cycle:0:4} # Year of cycle
+declare -i mm=$(str2num ${date_cycle:4:2})
+declare -i dd=$(str2num ${date_cycle:6:2})
 
 # Initial state for the model
 if ((${this_cycle} == 1)) ; then
@@ -41,7 +43,7 @@ if ((${this_cycle} == 1)) ; then
     restart=0
 else
     prev_cycle=$(( $this_cycle - 1 ))
-    date_prev_cycle=$(get_date_from_cycle ${prev_cycle} ${STARTDATE} ${DT_ANA})
+    date_prev_cycle=$(get_date_from_cycle $(( ${prev_cycle} -1 )) ${STARTDATE} ${DT_ANA})
     initialfile=${SCRATCHDIR}/Outputs/Reanalysis/m${this_member}/${SIMU}_rstana_${date_prev_cycle}.nc
     restart=-1
 fi
@@ -84,8 +86,17 @@ cat <CURRENTDIR>/ocean_${SIMU}.in | sed -e "s;<DT>;$DT;g"                       
                                         -e "s;<VARINFODIR>;${SCRATCHDIR};g"        \
                                         -e "s;<YEAR>;$yyyy;g"                      \
                                         -e "s;<YYYY2>;$yyyy;g"                     \
-                                        -e "s;<YYYY1>;$(($yyyy-1));g"              \
-> ${NAMELIST}
+> ${NAMELIST}.tmp
+
+# Add previous or following year in namelist (for forcings files) if necessary
+if [ $mm = 1 ] && [ $dd = 1 ]; then
+   cat ${NAMELIST}.tmp | sed -e "s;<YYYY1>;$(($yyyy-1));g" > ${NAMELIST}
+elif [ $mm = 12 ] && [ $dd = 31 ]; then
+   cat ${NAMELIST}.tmp | sed -e "s;<YYYY1>;$(($yyyy+1));g" > ${NAMELIST}
+else
+   cat ${NAMELIST}.tmp | sed -e "/<YYYY1>/d" > ${NAMELIST}
+fi
+rm ${NAMELIST}.tmp
 
 # Go to temporary directory (because filtering files are created in current directory)
 mkdir -p ${SCRATCHDIR}/Tempfiles/m${this_member}/

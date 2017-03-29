@@ -1013,7 +1013,9 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
     NFFILES == 11                          ! number of forcing files
 
-    FRCNAME == <FORCINGDIR>/<FORCINGPREF>Uwind<FORCINGSUFF><YYYY1>.nc  |
+    FRCNAME == <SSS_RESTORING_FILE> \
+               <RUNOFF_FILE> \
+               <FORCINGDIR>/<FORCINGPREF>Uwind<FORCINGSUFF><YYYY1>.nc  |
                <FORCINGDIR>/<FORCINGPREF>Uwind<FORCINGSUFF><YYYY2>.nc  \
                <FORCINGDIR>/<FORCINGPREF>Vwind<FORCINGSUFF><YYYY1>.nc  |
                <FORCINGDIR>/<FORCINGPREF>Vwind<FORCINGSUFF><YYYY2>.nc  \
@@ -1029,8 +1031,6 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
                <FORCINGDIR>/<FORCINGPREF>Tair<FORCINGSUFF><YYYY2>.nc   \
                <FORCINGDIR>/<FORCINGPREF>Pair<FORCINGSUFF><YYYY1>.nc   |
                <FORCINGDIR>/<FORCINGPREF>Pair<FORCINGSUFF><YYYY2>.nc   \
-               <SSS_RESTORING_FILE> \
-               <RUNOFF_FILE> \
                <TIDES_FILE>
 
 ! Output NetCDF file names, [1:Ngrids].

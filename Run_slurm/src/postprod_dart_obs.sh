@@ -31,8 +31,8 @@ find ${obs_dir} -type f > ${LIST_FILES}
 
 # Dates of bins
 date_first_bin_start=${STARTDATE}
-date_first_bin_end=$(get_date_from_cycle 2 ${STARTDATE} ${DT_ANA})
-date_last_bin=$(get_date_from_cycle $((${NCYCLES} +1)) ${STARTDATE} ${DT_ANA})
+date_first_bin_end=$(get_date_from_cycle 1 ${STARTDATE} ${DT_ANA})
+date_last_bin=$(get_date_from_cycle ${NCYCLES} ${STARTDATE} ${DT_ANA})
 
 # Fill the DART namelist 
 cat ${SCRATCHDIR}/input_${SIMU}.nml  | sed -e "s;<OBS_SEQ_LIST>;${LIST_FILES};g" \

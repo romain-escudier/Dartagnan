@@ -25,8 +25,8 @@ module load python netcdf4python numpy parallel
 
 # Create temporary python codes
 for this_cycle in $( seq $NSTART $NSTART_ANA ) ; do
-   next_cycle=$(( this_cycle + 1 ))
-   date_cycle=$(get_date_from_cycle ${this_cycle} ${STARTDATE} ${DT_ANA})
+   next_cycle=$(( $this_cycle + 1 ))
+   date_cycle=$(get_date_from_cycle $(( ${this_cycle} -1 )) ${STARTDATE} ${DT_ANA})
    # Dart reference is January 1st, 1601
    dart_ref_date=16010101
    # jday = cumulative days from 1601.01.01

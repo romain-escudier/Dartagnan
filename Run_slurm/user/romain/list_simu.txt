@@ -10,32 +10,32 @@ NWA-RE.REANA04 : First "long" simulation 			   [63 days] (30 membres)
 	- ClimCORE2 initial conditions
 	- 0.3 Rep error for SST
 	- 10 days freerun with forcing pert
-	-> Probleme de biais => * changer init/bnd?
-				* changer Rep error
+	-> biais issue => * change init/bnd?
+		          * change Rep error
 
 -----------------------------------------------------------------------------------------
   Initial condition/errors of SST
 -----------------------------------------------------------------------------------------
 
-NWA-RE.REANA05 : test avec meme init pour tous les membres	   [9 days]
+NWA-RE.REANA05 : test with meme init pour tous les membres	   [9 days]
 	- HYCOM initial conditions
 	- 0.3 Rep error for SST
         - 10 days freerun with forcing pert
-	-> Pas assez de spread!
+	-> Not enough spread!
 
-NWA-RE.REANA06 : test avec perturbed init pour tous les membres    [0 days]
+NWA-RE.REANA06 : test with perturbed init pour tous les membres    [0 days]
 	- HYCOM perturbed initial conditions (BJ code)
         - 0.3 Rep error for SST
         - 3 days freerun with forcing pert
         -> MPI error!
 
-NWA-RE.REANA07 : test avec 0.6 de rep error sur obs 		   [23 days]
+NWA-RE.REANA07 : test with 0.6 de rep error sur obs 		   [23 days]
         - ClimCORE2 initial conditions
         - 0.6 Rep error for SST
         - 10 days freerun with forcing pert
         -> No real effect
 
-NWA-RE.REANA08 : test avec new init 				   [18 days]
+NWA-RE.REANA08 : test with new init 				   [18 days]
         - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
         - 5 days freerun with forcing pert
@@ -82,7 +82,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
         - SW+LW corrected -> NOCS
         -> No more bias? Still pb in Gulf of Mexico but not in global
 
--RE.REANA14 : As RE.REANA13 mais new grid avec wtype from mean SeaWiFS chloro
+-RE.REANA14 : As RE.REANA13 mais new grid with wtype from mean SeaWiFS chloro
               + test roms2dart/dart2roms en parallele               [1 days]
         - HYCOM + anomaly of ClimCORE2 for initial conditions
         - 0.3 Rep error for SST
@@ -302,17 +302,18 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
 
 -NWA-RE.FRSTO03 : Freerun (membre #1) with EOS perturbations              [5 days]
 
--NWA-RE.FRSTO03 : Freerun (membre #1) with EOS perturbations (no spatial  [5 days]
+-NWA-RE.FRSTO04 : Freerun (membre #1) with EOS perturbations (no spatial  [5 days]
                   dependency)
 
 -----------------------------------------------------------------------------------------
   Stochastic parametrization operational
 -----------------------------------------------------------------------------------------
 
--RE.REANA32 : First test with EOS+Force inside ROMS perturbations       [61 days]
-        - HYCOM
-        - 50 days freerun with forcing pert/EOS
-        - Forcing perturbations (500km and increased variance)
+-RE.REANA32 : First test with EOS+Force inside ROMS perturbations       [64 days]
+        - HYCOM for initial conditions
+        - 50 days freerun with forcing/EOS pert
+        - Forcing perturbations (500km, swrad=2,Tair=.6,Uwind=.9) now online
+        - EOS perturbations (horiz:0.5,vert:0.3,clampT=0.8,clampS=0.3)
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
         - ROMS temperature clamp (>-1.8)
@@ -320,42 +321,58 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
         - Thinned (L=0.3,T=0.5) GTSPP data (Serr=0.3, Terr=0.7) (daily assim)
         - No Inflation
         - Cutoff = 0.02
-        - EOS perturbations (horiz:0.5,vert:0.3,clampT=0.8,clampS=0.3)
         -> Good spread but insufficient for 1rst assimilation?
 
 -RE.REANA33 : First test with EOS inside ROMS perturbations (no DA)      [30 days]
         - HYCOM
-        - 30 days freerun avec pert EOS
+        - freerun with EOS pert
+        - EOS perturbations (horiz:0.5,vert:0.3,clampT=0.8,clampS=0.3)
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
         - ROMS temperature clamp (>-1.8)
-        - Cutoff = 0.02
-        - EOS perturbations (horiz:0.5,vert:0.3,clampT=0.8,clampS=0.3)
+        -> Less spread overall (forcing important) but still some
 
--RE.REANA34 : As RE.REANA32 but with stronger pert on forcings          [48 days]
-        - HYCOM
-        - 50 days freerun with forcing pert/EOS
-        - Forcing perturbations (500km and increased variance)
+-RE.REANA34 : As RE.REANA32 but with stronger pert on forcings          [180 days]
+        - HYCOM for initial conditions
+        - freerun with forcing/EOS pert
+        - Forcing perturbations (500km, swrad=3,Tair=.9,Uwind=1) now online
+        - EOS perturbations (horiz:0.5,vert:0.3,clampT=0.8,clampS=0.3)
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
         - ROMS temperature clamp (>-1.8)
-        - Cutoff = 0.02
-        - EOS perturbations (horiz:0.5,vert:0.3,clampT=0.8,clampS=0.3)
-        -> 
+        -> Good spread! 
 
--RE.REANA35 : As RE.REANA34 but with stronger pert on EOS               [19 days]
-        - HYCOM
-        - 50 days freerun with forcing pert/EOS
-        - Forcing perturbations (500km and increased variance)
+-RE.REANA35 : As RE.REANA34 but with stronger pert on EOS               [31 days]
+        - HYCOM for initial conditions
+        - freerun with forcing/EOS pert
+        - Forcing perturbations (500km, swrad=3,Tair=.9,Uwind=1) now online
+        - EOS perturbations (horiz:1,vert:0.8,clampT=0.6,clampS=0.2)
+        - SW+LW corrected -> NOCS (no mask)
+        - Gridded WTYPE
+        - ROMS temperature clamp (>-1.8)
+        -> Unstable (-> waves 2.dx)
+
+-RE.REANA36 : As RE.REANA34 but starting on Sept, 1st 2010              [74 days]
+        - HYCOM for initial conditions (2010,9,1)
+        - 122 days freerun with forcing/EOS pert
+        - Forcing perturbations (500km, swrad=3,Tair=.9,Uwind=1) now online
+        - EOS perturbations (horiz:0.5,vert:0.3,clampT=0.8,clampS=0.3)
         - SW+LW corrected -> NOCS (no mask)
         - Gridded WTYPE
         - ROMS temperature clamp (>-1.8)
         - 0.15 Rep error for SST (daily assim)
-        - Thinned (L=0.3,T=0.5) GTSPP data (Serr=0.3, Terr=0.7) (daily assim)
+        - Thinned (L=0.3,T=0.5) GTSPP data (Serr=0.3, Terr=0.7) (5days assim)
         - No Inflation
         - Cutoff = 0.02
-        - EOS perturbations (horiz:0.5,vert:0.3,clampT=0.8,clampS=0.3)
         -> 
+
+
+
+
+
+
+
+
 
 
 

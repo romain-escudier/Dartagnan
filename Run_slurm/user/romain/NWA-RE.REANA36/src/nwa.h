@@ -130,8 +130,8 @@
 /* surface and side corrections */
 
 #ifdef SOLVE3D
-# undef SCORRECTION /* climate run : no SSS restoring */
-# undef SSSC_THRESHOLD
+# define SCORRECTION /* climate run : no SSS restoring */
+# define SSSC_THRESHOLD
 # undef SRELAXATION
 # undef QCORRECTION
 #endif
