@@ -21,7 +21,7 @@ SIMU=NWA-RE.REANA36
 # start at cycle nstart
 NSTART=1
 # end at cycle ncycles
-NCYCLES=122
+NCYCLES=180
 
 # Computation directory
 SCRATCHDIR=/glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA36/
@@ -34,7 +34,7 @@ DATADIR=/glade/scratch/dussin/romain/
 CLUSTER=yellowstone
 
 # Time limit
-TLIM_ROMS=0:20
+TLIM_ROMS=0:30
 TLIM_DART=0:10
 
 # TRITON OPTIONS
@@ -56,7 +56,7 @@ fi
 #-------------------------------------------------------
 
 # Number of core for analysis
-NCORES_DART=80
+NCORES_DART=16
 
 # start analysis at cycle nstart_ana
 NSTART_ANA=123
@@ -79,11 +79,11 @@ ITILE=10
 JTILE=8
 
 # Time step
-DT=200
+DT=300
 
 # SPIN-UP
-DT_SPIN=200
-NCYCLES_SPIN=5
+DT_SPIN=100
+NCYCLES_SPIN=3
 
 # Output step (days)
 DT_OUT=1
@@ -102,8 +102,8 @@ NUDGCOEF=${DATADIR}/NWA_nudging_coef.nc
 INITDIR=/glade/p/work/romaines/Data/Init/
 INITFILE=HYCOM_GLBa0.08_2010_244_ic_NWA.nc
 
-CLIMFILE=/glade/p/work/romaines/Data/Clim/HYCOM_GLBa0.08_monthly_clim_NWA_\<YEAR\>.nc
-BRYFILE=/glade/p/work/romaines/Data/OBC/HYCOM_GLBa0.08_bdry_NWA_\<YEAR\>.nc
+CLMPREF=/glade/p/work/romaines/Data/Clim/HYCOM_GLBa0.08_monthly_clim_NWA_
+BRYPREF=/glade/p/work/romaines/Data/OBC/HYCOM_GLBa0.08_bdry_NWA_
 RUNOFFILE=${DATADIR}/Runoff/runoff_NWA_daitren_clim.nc
 TIDESFILE=${DATADIR}/Tides/NWA_tides_otps.nc
 SSSREFILE=${DATADIR}/SSS/sss_monthly_climato_flooded.nc

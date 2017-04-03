@@ -52,9 +52,9 @@
    output_forward_op_errors = .false.
    output_timestamps        = .true.
    inf_flavor                  = 0,                       0
-   inf_initial_from_restart    = .true.,                 .false.
-   inf_sd_initial_from_restart = .true.,                 .false.
-   inf_output_restart          = .true.,                 .false.
+   inf_initial_from_restart    = .false.,                .false.
+   inf_sd_initial_from_restart = .false.,                .false.
+   inf_output_restart          = .false.,                .false.
    inf_deterministic           = .true.,                 .true.
    inf_in_file_name            = '<DARTINFIN>',          'not_initialized'
    inf_out_file_name           = '<DARTINFOUT>',         'not_initialized'
@@ -65,7 +65,7 @@
    inf_upper_bound             = 2.0,                     1000000.0
    inf_sd_lower_bound          = 0.6,                     0.0
    inf_damping                 = 0.9,                     1.0
-   output_inflation            = .true.
+   output_inflation            = .false.
    silence                     = .false.
 /
 

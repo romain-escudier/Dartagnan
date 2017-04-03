@@ -102,8 +102,8 @@ NUDGCOEF=/t0/scratch/romain/inputs/NWA_nudging_coef.nc
 INITDIR=${DATADIR}/Inputs/Init/HYCOM_ClimCore2/
 INITFILE=HYCOM_GLBa0.08_2011_001_ClimCore2_NWA_init.nc
 
-CLIMFILE=${DATADIR}/Inputs/CLM-NWA/HYCOM_GLBa0.08_monthly_clim_NWA_<YEAR>.nc
-BRYFILE=${DATADIR}/Inputs/BC-NWA/HYCOM_GLBa0.08_bdry_NWA_<YEAR>.nc
+CLMPREF=${DATADIR}/Inputs/CLM-NWA/HYCOM_GLBa0.08_monthly_clim_NWA_
+BRYPREF=${DATADIR}/Inputs/BC-NWA/HYCOM_GLBa0.08_bdry_NWA_
 RUNOFFILE=${DATADIR}/Inputs/Runoff/runoff_NWA_daitren_clim.nc
 TIDESFILE=${DATADIR}/Inputs/Tides/NWA_tides_otps.nc
 SSSREFILE=${DATADIR}/Inputs/SSS/sss_monthly_climato_flooded.nc

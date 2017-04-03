@@ -987,10 +987,12 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! except the last one.
 
    NCLMFILES == 1
-     CLMNAME == <CLMFILE>
+     CLMNAME == <CLMPREF><YYYY1>.nc  |
+                <CLMPREF><YYYY2>.nc
 
      NBCFILES == 1                          ! number of boundary files
-     BRYNAME == <BRYFILE> 
+     BRYNAME == <BRYPREF><YYYY1>.nc  |
+                <BRYPREF><YYYY2>.nc
 
 ! Input climatology nudging coefficients file name.
 

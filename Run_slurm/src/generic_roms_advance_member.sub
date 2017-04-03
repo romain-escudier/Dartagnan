@@ -69,8 +69,8 @@ cat <CURRENTDIR>/ocean_${SIMU}.in | sed -e "s;<DT>;$DT;g"                       
                                         -e "s;<NUDGCOEF>;$NUDGCOEF;g"              \
                                         -e "s;<STARTDAY>;$startday;g"              \
                                         -e "s;<REFDATE>;$REFDATE;g"                \
-                                        -e "s;<CLMFILE>;$CLIMFILE;g"               \
-                                        -e "s;<BRYFILE>;$BRYFILE;g"                \
+                                        -e "s;<CLMPREF>;$CLMPREF;g"                \
+                                        -e "s;<BRYPREF>;$BRYPREF;g"                \
                                         -e "s;<INIT>;$initialfile;g"               \
                                         -e "s;<RESTARTFILE>;$restartfile;g"        \
                                         -e "s;<HISTORYFILE>;$historyfile;g"        \
@@ -84,17 +84,17 @@ cat <CURRENTDIR>/ocean_${SIMU}.in | sed -e "s;<DT>;$DT;g"                       
                                         -e "s;<OUTPUTDIR>;${SCRATCHDIR}/Outputs/;g"\
                                         -e "s;<CONFCASE>;${SIMU};g"                \
                                         -e "s;<VARINFODIR>;${SCRATCHDIR};g"        \
-                                        -e "s;<YEAR>;$yyyy;g"                      \
-                                        -e "s;<YYYY2>;$yyyy;g"                     \
 > ${NAMELIST}.tmp
 
 # Add previous or following year in namelist (for forcings files) if necessary
-if [ $mm = 1 ] && [ $dd = 1 ]; then
-   cat ${NAMELIST}.tmp | sed -e "s;<YYYY1>;$(($yyyy-1));g" > ${NAMELIST}
-elif [ $mm = 12 ] && [ $dd = 31 ]; then
-   cat ${NAMELIST}.tmp | sed -e "s;<YYYY1>;$(($yyyy+1));g" > ${NAMELIST}
+if (($mm < 6)); then
+   cat ${NAMELIST}.tmp | sed -e "s;<YYYY1>;$(($yyyy-1));g" \
+                             -e "s;<YYYY2>;$yyyy;g"        \
+> ${NAMELIST}
 else
-   cat ${NAMELIST}.tmp | sed -e "/<YYYY1>/d" > ${NAMELIST}
+   cat ${NAMELIST}.tmp | sed -e "s;<YYYY2>;$(($yyyy+1));g" \
+                             -e "s;<YYYY1>;$yyyy;g"        \
+> ${NAMELIST}
 fi
 rm ${NAMELIST}.tmp
 
@@ -154,23 +154,24 @@ ${RUN} <CURRENTDIR>/Exe/oceanM ${NAMELIST} > <CURRENTDIR>/Logs/ROMS/log.roms_fwd
 
 echo $(date)
 
-  check1=$( grep Blowing-up <CURRENTDIR>/Logs/ROMS/log.roms_fwd.c${disp_cycle}.m${this_member} )
-  
-  if [ -z $check1 ] ; then
-     echo "run for member $this_member did not blow up... continue..."
-  else
-     echo "run for member $this_member blew up... stopping..."
-     echo "analysis step will be held pending forever, please scancel it"
-     exit 1
-  fi
-  
-  check2=$( grep DONE <CURRENTDIR>/Logs/ROMS/log.roms_fwd.c${disp_cycle}.m${this_member} | tail -1 | awk '{ print $2 }' )
-  
-  if [ ! -z $check2 ] ; then
-     echo "run for member $this_member finished OK... continue..."
-  else
-     echo "run for member $this_member did not finish... stopping..."
-     echo "analysis step will be held pending forever, please scancel it"
-     exit 1
-  fi
+check1=$( grep Blowing-up <CURRENTDIR>/Logs/ROMS/log.roms_fwd.c${disp_cycle}.m${this_member} )
 
+if [ -z $check1 ] ; then
+   echo "run for member $this_member did not blow up... continue..."
+else
+   echo "run for member $this_member blew up... stopping..."
+   echo "analysis step will be held pending forever, please scancel it"
+   exit 1
+fi
+
+check2=$( grep DONE <CURRENTDIR>/Logs/ROMS/log.roms_fwd.c${disp_cycle}.m${this_member} | tail -1 | awk '{ print $2 }' )
+
+if [ ! -z $check2 ] ; then
+   echo "run for member $this_member finished OK... continue..."
+else
+   echo "run for member $this_member did not finish... stopping..."
+   echo "analysis step will be held pending forever, please scancel it"
+   exit 1
+fi
+
+exit 0

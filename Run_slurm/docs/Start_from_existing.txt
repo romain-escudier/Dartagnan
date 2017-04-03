@@ -99,7 +99,7 @@ $ ./move_members.sh PREVIOUS_SIMUNAME_rstana_{DATE_START-1}.nc ${SCRATCH}/dart/t
 $ rename PREVIOUS_SIMUNAME SIMUNAME ${SCRATCH}/dart/tmp_SIMUNAME/Outputs/Reanalysis/m*/*.nc
 Get the previous date analysis
 $ rsync -havz --progress ${SCRATCH}/dart/tmp_PREVIOUS_SIMUNAME/Outputs/Reanalysis/Inflation/dart_inf_{DATE_START} ${SCRATCH}/dart/tmp_SIMUNAME/Outputs/Reanalysis/Inflation/
-Get the inflation status
+Get the inflation current values
 
 
 -----------------------------------------
