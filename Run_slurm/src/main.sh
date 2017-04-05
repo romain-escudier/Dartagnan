@@ -45,6 +45,9 @@ cp ${WORKINGDIR}/modules-used ${SCRATCHDIR}/
 cp ${WORKINGDIR}/input_${SIMU}.nml ${SCRATCHDIR}/
 cp ${WORKINGDIR}/ocean_${SIMU}.in ${SCRATCHDIR}/
 
+# Get gaussian random numbers
+cp ${DARTMNGDIR}/src/randn.txt ${SCRATCHDIR}/
+
 # Get scripts
 cp ${DARTMNGDIR}/src/*.sh ${SCRATCHDIR}/
 # Get scripts to be submitted with header corresponding to cluster

@@ -55,6 +55,27 @@ averagefile=${SCRATCHDIR}/Outputs/Average/m${this_member}/${SIMU}_avg_${date_cyc
 
 # Seed for perturbations
 seed_value=$(( $(str2num $this_member) + $this_cycle*100 ))
+RANDOM=$seed_value
+
+# Perturbations of parameters :
+randomfile=${SCRATCHDIR}/randn.txt
+# Viscosity
+if (( $RND_VISC_STD > 0 )); then
+   randomline=$(( $RANDOM+1 ))
+   randn=$( sed "${randomline}q;d" $randomfile )
+   VISC2=$(echo "scale=2; ($RND_VISC_AVG + $randn * $RND_VISC_STD)/1" | bc)
+else
+   VISC2=$(( $RND_VISC_AVG ))
+fi
+# Diffusion
+if (( $RND_DIFF_STD > 0 )); then
+   randomline=$(( $RANDOM+1 ))
+   randn=$( sed "${randomline}q;d" randn.txt )
+   DIFF2=$(echo "scale=2; ($RND_DIFF_AVG + $randn * $RND_DIFF_STD)/1" | bc)
+else
+   DIFF2=$(( $RND_DIFF_AVG ))
+fi
+
 
 # Create the namelist
 cat <CURRENTDIR>/ocean_${SIMU}.in | sed -e "s;<DT>;$DT;g"                          \
@@ -68,6 +89,8 @@ cat <CURRENTDIR>/ocean_${SIMU}.in | sed -e "s;<DT>;$DT;g"                       
                                         -e "s;<GRID>;$GRIDFILE;g"                  \
                                         -e "s;<NUDGCOEF>;$NUDGCOEF;g"              \
                                         -e "s;<STARTDAY>;$startday;g"              \
+                                        -e "s;<VISCOSITY>;$VISC2;g"                \
+                                        -e "s;<DIFFUSION>;$DIFF2;g"                \
                                         -e "s;<REFDATE>;$REFDATE;g"                \
                                         -e "s;<CLMPREF>;$CLMPREF;g"                \
                                         -e "s;<BRYPREF>;$BRYPREF;g"                \

@@ -352,7 +352,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
         - ROMS temperature clamp (>-1.8)
         -> Unstable (-> waves 2.dx)
 
--RE.REANA36 : As RE.REANA34 but starting on Sept, 1st 2010              [152 days]
+-RE.REANA36 : As RE.REANA34 but starting on Sept, 1st 2010              [180 days]
         - HYCOM for initial conditions (2010,9,1)
         - 122 days freerun with forcing/EOS pert
         - Forcing perturbations (500km, swrad=3,Tair=.9,Uwind=1) now online
@@ -364,9 +364,9 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
         - Thinned (L=0.3,T=0.5) GTSPP data (Serr=0.3, Terr=0.7) (5days assim)
         - No Inflation
         - Cutoff = 0.02
-        -> 
+        -> Not bad, lower spread than with inflation and CLIMCORE-init
 
--RE.REANA37 : As RE.REANA36 but daily assimilation                     [130 days]
+-RE.REANA37 : As RE.REANA36 but daily assimilation                     [180 days]
         - HYCOM for initial conditions (2010,9,1)
         - 122 days freerun with forcing/EOS pert (taken from RE.REANA36)
         - Forcing perturbations (500km, swrad=3,Tair=.9,Uwind=1) now online
@@ -378,7 +378,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
         - Thinned (L=0.3,T=0.5) GTSPP data (Serr=0.3, Terr=0.7) (daily assim)
         - No Inflation
         - Cutoff = 0.02
-        -> 
+        -> Very similar to RE.REANA36, 1% change in spread and #obs
 
 
 

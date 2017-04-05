@@ -91,6 +91,11 @@ DT_OUT=1
 # Filter output step (days)
 DT_FILT=1
 
+# Random parametrization
+RND_VISC_STD=0
+RND_VISC_AVG=25
+RND_DIFF_STD=0
+RND_DIFF_AVG=5
 
 # File parameters
 FORCINGDIR=${DATADIR}/Inputs/Forcings/Perturbed/CorrectDx/
