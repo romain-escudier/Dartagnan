@@ -46,10 +46,15 @@ cp ${WORKINGDIR}/input_${SIMU}.nml ${SCRATCHDIR}/
 cp ${WORKINGDIR}/ocean_${SIMU}.in ${SCRATCHDIR}/
 
 # Get gaussian random numbers
-cp ${DARTMNGDIR}/src/randn.txt ${SCRATCHDIR}/
+cp ${DARTMNGDIR}/utils/randn.txt ${SCRATCHDIR}/
 
 # Get scripts
 cp ${DARTMNGDIR}/src/*.sh ${SCRATCHDIR}/
+
+# Get useful functions
+cp ${DARTMNGDIR}/utils/functions.sh ${SCRATCHDIR}/
+cp ${DARTMNGDIR}/utils/extensions.bc ${SCRATCHDIR}/
+
 # Get scripts to be submitted with header corresponding to cluster
 cd ${DARTMNGDIR}/src/
 sed "/<HEADER>/r header.${CLUSTER}" generic_analysis.sub \
