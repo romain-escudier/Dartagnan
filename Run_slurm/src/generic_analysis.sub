@@ -20,7 +20,7 @@ cd ${SCRATCHDIR}
 if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 
 #------------------------------------------------------------------------------------
-# Specific options for triton computer
+# Number of nodes per core
 #------------------------------------------------------------------------------------
 
    # Number of processor per node
@@ -73,6 +73,11 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 
    ### Observations
    # Select the correct input observation files
+   if (( (${this_cycle}-${NSTART_ANA})%${DT_OBS} == 0 )) ; then
+      OBS_PREF=${OBS_PREF_2}
+   else
+      OBS_PREF=${OBS_PREF_1}
+   fi
    obs_seq_in=${OBS_DIR}/${OBS_PREF}${date_cycle_next}
    # The output observation is called final
    obs_seq_out=${SCRATCHDIR}/Outputs/ObsOut/${OBS_PREF}final.${date_cycle_next}

@@ -49,6 +49,7 @@ elif [ ${CLUSTER} = "yellowstone" ] ; then
    TYPENODE_DART=yellowstone
    PROJECT=URTG0011
    QUEUE=regular
+   QUEUE_PREP=geyser
 fi
 
 #-------------------------------------------------------
@@ -63,7 +64,8 @@ NSTART_ANA=2
 
 # Observation files
 OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/
-OBS_PREF=obs_seq.sst_gtspp.
+OBS_PREF_1=obs_seq.sst.
+OBS_PREF_2=obs_seq.sst_gtspp.
 
 # Inflation
 INF_INI=1.02
@@ -98,20 +100,20 @@ RND_DIFF_STD=0
 RND_DIFF_AVG=5
 
 # File parameters
-FORCINGDIR=${DATADIR}/Inputs/Forcings/Perturbed/CorrectDx/
+FORCINGDIR=${DATADIR}/Forcings/
 FORCINGPREF=drowned_MERRA_
 FORCINGSUFF=_3hours_
 
-GRIDFILE=/t0/scratch/romain/inputs/NWA_grd_newwtypechl.nc
-NUDGCOEF=/t0/scratch/romain/inputs/NWA_nudging_coef.nc
+GRIDFILE=${DATADIR}/NWA_grd_newwtypechl.nc
+NUDGCOEF=${DATADIR}/NWA_nudging_coef.nc
 INITDIR=${DATADIR}/Inputs/Init/HYCOM_ClimCore2/
 INITFILE=HYCOM_GLBa0.08_2011_001_ClimCore2_NWA_init.nc
 
-CLMPREF=${DATADIR}/Inputs/CLM-NWA/HYCOM_GLBa0.08_monthly_clim_NWA_
-BRYPREF=${DATADIR}/Inputs/BC-NWA/HYCOM_GLBa0.08_bdry_NWA_
-RUNOFFILE=${DATADIR}/Inputs/Runoff/runoff_NWA_daitren_clim.nc
-TIDESFILE=${DATADIR}/Inputs/Tides/NWA_tides_otps.nc
-SSSREFILE=${DATADIR}/Inputs/SSS/sss_monthly_climato_flooded.nc
+CLMPREF=${DATADIR}/Clim/HYCOM_GLBa0.08_monthly_clim_NWA_
+BRYPREF=${DATADIR}/OBC/HYCOM_GLBa0.08_bdry_NWA_
+RUNOFFILE=${DATADIR}/Runoff/runoff_NWA_daitren_clim.nc
+TIDESFILE=${DATADIR}/Tides/NWA_tides_otps.nc
+SSSREFILE=${DATADIR}/SSS/sss_monthly_climato_flooded.nc
 
 
 #-------------------------------------------------------

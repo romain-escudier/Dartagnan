@@ -9,146 +9,19 @@ set -x
 echo $(date)
 
 this_member=<MEMBER>
-this_cycle=<CYCLE>
-this_cycle=$(str2num $this_cycle)
 disp_cycle=<DISPCYCLE>
-this_job_id=${SLURM_JOB_ID}
 NCORES=<NCORES>
-
-#------------------------------------------------------------------------------------
-# create all necessary inputs and namelists
-#------------------------------------------------------------------------------------`
-
-# Select DT_spin if spin-up
-if ((${this_cycle} <= ${NCYCLES_SPIN})) ; then
-   DT=${DT_SPIN}
-fi
 
 # Name of the ROMS namelist
 NAMELIST=${SCRATCHDIR}/Roms_files/ocean_${SIMU}_m${this_member}.in
 
-# Time periods
-ntimeana=$(compute_eq_integer_result ${DT_ANA}*86400/$DT) # Number of steps between restart files
-ntimeout=$(compute_eq_integer_result ${DT_OUT}*86400/$DT) # Number of steps between outputs files
-time_end=$(( ${this_cycle} * ${ntimeana})) # Number of steps to reach before stopping
-startday=$(get_timediff_dates ${REFDATE} ${STARTDATE}) # Starting date (in days since reference)
-date_cycle=$(get_date_from_cycle $(( $this_cycle - 1 )) ${STARTDATE} ${DT_ANA}) # Date of cycle YYYYMMDD
-declare -i yyyy=${date_cycle:0:4} # Year of cycle
-declare -i mm=$(str2num ${date_cycle:4:2})
-declare -i dd=$(str2num ${date_cycle:6:2})
-
-# Initial state for the model
-if ((${this_cycle} == 1)) ; then
-    initialfile=${SCRATCHDIR}/Outputs/Reanalysis/m${this_member}/${SIMU}_ini_${STARTDATE}.nc
-    restart=0
-else
-    prev_cycle=$(( $this_cycle - 1 ))
-    date_prev_cycle=$(get_date_from_cycle $(( ${prev_cycle} -1 )) ${STARTDATE} ${DT_ANA})
-    initialfile=${SCRATCHDIR}/Outputs/Reanalysis/m${this_member}/${SIMU}_rstana_${date_prev_cycle}.nc
-    restart=-1
-fi
-
-# Outputs of the simulation
-restartfile=${SCRATCHDIR}/Outputs/Prior/m${this_member}//${SIMU}_rst_${date_cycle}.nc
-historyfile=${SCRATCHDIR}/Outputs/History/m${this_member}/${SIMU}_his_${date_cycle}.nc
-averagefile=${SCRATCHDIR}/Outputs/Average/m${this_member}/${SIMU}_avg_${date_cycle}.nc
-
-# Seed for perturbations
-seed_value=$(( $(str2num $this_member) + $this_cycle*100 ))
-RANDOM=$seed_value
-
-# Perturbations of parameters :
-randomfile=${SCRATCHDIR}/randn.txt
-extensfile=${SCRATCHDIR}/extensions.bc
-# Viscosity
-if (( $RND_VISC_STD > 0 )); then
-   randomline=$(( $RANDOM+1 ))
-   randn=$( sed "${randomline}q;d" $randomfile )
-   VISC2=$(echo "scale=2; max(($RND_VISC_AVG + $randn * $RND_VISC_STD)/1,0)" | bc $extensfile)
-else
-   VISC2=$(( $RND_VISC_AVG ))
-fi
-# Diffusion
-if (( $RND_DIFF_STD > 0 )); then
-   randomline=$(( $RANDOM+1 ))
-   randn=$( sed "${randomline}q;d" randn.txt )
-   DIFF2=$(echo "scale=2; max(($RND_DIFF_AVG + $randn * $RND_DIFF_STD)/1,0)" | bc $extensfile)
-else
-   DIFF2=$(( $RND_DIFF_AVG ))
-fi
-
-
-# Create the namelist
-cat <CURRENTDIR>/ocean_${SIMU}.in | sed -e "s;<DT>;$DT;g"                          \
-                                        -e "s;<SEED>;$seed_value;g"                \
-                                        -e "s;<ITILE>;$ITILE;g"                    \
-                                        -e "s;<JTILE>;$JTILE;g"                    \
-                                        -e "s;<NSTEPS>;$time_end;g"                \
-                                        -e "s;<NRESTART>;$ntimeana;g"              \
-                                        -e "s;<RESTART>;$restart;g"                \
-                                        -e "s;<NTIMEOUT>;$ntimeout;g"              \
-                                        -e "s;<GRID>;$GRIDFILE;g"                  \
-                                        -e "s;<NUDGCOEF>;$NUDGCOEF;g"              \
-                                        -e "s;<STARTDAY>;$startday;g"              \
-                                        -e "s;<VISCOSITY>;$VISC2;g"                \
-                                        -e "s;<DIFFUSION>;$DIFF2;g"                \
-                                        -e "s;<REFDATE>;$REFDATE;g"                \
-                                        -e "s;<CLMPREF>;$CLMPREF;g"                \
-                                        -e "s;<BRYPREF>;$BRYPREF;g"                \
-                                        -e "s;<INIT>;$initialfile;g"               \
-                                        -e "s;<RESTARTFILE>;$restartfile;g"        \
-                                        -e "s;<HISTORYFILE>;$historyfile;g"        \
-                                        -e "s;<AVERAGEFILE>;$averagefile;g"        \
-                                        -e "s;<SSS_RESTORING_FILE>;$SSSREFILE;g"   \
-                                        -e "s;<RUNOFF_FILE>;$RUNOFFILE;g"          \
-                                        -e "s;<TIDES_FILE>;$TIDESFILE;g"           \
-                                        -e "s;<FORCINGDIR>;${FORCINGDIR};g"        \
-                                        -e "s;<FORCINGPREF>;$FORCINGPREF;g"        \
-                                        -e "s;<FORCINGSUFF>;$FORCINGSUFF;g"        \
-                                        -e "s;<OUTPUTDIR>;${SCRATCHDIR}/Outputs/;g"\
-                                        -e "s;<CONFCASE>;${SIMU};g"                \
-                                        -e "s;<VARINFODIR>;${SCRATCHDIR};g"        \
-> ${NAMELIST}.tmp
-
-# Add previous or following year in namelist (for forcings files) if necessary
-if (($mm < 6)); then
-   cat ${NAMELIST}.tmp | sed -e "s;<YYYY1>;$(($yyyy-1));g" \
-                             -e "s;<YYYY2>;$yyyy;g"        \
-> ${NAMELIST}
-else
-   cat ${NAMELIST}.tmp | sed -e "s;<YYYY2>;$(($yyyy+1));g" \
-                             -e "s;<YYYY1>;$yyyy;g"        \
-> ${NAMELIST}
-fi
-rm ${NAMELIST}.tmp
-
-# Go to temporary directory (because filtering files are created in current directory)
-mkdir -p ${SCRATCHDIR}/Tempfiles/m${this_member}/
-cd ${SCRATCHDIR}/Tempfiles/m${this_member}/
-
-# Save filtering files every month (before computing the first day of the month)
-if (( ${this_cycle}  > 1 )) ; then # No filter files on cycle 1
-   file_filt_tmp=${SCRATCHDIR}/Outputs/Filtfiles/m${this_member}/ocean_filw_01_${date_cycle}.nc
-   # If the filtering file already exist, check if it is the same
-   if [ -f ${file_filt_tmp} ] ; then
-       if [ "$( comp_files_md5sum ${file_filt_tmp} ocean_filt_01.nc )" == "true" ] ; then
-          echo "Filtering files already copied. No new copy started."
-       else
-          for file_filt in ${SCRATCHDIR}/Outputs/Filtfiles/m${this_member}/ocean_fil*${date_cycle}.nc ; do
-             file_filt_short=$(basename ${file_filt})
-             rsync -havz ${file_filt} ${file_filt_short%_${date_cycle}*}.nc
-          done
-       fi
-   else
-      for file_filt in ocean_fil*.nc ; do
-         rsync -havz ${file_filt} ${SCRATCHDIR}/Outputs/Filtfiles/m${this_member}/${file_filt%.*}_${date_cycle}.nc
-      done
-   fi
-   if (( $((${prev_cycle}%${DT_FILT})) != 0 )) ; then # No filter files on cycle 1
-      rm ${SCRATCHDIR}/Outputs/Filtfiles/m${this_member}/ocean_fil*${date_prev_cycle}.nc
-   fi
-fi
 echo $(date)
+
+#------------------------------------------------------------------------------------
+# Go to temporary directory (where filtering files are created)
+#------------------------------------------------------------------------------------
+
+cd ${SCRATCHDIR}/Tempfiles/m${this_member}/
 
 #------------------------------------------------------------------------------------
 # reload modules used when compiling

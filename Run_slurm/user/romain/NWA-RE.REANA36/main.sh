@@ -45,16 +45,28 @@ cp ${WORKINGDIR}/modules-used ${SCRATCHDIR}/
 cp ${WORKINGDIR}/input_${SIMU}.nml ${SCRATCHDIR}/
 cp ${WORKINGDIR}/ocean_${SIMU}.in ${SCRATCHDIR}/
 
+# Get gaussian random numbers
+cp ${DARTMNGDIR}/utils/randn.txt ${SCRATCHDIR}/
+
 # Get scripts
 cp ${DARTMNGDIR}/src/*.sh ${SCRATCHDIR}/
+
+# Get useful functions
+cp ${DARTMNGDIR}/utils/functions.sh ${SCRATCHDIR}/
+cp ${DARTMNGDIR}/utils/extensions.bc ${SCRATCHDIR}/
+
 # Get scripts to be submitted with header corresponding to cluster
 cd ${DARTMNGDIR}/src/
 sed "/<HEADER>/r header.${CLUSTER}" generic_analysis.sub \
         | sed -e "/<HEADER>/d" \
 > ${SCRATCHDIR}/${SIMU}_analysis.sub
 # Also remove the dependency list and the mailing option for the forward script
-sed "/<HEADER>/r header.${CLUSTER}" generic_roms_advance_member.sub \
+sed "/<HEADER>/r header.${CLUSTER}" generic_roms_prepare_member.sub \
         | sed -e "/<HEADER>/d" -e "/<DEPLIST>/d" -e "/BSUB -N/d" \
+        | sed -e "/ptile=/d" \
+> ${SCRATCHDIR}/${SIMU}_roms_prepare_member.sub 
+sed "/<HEADER>/r header.${CLUSTER}" generic_roms_advance_member.sub \
+        | sed -e "/<HEADER>/d" -e "/BSUB -N/d" \
 > ${SCRATCHDIR}/${SIMU}_roms_advance_member.sub 
 # Also remove the mailing option for next submission script
 sed "/<HEADER>/r header.${CLUSTER}" generic_submit_next.sub \
