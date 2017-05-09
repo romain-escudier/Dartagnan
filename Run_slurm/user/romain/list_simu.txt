@@ -352,7 +352,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
         - ROMS temperature clamp (>-1.8)
         -> Unstable (-> waves 2.dx)
 
--RE.REANA36 : As RE.REANA34 but starting on Sept, 1st 2010              [180 days]
+-RE.REANA36 : As RE.REANA34 but starting on Sept, 1st 2010              [250 days]
         - HYCOM for initial conditions (2010,9,1)
         - 122 days freerun with forcing/EOS pert
         - Forcing perturbations (500km, swrad=3,Tair=.9,Uwind=1) now online
@@ -401,7 +401,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
         - ROMS temperature clamp (>-1.8)
         -> Values similar to CLIMCORE-init
 
--RE.REANA40 : As RE.REANA36 but small inflation + err(SST)=0.2     [180 days]
+-RE.REANA40 : As RE.REANA36 but small inflation + err(SST)=0.2     [215 days]
         - HYCOM for initial conditions (2010,9,1)
         - 122 days freerun with forcing/EOS pert (taken from RE.REANA36)
         - Forcing perturbations (500km, swrad=3,Tair=.9,Uwind=1) now online

@@ -12,29 +12,11 @@ cycle=$1
 . ./parameters
 
 echo "$(date) : running cycle $cycle of $NCYCLES"
-printf -v disp_cycle "%03d" ${cycle}
+printf -v disp_cycle "%05d" ${cycle}
 
 # Check if finished + post-processing
 if (( $cycle > $NCYCLES )) ; then 
    ./postprod_dart_obs.sh
-   listjobids=""
-   for kmem in $( seq 1 $NMEMBERS ) ; do
-      printf -v nnn "%03d" $kmem
-
-      # Do just the preparation (namelist and copy of filetering files)
-      cat ${SCRATCHDIR}/${SIMU}_roms_prepare_member.sub | sed -e "s;<MEMBER>;$nnn;g" \
-                                                              -e "s;<NCORES>;1;g"\
-                                                              -e "s;<WALLTIME>;00:10;g" \
-                                                              -e "s;<CYCLE>;${cycle};g" \
-                                                              -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
-                                                              -e "s;<JOBNAME>;roms_prep_${nnn}_c${disp_cycle}_${SIMU};g" \
-                                                              -e "s;<LOGNAME>;roms_prepare_c${disp_cycle}_m${nnn};g" \
-                                                              -e "s;<QUEUE>;${QUEUE_PREP};g" \
-                                                              -e "s;<PROJECTCODE>;${PROJECT};g" \
-      > ${SCRATCHDIR}/Tempfiles/roms_prepare_member_${nnn}.sub
-      ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/roms_prepare_member_${nnn}.sub > /dev/null
-   done
-
    echo 'Completed' ; 
    exit 0 ; 
 fi
@@ -61,7 +43,8 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    > ${SCRATCHDIR}/Tempfiles/roms_prepare_member_${nnn}.sub
    output=$( ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/roms_prepare_member_${nnn}.sub )
    dep_id=$(./get_id_dependency.sh "$output" "" $CLUSTER)
-   
+
+   # Run the ROMS code   
    cat ${SCRATCHDIR}/${SIMU}_roms_advance_member.sub | sed -e "s;<MEMBER>;$nnn;g" \
                                                            -e "s;<DEPLIST>;${dep_id};g" \
                                                            -e "s;<DISPCYCLE>;${disp_cycle};g" \
@@ -73,9 +56,23 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
                                                            -e "s;<QUEUE>;${QUEUE};g" \
                                                            -e "s;<PROJECTCODE>;${PROJECT};g" \
    > ${SCRATCHDIR}/Tempfiles/roms_advance_member_${nnn}.sub
-
-   # Get the id of the job and keep it in listjobids (for the dependency of the analysis)
    output=$( ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/roms_advance_member_${nnn}.sub )
+   dep_id=$(./get_id_dependency.sh "$output" "" $CLUSTER)
+
+   # Run the post-processing (netcdf4 + copy of filt files)
+   cat ${SCRATCHDIR}/${SIMU}_roms_post_member.sub | sed -e "s;<MEMBER>;$nnn;g" \
+                                                        -e "s;<DEPLIST>;${dep_id};g" \
+                                                        -e "s;<NCORES>;1;g"\
+                                                        -e "s;<WALLTIME>;00:10;g" \
+                                                        -e "s;<CYCLE>;${cycle};g" \
+                                                        -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
+                                                        -e "s;<JOBNAME>;roms_post_${nnn}_c${disp_cycle}_${SIMU};g" \
+                                                        -e "s;<LOGNAME>;roms_post_c${disp_cycle}_m${nnn};g" \
+                                                        -e "s;<QUEUE>;${QUEUE_PREP};g" \
+                                                        -e "s;<PROJECTCODE>;${PROJECT};g" \
+   > ${SCRATCHDIR}/Tempfiles/roms_post_member_${nnn}.sub
+   # Get the id of the job and keep it in listjobids (for the dependency of the analysis)
+   output=$( ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/roms_post_member_${nnn}.sub )
    listjobids=$(./get_id_dependency.sh "$output" "$listjobids" $CLUSTER)
    if ! (( $? == 0 )); then
       echo $listjobids

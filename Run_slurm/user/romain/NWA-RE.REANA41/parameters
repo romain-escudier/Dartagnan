@@ -1,7 +1,7 @@
 #!/bin/ksh
 
 # Directories
-WORKINGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA36/
+WORKINGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA41/
 DARTMNGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/
 
 # Number of ensemble members to run
@@ -9,22 +9,22 @@ NMEMBERS=30
 
 # Starting date
 REFDATE=19000101
-STARTDATE=20100901
+STARTDATE=20100701
 
 # Analysis step (days)
 DT_ANA=1
 DT_OBS=5
 
 # Simulation name
-SIMU=NWA-RE.REANA36
+SIMU=NWA-RE.REANA41
 
 # start at cycle nstart
 NSTART=1
 # end at cycle ncycles
-NCYCLES=180
+NCYCLES=183
 
 # Computation directory
-SCRATCHDIR=/glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA36/
+SCRATCHDIR=/glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA41/
 DATADIR=/glade/p/work/romaines/Data/
 
 #-------------------------------------------------------
@@ -60,10 +60,10 @@ fi
 NCORES_DART=16
 
 # start analysis at cycle nstart_ana
-NSTART_ANA=123
+NSTART_ANA=184
 
 # Observation files
-OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/Serr03Terr07thinSSTerr015_ST5days/
+OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/Serr03Terr07thinSSTerr02_ST5days/
 OBS_PREF_1=obs_seq.sst.
 OBS_PREF_2=obs_seq.sst_gtspp.
 
@@ -107,7 +107,7 @@ FORCINGSUFF=_3hours_
 GRIDFILE=${DATADIR}/NWA_grd_newwtypechl.nc
 NUDGCOEF=${DATADIR}/NWA_nudging_coef.nc
 INITDIR=${DATADIR}/Init/
-INITFILE=HYCOM_GLBa0.08_2010_244_ic_NWA.nc
+INITFILE=HYCOM_GLBa0.08_2010_182_ic_NWA.nc
 
 CLMPREF=${DATADIR}/Clim/HYCOM_GLBa0.08_monthly_clim_NWA_
 BRYPREF=${DATADIR}/OBC/HYCOM_GLBa0.08_bdry_NWA_
