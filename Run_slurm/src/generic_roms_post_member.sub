@@ -19,6 +19,7 @@ date_cycle=$(get_date_from_cycle $(( $this_cycle - 1 )) ${STARTDATE} ${DT_ANA}) 
 #------------------------------------------------------------------------------------
 # Save outputs in netcdf4 (compressed)
 #------------------------------------------------------------------------------------
+module load nco
 # Average
 cd ${SCRATCHDIR}/Outputs/Average/m${this_member}/
 filename=$(ls ${SIMU}_avg_${date_cycle}_*.nc)
