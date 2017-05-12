@@ -5,7 +5,7 @@
 . <CURRENTDIR>/parameters
 . <CURRENTDIR>/functions.sh
 
-set -x
+set -ex
 
 # Get values of cycle and job id
 this_cycle=<CYCLE>

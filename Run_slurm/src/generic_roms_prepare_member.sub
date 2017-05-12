@@ -4,7 +4,7 @@
 . <CURRENTDIR>/parameters
 . <CURRENTDIR>/functions.sh
 
-set -x
+set -ex
 
 echo $(date)
 
@@ -107,6 +107,8 @@ cat <CURRENTDIR>/ocean_${SIMU}.in | sed -e "s;<DT>;$DT;g"                       
                                         -e "s;<CONFCASE>;${SIMU};g"                \
                                         -e "s;<VARINFODIR>;${SCRATCHDIR};g"        \
 > ${NAMELIST}.tmp
+if 
+
 
 # Add previous or following year in namelist (for forcings files) if necessary
 if (($mm < 6)); then

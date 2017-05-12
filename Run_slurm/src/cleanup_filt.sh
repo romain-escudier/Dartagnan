@@ -6,16 +6,26 @@
 
 # Time parameters
 enddate=$1
-declare -i end_year=$(str2num ${enddate:0:4})
-declare -i end_mont=$(str2num ${enddate:4:2})
-declare -i end_dday=$(str2num ${enddate:6:2})
-
-declare -i start_year=$(str2num ${STARTDATE:0:4})
-declare -i start_mont=$(str2num ${STARTDATE:4:2})
-declare -i start_dday=$(str2num ${STARTDATE:6:2})
 
 # Length of time period
-N_cycles=$(get_timediff_dates $STARTDATE $enddate)
+if [ -z "$enddate" ]; then
+   N_cycles=99999999999999999999999999999
+else
+   N_cycles=$(get_timediff_dates $STARTDATE $enddate)
+   echo $N_cycles
+fi
+
+# Check last file (remove all before N-3)
+cd ${SCRATCHDIR}/Outputs/Filtfiles/m030/
+file_list=$(ls ocean_filu_01_*)
+last_file=$(echo $file_list | awk -F " " '{print $NF}')
+last_date=${last_file#ocean_filu_01_}
+last_date=${last_date%.nc}
+N_cycles_test=$(get_timediff_dates $STARTDATE $last_date)
+if (( $N_cycles > $(($N_cycles_test-3)) )); then
+   N_cycles=$(($N_cycles_test-3))
+fi
+enddate=$(get_date_from_cycle ${N_cycles} $STARTDATE 1)
 
 echo "Removing files from $STARTDATE to $enddate in ${SCRATCHDIR}/Outputs/Filtfiles/"
 
