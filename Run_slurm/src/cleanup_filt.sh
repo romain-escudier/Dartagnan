@@ -27,25 +27,31 @@ if (( $N_cycles > $(($N_cycles_test-3)) )); then
 fi
 enddate=$(get_date_from_cycle ${N_cycles} $STARTDATE 1)
 
-echo "Removing files from $STARTDATE to $enddate in ${SCRATCHDIR}/Outputs/Filtfiles/"
-
-for kmem in $( seq 1 $NMEMBERS ) ; do
-   printf -v nnn "%03d" $kmem
-   echo "Member ${nnn} :"
-   
-   cd ${SCRATCHDIR}/Outputs/Filtfiles/m${nnn}/
-   
-   for cycle in $(seq 0 $N_cycles); do
-      date_tmp=$(get_date_from_cycle ${cycle} $STARTDATE 1)
-      date_next=$(get_date_from_cycle $((${cycle}+1)) $STARTDATE 1)
-      dday=$(str2num ${date_next:6:2})
-      if (( dday == 1 )); then
-         echo "keep ${date_tmp}"
-      else
-         if [ -f ocean_filw_01_${date_tmp}.nc ]; then
-            rm ocean_fil*_01_${date_tmp}.nc
+read -r -p "Removing files from $STARTDATE to $enddate in ${SCRATCHDIR}/Outputs/Filtfiles/: Is this OK? [y/N]" response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]
+then
+   for kmem in $( seq 1 $NMEMBERS ) ; do
+      printf -v nnn "%03d" $kmem
+      echo "Member ${nnn} :"
+      printf "keep : "
+      
+      cd ${SCRATCHDIR}/Outputs/Filtfiles/m${nnn}/
+      
+      for cycle in $(seq 0 $N_cycles); do
+         date_tmp=$(get_date_from_cycle ${cycle} $STARTDATE 1)
+         date_next=$(get_date_from_cycle $((${cycle}+1)) $STARTDATE 1)
+         dday=$(str2num ${date_next:6:2})
+         if (( dday == 1 )); then
+            printf "${date_tmp} "
+         else
+            if [ -f ocean_filw_01_${date_tmp}.nc ]; then
+               rm ocean_fil*_01_${date_tmp}.nc
+            fi
          fi
-      fi
+      done
+      echo " "
    done
-done
+else
+    echo "We do nothing."
+fi
 

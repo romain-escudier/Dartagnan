@@ -31,7 +31,7 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    printf -v nnn "%03d" $kmem
 
    # First the preparation (namelist and copy of filetering files)
-   cat ${SCRATCHDIR}/${SIMU}_roms_prepare_member.sub | sed -e "s;<MEMBER>;$nnn;g" \
+   cat ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_prepare_member.sub | sed -e "s;<MEMBER>;$nnn;g" \
                                                            -e "s;<NCORES>;1;g"\
                                                            -e "s;<WALLTIME>;00:10;g" \
                                                            -e "s;<CYCLE>;${cycle};g" \
@@ -45,7 +45,7 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    dep_id=$(./get_id_dependency.sh "$output" "" $CLUSTER)
 
    # Run the ROMS code   
-   cat ${SCRATCHDIR}/${SIMU}_roms_advance_member.sub | sed -e "s;<MEMBER>;$nnn;g" \
+   cat ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_advance_member.sub | sed -e "s;<MEMBER>;$nnn;g" \
                                                            -e "s;<DEPLIST>;${dep_id};g" \
                                                            -e "s;<DISPCYCLE>;${disp_cycle};g" \
                                                            -e "s;<NCORES>;${NCORES_ROMS};g"\
@@ -60,7 +60,7 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    dep_id=$(./get_id_dependency.sh "$output" "" $CLUSTER)
 
    # Run the post-processing (netcdf4 + copy of filt files)
-   cat ${SCRATCHDIR}/${SIMU}_roms_post_member.sub | sed -e "s;<MEMBER>;$nnn;g" \
+   cat ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_post_member.sub | sed -e "s;<MEMBER>;$nnn;g" \
                                                         -e "s;<DEPLIST>;${dep_id};g" \
                                                         -e "s;<NCORES>;1;g"\
                                                         -e "s;<WALLTIME>;00:10;g" \
@@ -84,7 +84,7 @@ done
 #---------------------------------------------------------------------------------------------#
 # 2. submit assimilation step
 
-cat ${SCRATCHDIR}/${SIMU}_analysis.sub | sed -e "s;<DEPLIST>;"$listjobids";g" \
+cat ${SCRATCHDIR}/Jobfiles/${SIMU}_analysis.sub | sed -e "s;<DEPLIST>;"$listjobids";g" \
                                              -e "s;<CYCLE>;${cycle};g" \
                                              -e "s;<DISPCYCLE>;${disp_cycle};g" \
                                              -e "s;<TYPENODE>;${TYPENODE_DART};g"\
@@ -101,7 +101,7 @@ dep_id=$(./get_id_dependency.sh "$output" "" $CLUSTER)
 
 #---------------------------------------------------------------------------------------------#
 # 3. submit script for the next step
-cat ${SCRATCHDIR}/${SIMU}_submit_next.sub | sed -e "s;<DEPLIST>;"$dep_id";g" \
+cat ${SCRATCHDIR}/Jobfiles/${SIMU}_submit_next.sub | sed -e "s;<DEPLIST>;"$dep_id";g" \
                                                 -e "s;<CYCLE>;${cycle};g" \
                                                 -e "s;<DISPCYCLE>;${disp_cycle};g" \
                                                 -e "s;<TYPENODE>;${TYPENODE_DART};g"\

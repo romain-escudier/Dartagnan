@@ -12,6 +12,7 @@ mkdir -p ${SCRATCHDIR}/Logs/ROMS/
 mkdir -p ${SCRATCHDIR}/Logs/DART/
 mkdir -p ${SCRATCHDIR}/Tempfiles/
 mkdir -p ${SCRATCHDIR}/Roms_files/
+mkdir -p ${SCRATCHDIR}/Jobfiles/
 mkdir -p ${SCRATCHDIR}/Exe/
 mkdir -p ${SCRATCHDIR}/Outputs/Average/
 mkdir -p ${SCRATCHDIR}/Outputs/History/
@@ -57,32 +58,33 @@ cp ${DARTMNGDIR}/utils/extensions.bc ${SCRATCHDIR}/
 
 # Get scripts to be submitted with header corresponding to cluster
 cd ${DARTMNGDIR}/src/
-### ANALYSIS
-sed "/<HEADER>/r header.${CLUSTER}" generic_analysis.sub \
-        | sed -e "/<HEADER>/d" \
-> ${SCRATCHDIR}/${SIMU}_analysis.sub
 ### FORWARD MODEL
 # Also remove the dependency list and the mailing option for the forward script
 sed "/<HEADER>/r header.${CLUSTER}" generic_roms_prepare_member.sub \
         | sed -e "/<HEADER>/d" -e "/<DEPLIST>/d" -e "/BSUB -N/d" \
         | sed -e "/ptile=/d" \
-> ${SCRATCHDIR}/${SIMU}_roms_prepare_member.sub 
+> ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_prepare_member.sub 
 sed "/<HEADER>/r header.${CLUSTER}" generic_roms_advance_member.sub \
         | sed -e "/<HEADER>/d" -e "/BSUB -N/d" \
-> ${SCRATCHDIR}/${SIMU}_roms_advance_member.sub 
+> ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_advance_member.sub 
 sed "/<HEADER>/r header.${CLUSTER}" generic_roms_post_member.sub \
         | sed -e "/<HEADER>/d" -e "/BSUB -N/d" \
         | sed -e "/ptile=/d" \
-> ${SCRATCHDIR}/${SIMU}_roms_post_member.sub
+> ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_post_member.sub
+### ANALYSIS
+sed "/<HEADER>/r header.${CLUSTER}" generic_analysis.sub \
+        | sed -e "/<HEADER>/d" \
+> ${SCRATCHDIR}/Jobfiles/${SIMU}_analysis.sub
 ### SUBMIT SCRIPT
 # Also remove the mailing option for next submission script
 sed "/<HEADER>/r header.${CLUSTER}" generic_submit_next.sub \
         | sed -e "/<HEADER>/d" -e "/BSUB -N/d" \
         | sed -e "s;ptile=16;ptile=1;g" \
-> ${SCRATCHDIR}/${SIMU}_submit_next.sub
+> ${SCRATCHDIR}/Jobfiles/${SIMU}_submit_next.sub
 ### STORING and POSTPROCESSING
-cp roms2hpss.sub ${SCRATCHDIR}/roms2hpss.sub
-cp Compute_spread_timeserie.sub ${SCRATCHDIR}/
+cp roms2hpss.sub ${SCRATCHDIR}/Jobfiles/
+cp Compute_spread_timeserie.sub ${SCRATCHDIR}/Jobfiles/
+cp Make_nc4_diags.sub ${SCRATCHDIR}/Jobfiles/
 
 cd ${SCRATCHDIR}
 echo "Creating working directory : $(pwd)"

@@ -2,7 +2,7 @@
 
 . ./parameters
 
-cat ${SCRATCHDIR}/roms2hpss.sub | sed -e "s;<SIMU>;${SIMU};g" \
+cat ${SCRATCHDIR}/Jobfiles/roms2hpss.sub | sed -e "s;<SIMU>;${SIMU};g" \
                                       -e "s;<PROJECTCODE>;${PROJECT};g" \
                                       -e "s;<NMEMBERS>;${NMEMBERS};g" \
                                       -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \

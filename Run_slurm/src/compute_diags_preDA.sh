@@ -2,7 +2,7 @@
 
 . ./parameters
 
-cat ${SCRATCHDIR}/Compute_spread_timeserie.sub | sed -e "s;<SIMU>;${SIMU};g" \
+cat ${SCRATCHDIR}/Jobfiles/Compute_spread_timeserie.sub | sed -e "s;<SIMU>;${SIMU};g" \
                                                      -e "s;<PROJECTCODE>;${PROJECT};g" \
                                                      -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
 > ${SCRATCHDIR}/Tempfiles/Compute_spread_timeserie.sub
