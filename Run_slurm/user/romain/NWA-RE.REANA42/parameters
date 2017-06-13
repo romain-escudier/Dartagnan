@@ -1,30 +1,30 @@
 #!/bin/ksh
 
 # Directories
-WORKINGDIR=<WORKINGDIR>
-DARTMNGDIR=<DARTMNGDIR>
+WORKINGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA41/
+DARTMNGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/
 
 # Number of ensemble members to run
 NMEMBERS=30
 
 # Starting date
 REFDATE=19000101
-STARTDATE=20110101
+STARTDATE=20100701
 
 # Analysis step (days)
 DT_ANA=1
 DT_OBS=5
 
 # Simulation name
-SIMU=<SIMUNAME>
+SIMU=NWA-RE.REANA41
 
 # start at cycle nstart
 NSTART=1
 # end at cycle ncycles
-NCYCLES=10
+NCYCLES=183
 
 # Computation directory
-SCRATCHDIR=<SCRATCHDIR>
+SCRATCHDIR=/glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA41/
 DATADIR=/glade/p/work/romaines/Data/
 
 #-------------------------------------------------------
@@ -35,7 +35,7 @@ CLUSTER=yellowstone
 
 # Time limit
 TLIM_ROMS=0:30
-TLIM_DART=0:30
+TLIM_DART=0:10
 
 # TRITON OPTIONS
 if [ ${CLUSTER} = "triton" ] ; then
@@ -57,14 +57,14 @@ fi
 #-------------------------------------------------------
 
 # Number of core for analysis
-NCORES_DART=72
+NCORES_DART=16
 
 # start analysis at cycle nstart_ana
 NSTART_ANA=184
 
 # Observation files
-OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/
-OBS_PREF_1=obs_seq.sst_gtspp.
+OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/Serr03Terr07thinSSTerr02_ST5days/
+OBS_PREF_1=obs_seq.sst.
 OBS_PREF_2=obs_seq.sst_gtspp.
 
 # Inflation
@@ -85,7 +85,7 @@ DT=300
 
 # SPIN-UP
 DT_SPIN=100
-NCYCLES_SPIN=5
+NCYCLES_SPIN=3
 
 # Output step (days)
 DT_OUT=1
@@ -115,13 +115,12 @@ RUNOFFILE=${DATADIR}/Runoff/runoff_NWA_daitren_clim.nc
 TIDESFILE=${DATADIR}/Tides/NWA_tides_otps.nc
 SSSREFILE=${DATADIR}/SSS/sss_monthly_climato_flooded.nc
 
-
 #-------------------------------------------------------
 # EXECUTABLES
 #-------------------------------------------------------
 
 if [ ${CLUSTER} = "triton" ] ; then
-   SUBMIT="sbatch --reservation=dart"
+   SUBMIT=sbatch
    RUN="srun --cpu_bind=rank"
    declare -a frontnode=(node0)
 elif [ ${CLUSTER} = "yellowstone" ] ; then
