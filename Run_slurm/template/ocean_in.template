@@ -535,6 +535,10 @@ SO_sdev(isTsur) == 1.0d0 1.0d0             ! NT surface tracers flux
     eos_pert_rcorr == 1.0d5                  ! Spatial correlation of perturbations
     eos_pert_tcorr == 5.0d0                  ! Temporal correlation of perturbations
 
+    var_perturb_hsbl == 0.1d0                ! Variance of HSBL perturbations for SKPP
+    hskpp_pert_rcorr == 1.0d5                ! Spatial correlation of perturbations
+    hskpp_pert_tcorr == 5.0d0                ! Temporal correlation of perturbations
+
 ! Logical switches (TRUE/FALSE) to activate writing of fields into
 ! HISTORY output file.
 

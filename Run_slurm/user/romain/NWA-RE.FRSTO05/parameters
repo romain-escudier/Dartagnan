@@ -16,7 +16,7 @@ DT_ANA=1
 DT_OBS=5
 
 # Simulation name
-SIMU=NWA-RE.FRSTO04
+SIMU=NWA-RE.FRSTO05
 
 # start at cycle nstart
 NSTART=1
@@ -97,13 +97,13 @@ FORCINGDIR=${DATADIR}/Inputs/Forcings/Perturbed/CorrectDx/
 FORCINGPREF=drowned_MERRA_
 FORCINGSUFF=_3hours_
 
-GRIDFILE=/t0/scratch/romain/inputs/NWA_grd_newwtypechl.nc
-NUDGCOEF=/t0/scratch/romain/inputs/NWA_nudging_coef.nc
+GRIDFILE=${DATADIR}/NWA_grd_newwtypechl.nc
+NUDGCOEF=${DATADIR}/NWA_nudging_coef.nc
 INITDIR=${DATADIR}/Inputs/Init/HYCOM_ClimCore2/
 INITFILE=HYCOM_GLBa0.08_2011_001_ClimCore2_NWA_init.nc
 
-CLIMFILE=${DATADIR}/Inputs/CLM-NWA/HYCOM_GLBa0.08_monthly_clim_NWA_2011.nc
-BRYFILE=${DATADIR}/Inputs/BC-NWA/HYCOM_GLBa0.08_bdry_NWA_2011.nc
+CLMPREF=${DATADIR}/Inputs/CLM-NWA/HYCOM_GLBa0.08_monthly_clim_NWA_
+BRYPREF=${DATADIR}/Inputs/BC-NWA/HYCOM_GLBa0.08_bdry_NWA_
 RUNOFFILE=${DATADIR}/Inputs/Runoff/runoff_NWA_daitren_clim.nc
 TIDESFILE=${DATADIR}/Inputs/Tides/NWA_tides_otps.nc
 SSSREFILE=${DATADIR}/Inputs/SSS/sss_monthly_climato_flooded.nc
