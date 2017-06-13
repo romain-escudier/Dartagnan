@@ -305,6 +305,8 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
 -NWA-RE.FRSTO04 : Freerun (membre #1) with EOS perturbations (no spatial  [5 days]
                   dependency)
 
+-NWA-RE.FRSTO05 : Freerun (membre #1) with SKPP perturbations             [5 days]
+
 -----------------------------------------------------------------------------------------
   Stochastic parametrization operational
 -----------------------------------------------------------------------------------------
