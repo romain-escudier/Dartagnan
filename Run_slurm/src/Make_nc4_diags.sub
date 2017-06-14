@@ -18,6 +18,11 @@ module load parallel
 cd ${SCRATCHDIR}/Outputs/Diags/
 
 ls *.nc | parallel "ncks -4 -L 1 {} {}4"
-rm *.nc
+for file in *.nc; do
+   if [ -f ${file}4 ]; then
+      rm ${file}
+   fi
+done
 
 exit 0
+

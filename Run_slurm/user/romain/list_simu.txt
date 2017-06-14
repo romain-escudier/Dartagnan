@@ -305,7 +305,7 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
 -NWA-RE.FRSTO04 : Freerun (membre #1) with EOS perturbations (no spatial  [5 days]
                   dependency)
 
--NWA-RE.FRSTO05 : Freerun (membre #1) with SKPP perturbations             [5 days]
+-NWA-RE.FRSTO05 : Freerun (membre #1) with SKPP perturbations             [12 days]
 
 -----------------------------------------------------------------------------------------
   Stochastic parametrization operational
@@ -416,9 +416,10 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
         - Thinned (L=0.3,T=0.5) GTSPP data (Serr=0.3, Terr=0.7) (5days assim)
         - Inflation (Prior, ini=1.02/0.6, damp=0.6, max=1.3)
         - Cutoff = 0.02
-        -> 
+        -> Not bad
 
--RE.REANA41 : As RE.REANA36 but small inflation + err(SST)=0.2     [537 days]
+-RE.REANA41 : As RE.REANA40 but longer spin-up + no perturb on param
+              + daily assimilation                                [537 days]
         - HYCOM for initial conditions (2010,7,1)
         - 184 days (6 month) spin-up (freerun) with forcing/EOS pert
         - Forcing perturbations (500km, swrad=3,Tair=.9,Uwind=1) now online
@@ -430,9 +431,19 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
         - Thinned (L=0.3,T=0.5) GTSPP data (Serr=0.3, Terr=0.7) (daily assim)
         - No Inflation 
         - Cutoff = 0.02
-        ->
+        -> Simulation for article: some issues in summer (bias) but assessed
+           to be due to lack of ice model in the Labrador/Saint Laurent
 
-
+-RE.REANA42 : As RE.REANA42 with perturb on SKPP                  [0 days]
+        - HYCOM for initial conditions (2010,7,1)
+        - 184 days (6 month) spin-up (freerun) with forcing/EOS/SKPP pert
+        - Forcing perturbations: swrad=3,Tair=.9,Uwind=1, 500km, 5days
+        - EOS     perturbations: horiz=0.7,vert=0.5,clampT=0.8,clampS=0.3
+        - SKPP    perturbations: var=0.1, 100km, 5days
+        - SW+LW corrected -> NOCS (no mask)
+        - Gridded WTYPE
+        - ROMS temperature clamp (>-1.8)
+        -> 
 
 
 

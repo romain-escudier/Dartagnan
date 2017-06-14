@@ -63,7 +63,7 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    cat ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_post_member.sub | sed -e "s;<MEMBER>;$nnn;g" \
                                                         -e "s;<DEPLIST>;${dep_id};g" \
                                                         -e "s;<NCORES>;1;g"\
-                                                        -e "s;<WALLTIME>;00:10;g" \
+                                                        -e "s;<WALLTIME>;00:20;g" \
                                                         -e "s;<CYCLE>;${cycle};g" \
                                                         -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
                                                         -e "s;<JOBNAME>;roms_post_${nnn}_c${disp_cycle}_${SIMU};g" \

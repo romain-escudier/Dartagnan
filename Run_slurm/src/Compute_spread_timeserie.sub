@@ -41,6 +41,14 @@ for this_cycle in $( seq $NSTART $NSTART_ANA ) ; do
 done
 
 seq 1 $NSTART $NSTART_ANA | parallel "python ${SCRATCHDIR}/Tempfiles/Compute_spread_{}.py"
+cd ${SCRATCHDIR}/Outputs/Diags/
+
+ls *.nc | parallel "ncks -4 -L 1 {} {}4"
+for file in *.nc; do
+   if [ -f ${file}4 ]; then
+      rm ${file}
+   fi
+done
 
 
 

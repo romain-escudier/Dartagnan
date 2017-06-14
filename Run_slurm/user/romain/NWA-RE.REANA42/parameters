@@ -1,7 +1,7 @@
 #!/bin/ksh
 
 # Directories
-WORKINGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA41/
+WORKINGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA42/
 DARTMNGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/
 
 # Number of ensemble members to run
@@ -13,10 +13,10 @@ STARTDATE=20100701
 
 # Analysis step (days)
 DT_ANA=1
-DT_OBS=5
+DT_OBS=1
 
 # Simulation name
-SIMU=NWA-RE.REANA41
+SIMU=NWA-RE.REANA42
 
 # start at cycle nstart
 NSTART=1
@@ -24,7 +24,7 @@ NSTART=1
 NCYCLES=183
 
 # Computation directory
-SCRATCHDIR=/glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA41/
+SCRATCHDIR=/glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA42/
 DATADIR=/glade/p/work/romaines/Data/
 
 #-------------------------------------------------------
@@ -63,7 +63,7 @@ NCORES_DART=16
 NSTART_ANA=184
 
 # Observation files
-OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/Serr03Terr07thinSSTerr02_ST5days/
+OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/Serr03Terr07thinSSTerr02/
 OBS_PREF_1=obs_seq.sst.
 OBS_PREF_2=obs_seq.sst_gtspp.
 

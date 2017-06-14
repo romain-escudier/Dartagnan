@@ -20,8 +20,6 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    echo "Moving file : HSI:${rep_ini}/m${nnn}/$filename $rep_out/m${nnn}/"
    cd m${nnn}/
    hsi -a $ACCOUNT "cd ${rep_ini}/m${nnn}; cget $file_name"
-
-
 done
 
 
