@@ -16,7 +16,8 @@ else
 fi
 
 # Check last file (remove all before N-3)
-cd ${SCRATCHDIR}/Outputs/Filtfiles/m030/
+printf -v NMEM "%03d" ${NMEMBERS}
+cd ${SCRATCHDIR}/Outputs/Filtfiles/m${NMEM}/
 file_list=$(ls ocean_filu_01_*)
 last_file=$(echo $file_list | awk -F " " '{print $NF}')
 last_date=${last_file#ocean_filu_01_}

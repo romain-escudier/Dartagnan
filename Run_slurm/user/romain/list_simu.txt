@@ -445,7 +445,14 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
         - ROMS temperature clamp (>-1.8)
         -> 
 
-
+-RE.REANA43 : Spin-up with perturbations on SKPP only             [0 days]
+        - HYCOM for initial conditions (2010,7,1)
+        - 184 days (6 month) spin-up (freerun) with SKPP pert
+        - SKPP    perturbations: var=0.1, 100km, 5days
+        - SW+LW corrected -> NOCS (no mask)
+        - Gridded WTYPE
+        - ROMS temperature clamp (>-1.8)
+        ->
 
 
 
