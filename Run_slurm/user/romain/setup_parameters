@@ -10,7 +10,7 @@ ROMSAPP=NWA
 USERINI=RE
 
 # Simulation specific name
-SIMUSUFF=REANA42
+SIMUSUFF=REANA45
 
 # Application long name
 APPLONG="Northwest Atlantic 7km Grid"
@@ -19,7 +19,7 @@ APPLONG="Northwest Atlantic 7km Grid"
 #ROMSDIR=/home/romain/Projects/ROMS/
 #DARTDIR=/home/romain/Projects/DART/trunk/
 ROMSDIR=/glade/p/work/romaines/Tools/ROMS/
-DARTDIR=/glade/p/work/romaines/Tools/DART/trunk_new/
+DARTDIR=/glade/p/work/romaines/Tools/DART/trunk_new2/
 
 
 ############################################################

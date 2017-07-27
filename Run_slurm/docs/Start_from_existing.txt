@@ -93,9 +93,9 @@ $ ./main.sh
 -----------------------------------------
 Get the initialization files :
 -----------------------------------------
-$ ./move_members.sh ocean_fil*_01_{DATE_START}.nc ${SCRATCH}/dart/tmp_PREVIOUS_SIMUNAME/Outputs/Filtfiles/ ${SCRATCH}/dart/tmp_SIMUNAME/Outputs/Filtfiles/
+$ ./move_members.sh ocean_fil*_01_{DATE_START-1}.nc ${SCRATCH}/dart/tmpdir_PREVIOUS_SIMUNAME/Outputs/Filtfiles/ ${SCRATCH}/dart/tmpdir_SIMUNAME/Outputs/Filtfiles/
 Get the filtering files for the start date
-$ ./move_members.sh PREVIOUS_SIMUNAME_rstana_{DATE_START-1}.nc ${SCRATCH}/dart/tmp_PREVIOUS_SIMUNAME/Outputs/Reanalysis/ ${SCRATCH}/dart/tmp_SIMUNAME/Outputs/Reanalysis/
+$ ./move_members.sh PREVIOUS_SIMUNAME_rstana_{DATE_START-1}.nc ${SCRATCH}/dart/tmpdir_PREVIOUS_SIMUNAME/Outputs/Reanalysis/ ${SCRATCH}/dart/tmpdir_SIMUNAME/Outputs/Reanalysis/
 $ rename PREVIOUS_SIMUNAME SIMUNAME ${SCRATCH}/dart/tmp_SIMUNAME/Outputs/Reanalysis/m*/*.nc
 Get the previous date analysis
 $ rsync -havz --progress ${SCRATCH}/dart/tmp_PREVIOUS_SIMUNAME/Outputs/Reanalysis/Inflation/dart_inf_{DATE_START} ${SCRATCH}/dart/tmp_SIMUNAME/Outputs/Reanalysis/Inflation/
