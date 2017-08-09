@@ -1,30 +1,30 @@
 #!/bin/ksh
 
 # Directories
-WORKINGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA45/
-DARTMNGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/
+WORKINGDIR=<WORKINGDIR>
+DARTMNGDIR=<DARTMNGDIR>
 
 # Number of ensemble members to run
 NMEMBERS=30
 
 # Starting date
 REFDATE=19000101
-STARTDATE=20100701
+STARTDATE=20110701
 
 # Analysis step (days)
 DT_ANA=1
 DT_OBS=1
 
 # Simulation name
-SIMU=NWA-RE.REANA45
+SIMU=<SIMUNAME>
 
 # start at cycle nstart
 NSTART=1
 # end at cycle ncycles
-NCYCLES=550
+NCYCLES=10
 
 # Computation directory
-SCRATCHDIR=/glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA45/
+SCRATCHDIR=<SCRATCHDIR>
 DATADIR=/glade/p/work/romaines/Data/
 
 #-------------------------------------------------------
@@ -63,10 +63,9 @@ NCORES_DART=80
 NSTART_ANA=185
 
 # Observation files
-OBS_DIR=${DATADIR}/ObsData/AVISO/ATerr003/
-OBS_PREF_1=obs_seq.aviso.
-OBS_PREF_2=obs_seq.aviso.
-MDT_FILE=${DATADIR}/ObsData/AVISO/NWA-RD.HCSODA3REMERRA_ssh_avg_1993-2012.nc
+OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/
+OBS_PREF_1=obs_seq.sst_gtspp.
+OBS_PREF_2=obs_seq.sst_gtspp.
 
 # Inflation
 INF_INI=1.02

@@ -1,0 +1,46 @@
+#!/bin/bash
+<HEADER>
+
+. <CURRENTDIR>/parameters
+. <CURRENTDIR>/functions.sh
+
+set -ex
+
+echo $(date)
+
+this_member=<MEMBER>
+this_cycle=<CYCLE>
+this_cycle=$(str2num $this_cycle)
+
+# Get current date
+date_cycle=$(get_date_from_cycle $(( $this_cycle - 1 )) ${STARTDATE} ${DT_ANA}) # Date of cycle YYYYMMDD
+
+
+#------------------------------------------------------------------------------------
+# Save outputs in netcdf4 (compressed)
+#------------------------------------------------------------------------------------
+module load nco
+# Average
+cd ${SCRATCHDIR}/Outputs/Average/m${this_member}/
+filename=$(ls ${SIMU}_avg_${date_cycle}_*.nc)
+ncks -O -4 -L 1 ${filename} ${filename}
+# Prior
+cd ${SCRATCHDIR}/Outputs/Prior/m${this_member}/
+filename=${SIMU}_rst_${date_cycle}.nc
+ncks -O -4 -L 1 ${filename} ${filename}
+
+
+#------------------------------------------------------------------------------------
+# Save the filter files
+#------------------------------------------------------------------------------------
+
+# Go to temporary directory (because filtering files are created in current directory)
+cd ${SCRATCHDIR}/Tempfiles/m${this_member}/
+
+# Save current filtering files
+for file_filt in ocean_fil*.nc ; do
+   rsync -havz ${file_filt} ${SCRATCHDIR}/Outputs/Filtfiles/m${this_member}/${file_filt%.*}_${date_cycle}.nc
+done
+
+echo $(date)
+

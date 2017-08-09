@@ -1,0 +1,33 @@
+
+############################################################
+## To be filled by user
+#############################################################
+
+# Type of simulation
+ROMSAPP=NWA
+
+# User initials
+USERINI=BJC
+
+# Simulation specific name
+SIMUSUFF=ENKF14
+
+# Computation directory
+ROMSDIR=/home/bjchoi/MODELS/ROMS-kate
+DARTDIR=/home/bjchoi/MODELS/lanai
+
+
+
+############################################################
+# No user change after this
+############################################################
+
+# Simulation name
+SIMUNAME=${ROMSAPP}-${USERINI}.${SIMUSUFF}
+
+# Directory of outputs
+SCRATCHDIR=${SCRATCH}/tmpdir_${SIMUNAME}/
+
+
+
+

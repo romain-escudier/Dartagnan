@@ -1,6 +1,5 @@
 *******************************************************************
      HOW TO RUN ROMS/DART ON TRITON (RUTGERS) WITH dartagnan
-               Starting from existing simulation
 *******************************************************************
 
 
@@ -83,37 +82,16 @@ Put the desired parameters for the DART assimilation
 
 
 -----------------------------------------
-Prelaunch the simulation :
------------------------------------------
-$ vi main.sh
-Comment the line that launch the ./submit_cycle
-$ ./main.sh
-
-
------------------------------------------
-Get the initialization files :
------------------------------------------
-$ ./move_members.sh ocean_fil*_01_{DATE_START-1}.nc ${SCRATCH}/dart/tmpdir_PREVIOUS_SIMUNAME/Outputs/Filtfiles/ ${SCRATCH}/dart/tmpdir_SIMUNAME/Outputs/Filtfiles/
-Get the filtering files for the start date
-$ ./move_members.sh PREVIOUS_SIMUNAME_rstana_{DATE_START-1}.nc ${SCRATCH}/dart/tmpdir_PREVIOUS_SIMUNAME/Outputs/Reanalysis/ ${SCRATCH}/dart/tmpdir_SIMUNAME/Outputs/Reanalysis/
-$ rename PREVIOUS_SIMUNAME SIMUNAME ${SCRATCH}/dart/tmpdir_SIMUNAME/Outputs/Reanalysis/m*/*.nc
-Get the previous date analysis
-$ rsync -havz --progress ${SCRATCH}/dart/tmpdir_PREVIOUS_SIMUNAME/Outputs/Reanalysis/Inflation/dart_inf_{DATE_START} ${SCRATCH}/dart/tmpdir_SIMUNAME/Outputs/Reanalysis/Inflation/
-Get the inflation current values
-
-
------------------------------------------
 Launch the simulation :
 -----------------------------------------
-$ ./submit_cycle {CYCLE} > Logs/submit.log
-
+$ ./main.sh
 
 -----------------------------------------
 Look at results :
 -----------------------------------------
 The outputs/logs are stored in the scratch directory:
-it is ${SCRATCH}/dart/tmpdir_SIMUNAME/
-$ cd ${SCRATCH}/dart/tmpdir_SIMUNAME/
+it is ${SCRATCH}/dart/tmp_SIMUNAME/
+$ cd ${SCRATCH}/dart/tmp_SIMUNAME/
 
 The output files are in Outputs/ :
    Average/    -> directory for average files

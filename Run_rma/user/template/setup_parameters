@@ -1,0 +1,35 @@
+
+############################################################
+## To be filled by user
+#############################################################
+
+# Type of application
+ROMSAPP=NWA
+
+# User initials
+USERINI=RE
+
+# Simulation specific name
+SIMUSUFF=REANA01T
+
+# Application long name
+APPLONG="Northwest Atlantic 7km Grid"
+
+# Computation directory
+ROMSDIR=/home/romain/Projects/ROMS/
+DARTDIR=/home/romain/Projects/DART/trunk/
+
+
+############################################################
+# No user change after this
+############################################################
+
+# Simulation name
+SIMUNAME=${ROMSAPP}-${USERINI}.${SIMUSUFF}
+
+# Directory of outputs
+SCRATCHDIR=${SCRATCH}/dart/tmpdir_${SIMUNAME}/
+
+
+
+

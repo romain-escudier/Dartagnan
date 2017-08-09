@@ -137,6 +137,20 @@
                                 'FLOAT_SALINITY',
                                 'SEA_SURFACE_HEIGHT',
                                 'SATELLITE_INFRARED_SST',
+                                'AltiKa_SEA_SURFACE_ANOMALY',
+                                'Cryosat2_SEA_SURFACE_ANOMALY',
+                                'Envisat_SEA_SURFACE_ANOMALY',
+                                'Envisatn_SEA_SURFACE_ANOMALY',
+                                'ERS1_SEA_SURFACE_ANOMALY',
+                                'ERS2_SEA_SURFACE_ANOMALY',
+                                'GFO_SEA_SURFACE_ANOMALY',
+                                'Haiyang2A_SEA_SURFACE_ANOMALY',
+                                'J1_SEA_SURFACE_ANOMALY',
+                                'J1g_SEA_SURFACE_ANOMALY',
+                                'J1n_SEA_SURFACE_ANOMALY',
+                                'J2_SEA_SURFACE_ANOMALY',
+                                'TP_SEA_SURFACE_ANOMALY',
+                                'TPn_SEA_SURFACE_ANOMALY',
    evaluate_these_obs_types   = 'null'
   /
 
@@ -154,6 +168,8 @@
    hc                           = <HC>
    model_restart_filename       = '<ROMSRSTNAME>'
    grid_definition_filename     = '<GRIDNAME>'
+   mdt_reference_file_name      = '<MDTFILENAME>'
+   mdt_reference_var_name       = 'zeta'
    vert_localization_coord      = 3
    debug     = 0
    variables = 'temp',         'KIND_TEMPERATURE',
@@ -324,4 +340,8 @@
    interp_test_vertcoord = 'VERTISHEIGHT'
   /
 
+&obs_def_ocean_nml
+   max_radial_vel_obs = 1000000,
+   debug              = .false.,
+   /
 
