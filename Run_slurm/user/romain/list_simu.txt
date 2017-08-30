@@ -382,6 +382,10 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
         - Cutoff = 0.02
         -> Very similar to RE.REANA36, 1% change in spread (<) and #obs (>)
 
+-----------------------------------------------------------------------------------------
+  Stochastic parameters (viscosity/diffusion)
+-----------------------------------------------------------------------------------------
+
 -RE.REANA38 : As RE.REANA36 but perturbations on viscosity and diff  [65 days]
         - HYCOM for initial conditions (2010,9,1)
         - 65 days freerun with forcing/EOS/param pert
@@ -392,6 +396,10 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
         - Gridded WTYPE
         - ROMS temperature clamp (>-1.8)
         -> Almost same spread as RE.REANA36
+
+-----------------------------------------------------------------------------------------
+  1-yr reanalysis
+-----------------------------------------------------------------------------------------
 
 -RE.REANA39 : Extension of freerun of RE.REANA36                    [180 days]
         - HYCOM for initial conditions (2010,9,1)
@@ -480,9 +488,44 @@ NWA-RE.REANA11 : First test corrected atmo perturbed fields	    [34 days]
         - Cutoff = 0.02
         -> Some issues with MDT...
 
+-----------------------------------------------------------------------------------------
+  Manhattan version of DART
+-----------------------------------------------------------------------------------------
+
+-RE.REANA46 : As RE.REANA44 but with new DART code                [200 days]
+              cutoff = 0.05
+        - HYCOM for initial conditions (2010,7,1)
+        - 184 days (6 month) spin-up (freerun) with forcing/EOS pert
+        - Forcing perturbations (500km, swrad=3,Tair=.9,Uwind=1) now online
+        - EOS perturbations (horiz:0.7,vert:0.5,clampT=0.8,clampS=0.3)
+        - SW+LW corrected -> NOCS (no mask)
+        - Gridded WTYPE
+        - ROMS temperature clamp (>-1.8)
+        - 0.2 Rep error for SST (daily assim)
+        - Thinned (L=0.3,T=0.5) GTSPP data (Serr=0.3, Terr=0.7) (daily assim)
+        - Inflation (Prior, ini=1.02/0.6, damp=0.8, max=2)
+        - Cutoff = 0.05
+        -> Sharp decrease of spread
 
 
+-RE.REANA47 : As RE.REANA46 but no inflation and cutoff = 0.02    [200 days]
+              (should be comparable to RE.REANA44)
+        - HYCOM for initial conditions (2010,7,1)
+        - 184 days (6 month) spin-up (freerun) with forcing/EOS pert
+        - Forcing perturbations (500km, swrad=3,Tair=.9,Uwind=1) now online
+        - EOS perturbations (horiz:0.7,vert:0.5,clampT=0.8,clampS=0.3)
+        - SW+LW corrected -> NOCS (no mask)
+        - Gridded WTYPE
+        - ROMS temperature clamp (>-1.8)
+        - 0.2 Rep error for SST (daily assim)
+        - Thinned (L=0.3,T=0.5) GTSPP data (Serr=0.3, Terr=0.7) (daily assim)
+        - Cutoff = 0.02
+        -> Also sharp decrease of spread
 
+
+-RE.REANA48 : 15yrs Reanalysis!!!!!!!                            [200 days]
+              * Correction of in-situ VS potential temperature
+              * Correction of vertical levels definition
 
 
 

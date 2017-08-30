@@ -35,8 +35,8 @@
 
 &assim_tools_nml
    filter_kind                       = 1
-   cutoff                            = 0.02
-   distribute_mean                   = .false.
+   cutoff                            = 0.05
+   distribute_mean                   = .true.
    sort_obs_inc                      = .false.
    spread_restoration                = .false.
    sampling_error_correction         = .false.
@@ -64,17 +64,17 @@
 &filter_nml
    single_file_in               = .false.,
    input_state_files            = 'null'
-   input_state_file_list        = 'null'
-   init_time_days               = 0,
+   input_state_file_list        = '<PRIORLIST>'
+   init_time_days               = <DARTINITDAYS>,
    init_time_seconds            = 0,
    perturb_from_single_instance = .false.,
    perturbation_amplitude       = 0.2,
 
-   stages_to_write              = 'output'
+   stages_to_write              = 'preassim', 'output'
 
    single_file_out              = .false.,
    output_state_files           = 'null'
-   output_state_file_list       = 'null'
+   output_state_file_list       = '<ANALIST>'
    output_interval              = 1,
    output_members               = .true.
    num_output_state_members     = 0,
@@ -82,7 +82,7 @@
    output_sd                    = .true.
    write_all_stages_at_end      = .false.
 
-   ens_size                     = 20,
+   ens_size                     = <NMEMBERS>,
    num_groups                   = 1,
    distributed_state            = .true.
 
@@ -90,35 +90,36 @@
    adv_ens_command              = "./advance_model.csh",
    tasks_per_model_advance      = 1
 
-   obs_sequence_in_name         = "obs_seq.out",
-   obs_sequence_out_name        = "obs_seq.final",
-   num_output_obs_members       = 0,
-   first_obs_days               = -1,
-   first_obs_seconds            = -1,
-   last_obs_days                = -1,
-   last_obs_seconds             = -1,
-   obs_window_days              = -1,
-   obs_window_seconds           = -1,
+   obs_sequence_in_name         = "<OBSINFILE>",
+   obs_sequence_out_name        = "<OBSOUTFILE>",
+   num_output_obs_members       = <NMEMBERS>,
+   first_obs_days               = <FIRSTOBSDAY>,
+   first_obs_seconds            = 0,
+   last_obs_days                = <LASTOBSDAY>,
+   last_obs_seconds             = 86399,
+   obs_window_days              = <DTANA_OBS>,
+   obs_window_seconds           = 0,
 
-   inf_flavor                  = 0,                       0,
-   inf_initial_from_restart    = .false.,                 .false.,
-   inf_sd_initial_from_restart = .false.,                 .false.,
+   inf_flavor                  = <INFLATION>,             0,
+   inf_initial_from_restart    = .true.,                  .false.,
+   inf_sd_initial_from_restart = .true.,                  .false.,
    inf_deterministic           = .true.,                  .true.,
-   inf_initial                 = 1.0,                     1.0,
-   inf_sd_initial              = 0.0,                     0.0,
-   inf_damping                 = 1.0,                     1.0,
+   inf_initial                 = <INF_INI>,               1.0,
+   inf_sd_initial              = <INF_SD_INI>,            0.0,
+   inf_damping                 = 0.9,                     1.0,
    inf_lower_bound             = 1.0,                     1.0,
-   inf_upper_bound             = 1000000.0,               1000000.0,
-   inf_sd_lower_bound          = 0.0,                     0.0
+   inf_upper_bound             = 1.3,                     1000000.0,
+   inf_sd_lower_bound          = 0.6,                     0.0
 
    trace_execution              = .false.,
-   output_timestamps            = .false.,
+   output_timestamps            = .true.,
    output_forward_op_errors     = .false.,
    silence                      = .false.,
    /
+
 &quality_control_nml
    input_qc_threshold          = 3
-   outlier_threshold           = -1
+   outlier_threshold           = 3
    enable_special_outlier_code = .false.
   /
 
@@ -126,22 +127,41 @@
    select_regression    = 1,
    input_reg_file       = "time_mean_reg",
    save_reg_diagnostics = .false.,
-   reg_diagnostics_file = "reg_diagnostics"  /
+   reg_diagnostics_file = "reg_diagnostics"
+  /
 
 &smoother_nml
    num_lags              = 0,
    start_from_restart    = .false.,
    output_restart        = .false.,
    restart_in_file_name  = 'ics',
-   restart_out_file_name = 'restart'  /
+   restart_out_file_name = 'restart'
+  /
 
 &state_vector_io_nml
    buffer_state_io         = .false.
    single_precision_output = .false.
 /
+
 &obs_kind_nml
-   assimilate_these_obs_types          = 'null',
-   evaluate_these_obs_types            = 'null'  
+   assimilate_these_obs_types          = 'FLOAT_TEMPERATURE',
+                                         'FLOAT_SALINITY',
+                                         'SEA_SURFACE_HEIGHT',
+                                         'SATELLITE_INFRARED_SST',
+   evaluate_these_obs_types            = 'AltiKa_SEA_SURFACE_ANOMALY',
+                                         'Cryosat2_SEA_SURFACE_ANOMALY',
+                                         'Envisat_SEA_SURFACE_ANOMALY',
+                                         'Envisatn_SEA_SURFACE_ANOMALY',
+                                         'ERS1_SEA_SURFACE_ANOMALY',
+                                         'ERS2_SEA_SURFACE_ANOMALY',
+                                         'GFO_SEA_SURFACE_ANOMALY',
+                                         'Haiyang2A_SEA_SURFACE_ANOMALY',
+                                         'J1_SEA_SURFACE_ANOMALY',
+                                         'J1g_SEA_SURFACE_ANOMALY',
+                                         'J1n_SEA_SURFACE_ANOMALY',
+                                         'J2_SEA_SURFACE_ANOMALY',
+                                         'TP_SEA_SURFACE_ANOMALY',
+                                         'TPn_SEA_SURFACE_ANOMALY',  
    use_precomputed_FOs_these_obs_types = 'null'
 /
 
@@ -151,8 +171,8 @@
   /
 
 &ensemble_manager_nml
-   layout                      = 1
-   tasks_per_node              = 1
+   layout                      = 2
+   tasks_per_node              = <TASKPERNODE>
    communication_configuration = 1
    debug                       = .false.
  /
@@ -170,9 +190,9 @@
   /
 
 &utilities_nml
-   TERMLEVEL      = 2
-   logfilename    = 'dart_log.out'
-   nmlfilename    = 'dart_log.nml'
+   TERMLEVEL      = 1
+   logfilename    = '<DARTLOGOUT>'
+   nmlfilename    = '<DARTLOGNML>'
    module_details = .true.
    print_debug    = .false.
    write_nml      = 'file'
@@ -192,11 +212,20 @@
 #    only variables marked 'UPDATE' will be modified for ROMS.
 
 &model_nml
-   roms_filename               = 'roms_init.nc'
-   assimilation_period_days    = 1
+   roms_filename               = '<ROMSRSTNAME>'
+   vert_transform              = 2
+   roms_grid_file              = '<GRIDNAME>'
+   assimilation_period_days    = <DTANA_OBS>
    assimilation_period_seconds = 0
    vert_localization_coord     = 3
    debug                       = 0
-   variables                   = ''
+   variables                   = 'temp',   'QTY_TEMPERATURE',          'NA', 'NA', 'update',
+                                 'salt',   'QTY_SALINITY',             '0.0','NA', 'update',
+                                 'u',      'QTY_U_CURRENT_COMPONENT',  'NA', 'NA', 'update',
+                                 'v',      'QTY_V_CURRENT_COMPONENT',  'NA', 'NA', 'update',
+                                 'zeta',   'QTY_SEA_SURFACE_HEIGHT'    'NA', 'NA', 'update',
 /
 
+&quad_interpolate_nml
+   debug = 0
+  /

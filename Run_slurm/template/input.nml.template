@@ -171,7 +171,6 @@
    assimilation_period_days     = <DTANA_OBS>
    assimilation_period_seconds  = 0
    model_perturbation_amplitude = 0.2
-   hc                           = <HC>
    model_restart_filename       = '<ROMSRSTNAME>'
    grid_definition_filename     = '<GRIDNAME>'
    mdt_reference_file_name      = '<MDTFILENAME>'

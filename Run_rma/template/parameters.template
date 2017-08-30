@@ -9,7 +9,7 @@ NMEMBERS=30
 
 # Starting date
 REFDATE=19000101
-STARTDATE=20110701
+STARTDATE=20100701
 
 # Analysis step (days)
 DT_ANA=1
@@ -68,12 +68,16 @@ OBS_PREF_1=obs_seq.sst_gtspp.
 OBS_PREF_2=obs_seq.sst_gtspp.
 
 # Inflation
-INF_INI=1.02
+INFLATION=false
+INF_INI=1.0
 INF_SD_INI=0.6
 
 #-------------------------------------------------------
 # ROMS PARAMETERS
 #-------------------------------------------------------
+
+# Vertical parametrization
+vert_transform=2
 
 # Number of core for forward
 NCORES_ROMS=80

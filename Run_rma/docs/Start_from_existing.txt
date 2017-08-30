@@ -1,5 +1,5 @@
 *******************************************************************
-     HOW TO RUN ROMS/DART ON TRITON (RUTGERS) WITH dartagnan
+              HOW TO RUN ROMS/DART WITH dartagnan
                Starting from existing simulation
 *******************************************************************
 

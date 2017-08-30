@@ -88,7 +88,6 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    # Temporart dart files
    restart_in=${Temp_dir}/dart.ics
    restart_out=${Temp_dir}/dart.restart
-   hc=$(get_param_from_nc ${GRIDFILE} hc) # ROMS critical depth
    # Inflation file names
    inf_in=${SCRATCHDIR}/Outputs/Reanalysis/Inflation/dart_inf_${date_cycle}
    inf_out=${SCRATCHDIR}/Outputs/Reanalysis/Inflation/dart_inf_${date_cycle_next}
@@ -99,7 +98,6 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    cat ${SCRATCHDIR}/input_${SIMU}.nml  | sed -e "s;<TIMEANA>;${date_cycle_next_std};g" \
                                               -e "s;<DTANA>;${DT_ANA};g" \
                                               -e "s;<DTANA_OBS>;${DT_OBS};g" \
-                                              -e "s;<HC>;${hc};g" \
                                               -e "s;<GRIDNAME>;${GRIDFILE};g" \
                                               -e "s;<MDTFILENAME>;${MDT_FILE};g" \
                                               -e "s;<NMEMBERS>;${NMEMBERS};g" \

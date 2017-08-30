@@ -51,17 +51,13 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 # Prepare the namelists
 #------------------------------------------------------------------------------------
 
-   ### Temporary directory
-   Temp_dir=${SCRATCHDIR}/Outputs/Tmpdir/
-   # Clean it before use
-   rm ${Temp_dir}/*
-
    ### Get dates
    # for this cycle
    date_cycle=$(get_date_from_cycle $(( ${this_cycle} -1 )) $STARTDATE $DT_ANA)
    # For next cycle
    date_cycle_next=$(get_date_from_cycle ${this_cycle} $STARTDATE $DT_ANA)
-   date_cycle_next_std=$(print_time_dart $date_cycle_next)
+   # For previous cycle
+   date_cycle_prev=$(get_date_from_cycle $(( ${this_cycle} -2 )) $STARTDATE $DT_ANA)
 
    ### Get the associate Dart day
    # Dart reference is January 1st, 1601
@@ -83,133 +79,106 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    obs_seq_out=${SCRATCHDIR}/Outputs/ObsOut/${OBS_PREF}final.${date_cycle_next}
 
    ### Other options
-   # read grid info
-   roms_restart_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc
-   # Temporart dart files
-   restart_in=${Temp_dir}/dart.ics
-   restart_out=${Temp_dir}/dart.restart
-   hc=$(get_param_from_nc ${GRIDFILE} hc) # ROMS critical depth
-   # Inflation file names
-   inf_in=${SCRATCHDIR}/Outputs/Reanalysis/Inflation/dart_inf_${date_cycle}
-   inf_out=${SCRATCHDIR}/Outputs/Reanalysis/Inflation/dart_inf_${date_cycle_next}
-   inf_diag=${SCRATCHDIR}/Outputs/Reanalysis/Inflation/dart_inf_diag_${date_cycle}
-
+   # list of restart files
+   roms_list_priors=${SCRATCHDIR}/Tempfiles/list_priors_${date_cycle}.txt
+   ls ${SCRATCHDIR}/Outputs/Prior/m*/${SIMU}_rst_${date_cycle}.nc > ${roms_list_priors}
+   roms_rst_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc
+   # list of analysis files
+   roms_list_ana=${SCRATCHDIR}/Tempfiles/list_analysis_${date_cycle}.txt
+   cat ${roms_list_priors} | sed -e "s;Prior;Reanalysis;g" \
+                                 -e "s;_rst_;_rstana_;g"   > ${roms_list_ana}
 
    # Create the temporary namelist 
-   cat ${SCRATCHDIR}/input_${SIMU}.nml  | sed -e "s;<TIMEANA>;${date_cycle_next_std};g" \
-                                              -e "s;<DTANA>;${DT_ANA};g" \
-                                              -e "s;<DTANA_OBS>;${DT_OBS};g" \
-                                              -e "s;<HC>;${hc};g" \
+   cat ${SCRATCHDIR}/input_${SIMU}.nml  | sed -e "s;<DTANA_OBS>;${DT_OBS};g" \
+                                              -e "s;<PRIORLIST>;${roms_list_priors};g" \
+                                              -e "s;<ANALIST>;${roms_list_ana};g" \
                                               -e "s;<GRIDNAME>;${GRIDFILE};g" \
+                                              -e "s;<ROMSRSTNAME>;${roms_rst_file};g" \
                                               -e "s;<MDTFILENAME>;${MDT_FILE};g" \
                                               -e "s;<NMEMBERS>;${NMEMBERS};g" \
                                               -e "s;<OBSINFILE>;${obs_seq_in};g" \
                                               -e "s;<OBSOUTFILE>;${obs_seq_out};g" \
                                               -e "s;<TASKPERNODE>;${taskpernode};g" \
-                                              -e "s;<DARTRSTIN>;${restart_in};g" \
-                                              -e "s;<DARTRSTOUT>;${restart_out};g" \
                                               -e "s;<FIRSTOBSDAY>;$(($jday-$semi_period));g" \
                                               -e "s;<LASTOBSDAY>;$(($jday+$semi_period));g" \
                                               -e "s;<DARTINITDAYS>;$jday;g" \
-                                              -e "s;<DARTINFIN>;$inf_in;g" \
-                                              -e "s;<DARTINFOUT>;$inf_out;g" \
-                                              -e "s;<DARTINFDIAG>;$inf_diag;g" \
                                               -e "s;<INF_INI>;$INF_INI;g" \
                                               -e "s;<INF_SD_INI>;$INF_SD_INI;g" \
-   > ${SCRATCHDIR}/input.nml.temp
+                                              -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_filt_c${disp_cycle}.out;g" \
+                                              -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_filt_c${disp_cycle}.nml;g" \
+   > ${SCRATCHDIR}/input.nml.tmp
+
+   # Inflation
+   if [ "$INFLATION" = true ] ; then
+      # Edit namelist
+      cat ${SCRATCHDIR}/input.nml.tmp | sed -e "s;<INFLATION>;2;g" > ${SCRATCHDIR}/input.nml
+
+      inf_file_mn=${SCRATCHDIR}/Outputs/Reanalysis/Inflation/Prior_inf_mean_${date_cycle_prev}.nc
+      inf_file_sd=${SCRATCHDIR}/Outputs/Reanalysis/Inflation/Prior_inf_sd_${date_cycle_prev}.nc
+      inf_file_mn_tmp=${SCRATCHDIR}/input_priorinf_mean.nc
+      inf_file_sd_tmp=${SCRATCHDIR}/input_priorinf_sd.nc
+
+      if (( $this_cycle == $NSTART_ANA )) ; then
+         # For the first cycle, create the inflation file
+         module load nco
+         cp ${roms_rst_file} ${inf_file_mn_tmp}
+         cp ${roms_rst_file} ${inf_file_sd_tmp}
+         ncap2 -O -s "u=${INF_INI};v=${INF_INI};temp=${INF_INI};salt=${INF_INI};zeta=${INF_INI}" \
+             ${inf_file_mn_tmp} ${inf_file_mn_tmp}
+         ncap2 -O -s "u=${INF_SD_INI};v=${INF_SD_INI};temp=${INF_SD_INI};salt=${INF_SD_INI};zeta=${INF_SD_INI}" \
+             ${inf_file_sd_tmp} ${inf_file_sd_tmp}
+      else
+         if [ "$( comp_files_md5sum ${inf_file_mn} ${inf_file_mn_tmp} )" == "true" ] ; then
+            echo "Inflation file already there."
+         else
+            rsync -hav ${inf_file_mn} ${inf_file_mn_tmp}
+            rsync -hav ${inf_file_sd} ${inf_file_sd_tmp}
+         fi
+      fi
+   else
+      # Edit namelist
+      cat ${SCRATCHDIR}/input.nml.tmp | sed -e "s;<INFLATION>;0;g" > ${SCRATCHDIR}/input.nml 
+   fi
+   rm ${SCRATCHDIR}/input.nml.tmp
+
+   # Dart need an existing reanalysis file (which is going to be overwritten)
+   seq -f %03g 1 $NMEMBERS | parallel \
+       "rsync -havz ${SCRATCHDIR}/Outputs/Prior/m{}/${SIMU}_rst_${date_cycle}.nc \
+       ${SCRATCHDIR}/Outputs/Reanalysis/m{}/${SIMU}_rstana_${date_cycle}.nc"
 
 
-
-
-#------------------------------------------------------------------------------------
-# Convert all members ROMS files to DART files
-#------------------------------------------------------------------------------------
-
-   for kmem in $( seq 1 $NMEMBERS ) ; do
-   
-      # Dart files have 4 digits in their name, our directories only 3
-      printf -v nnnn "%04d" $kmem
-      printf -v nnn "%03d" $kmem
-      
-      roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
-      dart_input=${Temp_dir}/dart.ics.${nnnn}
-      
-      # Create namelist for the roms2dart code
-      cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTICSFILE>;${dart_input};g" \
-                                              -e "s;<ROMSRSTNAME>;${roms_restart};g" \
-                                              -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_r2d_c${disp_cycle}_m${nnn}.out;g" \
-                                              -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_r2d_c${disp_cycle}_m${nnn}.nml;g" \
-      > ${SCRATCHDIR}/Tempfiles/m${nnn}/input.nml
-   
-   done
-
-   # run DART Fortran program in parallel
-   seq -f %03g 1 $NMEMBERS | parallel "cd ${SCRATCHDIR}/Tempfiles/m{}/;${SCRATCHDIR}/Exe/roms_to_dart"
-   cd ${SCRATCHDIR}/
-   
 #------------------------------------------------------------------------------------
 # run the analysis
 #------------------------------------------------------------------------------------
    
-   # Create namelist for the filter code
-   cat ${SCRATCHDIR}/input.nml.temp | sed -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_filt_c${disp_cycle}.out;g" \
-                                          -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_filt_c${disp_cycle}.nml;g" \
-                                          -e "s;<ROMSRSTNAME>;${roms_restart_file};g" \
-   > ${SCRATCHDIR}/input.nml
-   
-   # For the first cycle, create the inflation file
-   if (( $this_cycle == $NSTART_ANA )) ; then
-      echo ${INF_INI} ${INF_SD_INI} | ${SCRATCHDIR}/Exe/fill_inflation_restart
-      mv inflate_ics $inf_in
-   fi
-
    # Run the Kalman filter
    ${RUN} ${SCRATCHDIR}/Exe/filter
 
-   # If successfully created restart files
-   if [ -f ${Temp_dir}/dart.restart.0001 ]; then
-      success=true
-      # Copy the diag outputs
-      mv ${SCRATCHDIR}/Prior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Prior_Diag_${date_cycle}.nc
-      mv ${SCRATCHDIR}/Posterior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Posterior_Diag_${date_cycle}.nc
-   else
+   # Check if successful
+   check=$( grep "Filter done" ${SCRATCHDIR}/Logs/DART/dart_filt_c${disp_cycle}.out )
+   if [ -z $check ] ; then
       success=false
-   fi 
- 
-#------------------------------------------------------------------------------------
-# Convert all members DART files to ROMS files
-#------------------------------------------------------------------------------------
+   else
+      success=true
+   fi
 
-   if [ "$success" = true ] ; then
- 
-      # Dart need an existing reanalysis file (which is going to be overwritten)
-      seq -f %03g 1 $NMEMBERS | parallel \
-         "rsync -havz ${SCRATCHDIR}/Outputs/Prior/m{}/${SIMU}_rst_${date_cycle}.nc \
-         ${SCRATCHDIR}/Outputs/Reanalysis/m{}/${SIMU}_rstana_${date_cycle}.nc"
-
-      for kmem in $( seq 1 $NMEMBERS ) ; do
-      
-         # Dart files have 4 digits in their name, our directories only 3 
-         printf -v nnn "%03d" $kmem
-         printf -v nnnn "%04d" $kmem
-         
-         roms_restart=${SCRATCHDIR}/Outputs/Prior/m${nnn}/${SIMU}_rst_${date_cycle}.nc
-         roms_reanaly=${SCRATCHDIR}/Outputs/Reanalysis/m${nnn}/${SIMU}_rstana_${date_cycle}.nc
-         dart_output=${Temp_dir}/dart.restart.${nnnn}
-         
-         # Create namelist for the dart2roms code
-         cat ${SCRATCHDIR}/input.nml.temp  | sed -e "s;<DARTRSTFILE>;${dart_output};g" \
-                                                 -e "s;<ROMSRSTNAME>;${roms_reanaly};g" \
-                                                 -e "s;<DARTLOGOUT>;${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}_m${nnn}.out;g" \
-                                                 -e "s;<DARTLOGNML>;${SCRATCHDIR}/Logs/DART/dart_d2r_c${disp_cycle}_m${nnn}.nml;g" \
-         > ${SCRATCHDIR}/Tempfiles/m${nnn}/input.nml
-   
-      done
-
-      # run DART Fortran program in parallel
-      seq -f %03g 1 $NMEMBERS | parallel "cd ${SCRATCHDIR}/Tempfiles/m{}/;${SCRATCHDIR}/Exe/dart_to_roms"
-      cd ${SCRATCHDIR}/
-
+   # If successfully created restart files
+   if [ "$success" = true ]; then
+      # Move the diag outputs
+      mv ${SCRATCHDIR}/preassim_mean.nc ${SCRATCHDIR}/Outputs/Diags/Prior_mean_${date_cycle}.nc
+      mv ${SCRATCHDIR}/preassim_sd.nc   ${SCRATCHDIR}/Outputs/Diags/Prior_sd_${date_cycle}.nc
+      mv ${SCRATCHDIR}/output_mean.nc   ${SCRATCHDIR}/Outputs/Diags/Analysis_mean_${date_cycle}.nc
+      mv ${SCRATCHDIR}/output_sd.nc     ${SCRATCHDIR}/Outputs/Diags/Analysis_sd_${date_cycle}.nc
+    
+      # Copy the inflation files
+      if [ "$INFLATION" = true ] ; then
+         inf_file_mn=${SCRATCHDIR}/Outputs/Reanalysis/Inflation/Prior_inf_mean_${date_cycle}.nc
+         inf_file_sd=${SCRATCHDIR}/Outputs/Reanalysis/Inflation/Prior_inf_sd_${date_cycle}.nc
+         inf_file_mn_tmp=${SCRATCHDIR}/output_priorinf_mean.nc
+         inf_file_sd_tmp=${SCRATCHDIR}/output_priorinf_sd.nc
+         rsync -hav ${inf_file_mn_tmp} ${SCRATCHDIR}/Outputs/Reanalysis/Inflation/Prior_inf_mean_${date_cycle}.nc
+         rsync -hav ${inf_file_sd_tmp} ${SCRATCHDIR}/Outputs/Reanalysis/Inflation/Prior_inf_sd_${date_cycle}.nc
+      fi
    fi
 
 else
@@ -228,7 +197,7 @@ else
       "rsync -havz ${SCRATCHDIR}/Outputs/Prior/m{}/${SIMU}_rst_${date_cycle}.nc \
       ${SCRATCHDIR}/Outputs/Reanalysis/m{}/${SIMU}_rstana_${date_cycle}.nc"
    success=true
-   
+0   
 fi
 
 
