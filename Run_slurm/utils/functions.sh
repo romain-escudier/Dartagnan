@@ -198,7 +198,7 @@ get_timediff_dates() { DATE1=$1 ; DATE2=$2
    declare -i YEAR2=${DATE2:0:4} MONT2=$(str2num ${DATE2:4:2}) DAYS2=$(str2num ${DATE2:6:2})
 
    declare -i NTIME=0
-
+   
    #######################################################
    #           Loop on years
    #######################################################
@@ -211,31 +211,30 @@ get_timediff_dates() { DATE1=$1 ; DATE2=$2
          NDAYS=366
       fi
       NTIME=${NTIME}+${NDAYS}
-
    done
 
    #######################################################
    #           Remove year1 days
    #######################################################
    LEAP1=$(is_leap_year ${YEAR1})
-   if [[ "${LEAP1}" = true && ((${MONT1} > 2)) ]] ; then
+   if [[ "${LEAP1}" = true && "${MONT1}" -gt "2" ]] ; then
       NDAYS=$(get_sum_from_array ${nb_days_months[*]:0:$((${MONT1}-1))})+1
    else
       NDAYS=$(get_sum_from_array ${nb_days_months[*]:0:$((${MONT1}-1))})
    fi
-   NDAYS=${NDAYS}+${DAYS1}
+   NDAYS=$((${NDAYS}+${DAYS1}-1))
    NTIME=${NTIME}-NDAYS
 
    #######################################################
    #           Add year2 days
    #######################################################
    LEAP2=$(is_leap_year ${YEAR2})
-   if [[ "${LEAP2}" = true && ((${MONT2} > 2)) ]] ; then
+   if [[ "${LEAP2}" = true && "${MONT2}" -gt "2" ]] ; then
       NDAYS=$(get_sum_from_array ${nb_days_months[*]:0:$((${MONT2}-1))})+1
    else
       NDAYS=$(get_sum_from_array ${nb_days_months[*]:0:$((${MONT2}-1))})
    fi
-   NDAYS=${NDAYS}+${DAYS2}
+   NDAYS=$((${NDAYS}+${DAYS2}-1))
    NTIME=${NTIME}+NDAYS
 
    echo ${NTIME}

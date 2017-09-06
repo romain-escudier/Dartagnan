@@ -11,7 +11,8 @@ cycle=$1
 . ./functions.sh
 . ./parameters
 
-echo "$(date) : running cycle $cycle of $NCYCLES"
+date_cycle=$(get_date_from_cycle $(( $cycle - 1 )) ${STARTDATE} ${DT_ANA})
+echo "$(date) : running cycle $cycle of $NCYCLES (${date_cycle})"
 printf -v disp_cycle "%05d" ${cycle}
 
 # Check if finished + post-processing
