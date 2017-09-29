@@ -45,7 +45,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
        module load $mod
    done
    rm ${SCRATCHDIR}/Tempfiles/modules.dat
-   module load parallel
+   module load parallel nco
 
 #------------------------------------------------------------------------------------
 # Prepare the namelists
@@ -168,9 +168,9 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    # If successfully created restart files
    if [ -f ${Temp_dir}/dart.restart.0001 ]; then
       success=true
-      # Copy the diag outputs
-      mv ${SCRATCHDIR}/Prior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Prior_Diag_${date_cycle}.nc
-      mv ${SCRATCHDIR}/Posterior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Posterior_Diag_${date_cycle}.nc
+      # Copy and convert to nc4 (for storage) the diag outputs
+      ncks -4 -L 1 ${SCRATCHDIR}/Prior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Prior_Diag_${date_cycle}.nc4
+      ncks -4 -L 1 ${SCRATCHDIR}/Posterior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Posterior_Diag_${date_cycle}.nc4
    else
       success=false
    fi 
@@ -236,12 +236,36 @@ fi
 #------------------------------------------------------------------------------------
 
 if [ "$success" = true ] ; then
+
+   # Do some cleanup
+   if ((${this_cycle}>4)); then
+      cleandate=$(get_date_from_cycle $(( ${this_cycle}-4 )) $STARTDATE 1)
+      next_date=$(get_date_from_cycle $(( ${this_cycle}-3 )) $STARTDATE 1)
+      dday=$(str2num ${next_date:6:2})
+      if (( dday == 1 )); then
+         echo "No cleaning on last day of month: ${cleandate}"
+      else
+         echo "Cleaning up N-3 files. Cleaning day: ${cleandate}"
+         # Directories
+         dir_prior=${SCRATCHDIR}/Outputs/Prior/
+         dir_analy=${SCRATCHDIR}/Outputs/Reanalysis/
+         dir_filts=${SCRATCHDIR}/Outputs/Filtfiles/
+         # Prefixes
+         prefix_prior=${SIMU}_rst_
+         prefix_analy=${SIMU}_rstana_
+         # Loop on members
+         if [ -f ${dir_analy}/m030/${prefix_analy}${cleandate}.nc ]; then
+            seq -f %03g 1 $NMEMBERS | parallel "rm ${dir_prior}/m{}/${prefix_prior}${cleandate}.nc"
+            seq -f %03g 1 $NMEMBERS | parallel "rm ${dir_analy}/m{}/${prefix_analy}${cleandate}.nc"
+            seq -f %03g 1 $NMEMBERS | parallel "rm ${dir_filts}/m{}/ocean_fil*_01_${cleandate}.nc"
+        fi
+      fi
+   fi
    echo "Assimilation cycle # $this_cycle successful"
    exit 0
 else
    echo "Assimilation cycle # $this_cycle failed"
    exit 1
 fi
-
 
 

@@ -45,7 +45,7 @@ enddate=$(get_date_from_cycle ${N_cycles} $STARTDATE 1)
 # Do the cleaning
 ###################################################
 # Ask for confirmation
-read -r -p "Removing files from $STARTDATE to $enddate in ${SCRATCHDIR}/Outputs/Filtfiles/: Is this OK? [y/N]" response
+read -r -p "Removing files from $STARTDATE to $enddate in ${SCRATCHDIR}/Outputs/: Is this OK? [y/N]" response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]
 then
    # Loop on members

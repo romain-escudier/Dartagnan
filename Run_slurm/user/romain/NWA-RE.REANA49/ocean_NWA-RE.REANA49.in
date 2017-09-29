@@ -61,16 +61,16 @@
 !
 ! Application title.
 
-       TITLE = <TITLESIMU>
+       TITLE = Northwest Atlantic 7km Grid
 
 ! C-preprocessing Flag.
 
-    MyAppCPP = <SIMUAPP>
+    MyAppCPP = NWA
 
 ! Input variable information file name.  This file needs to be processed
 ! first so all information arrays can be initialized properly.
 
-     VARNAME = <VARINFODIR>/varinfo.dat
+     VARNAME = /glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA49//varinfo.dat
 
 ! Number of nested grids.
 
@@ -352,9 +352,9 @@ LtracerSponge == F F                            ! temperature, salinity, inert
 
 ! Height (m) of atmospheric measurements for Bulk fluxes parameterization.
 
-      BLK_ZQ == <ACHANGER>                    ! air humidity
-      BLK_ZT == <ACHANGER>                    ! air temperature
-      BLK_ZW == <ACHANGER>                    ! winds
+      BLK_ZQ == 10.0d0                     ! air humidity
+      BLK_ZT == 10.0d0                     ! air temperature
+      BLK_ZW == 10.0d0                     ! winds
 
 ! Minimum depth for wetting and drying.
 

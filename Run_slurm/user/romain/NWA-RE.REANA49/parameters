@@ -1,30 +1,30 @@
 #!/bin/ksh
 
 # Directories
-WORKINGDIR=<WORKINGDIR>
-DARTMNGDIR=<DARTMNGDIR>
+WORKINGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA49/
+DARTMNGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/
 
 # Number of ensemble members to run
 NMEMBERS=30
 
 # Starting date
 REFDATE=19000101
-STARTDATE=20100701
+STARTDATE=19990702
 
 # Analysis step (days)
 DT_ANA=1
 DT_OBS=1
 
 # Simulation name
-SIMU=<SIMUNAME>
+SIMU=NWA-RE.REANA49
 
 # start at cycle nstart
 NSTART=1
 # end at cycle ncycles
-NCYCLES=10
+NCYCLES=5000
 
 # Computation directory
-SCRATCHDIR=<SCRATCHDIR>
+SCRATCHDIR=/glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA49/
 DATADIR=/glade/p/work/romaines/Data/
 
 #-------------------------------------------------------
@@ -60,10 +60,10 @@ fi
 NCORES_DART=80
 
 # start analysis at cycle nstart_ana
-NSTART_ANA=185
+NSTART_ANA=184
 
 # Observation files
-OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/
+OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/Serr03Terr07thinSSTerr02/
 OBS_PREF_1=obs_seq.sst_gtspp.
 OBS_PREF_2=obs_seq.sst_gtspp.
 
@@ -100,18 +100,18 @@ RND_DIFF_STD=0
 RND_DIFF_AVG=5
 
 # File parameters
-FORCINGDIR=${DATADIR}/Forcings/
-FORCINGPREF=drowned_MERRA_
-FORCINGSUFF=_3hours_
+FORCINGDIR=/glade/scratch/dussin/romain/JRA55DO/drowned/
+FORCINGPREF=drowned_JRA55DO_
+FORCINGSUFF=_3hours_y
 
 GRIDFILE=${DATADIR}/NWA_grd_newwtypechl.nc
 NUDGCOEF=${DATADIR}/NWA_nudging_coef.nc
 INITDIR=${DATADIR}/Init/
-INITFILE=HYCOM_GLBa0.08_2010_182_ic_NWA.nc
+INITFILE=NWA_ic_1999_07_02_SODA3.3.1.nc
 
-CLMPREF=${DATADIR}/Clim/HYCOM_GLBa0.08_monthly_clim_NWA_
-BRYPREF=${DATADIR}/OBC/HYCOM_GLBa0.08_bdry_NWA_
-RUNOFFILE=${DATADIR}/Runoff/runoff_NWA_daitren_clim.nc
+CLMPREF=/glade/scratch/dussin/romain/SODA3/NWA_clim_SODA3.3.1_y
+BRYPREF=/glade/scratch/dussin/romain/SODA3/NWA_bdry_SODA3.3.1_y
+RUNOFFILE="/glade/scratch/dussin/romain/Runoff/runoff_NWA_DaiTrenberth_clim_y2008-2016.nc | \n               /glade/scratch/dussin/romain/Runoff/runoff_NWA_daitren_inter_annual_1948-2007.nc"
 TIDESFILE=${DATADIR}/Tides/NWA_tides_otps.nc
 SSSREFILE=${DATADIR}/SSS/sss_monthly_climato_flooded.nc
 
