@@ -1,0 +1,134 @@
+#!/bin/ksh
+
+# Directories
+WORKINGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA52/
+DARTMNGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/
+
+# Number of ensemble members to run
+NMEMBERS=30
+
+# Starting date
+REFDATE=19000101
+STARTDATE=19990702
+
+# Analysis step (days)
+DT_ANA=1
+DT_OBS=1
+
+# Simulation name
+SIMU=NWA-RE.REANA52
+
+# start at cycle nstart
+NSTART=1
+# end at cycle ncycles
+NCYCLES=200
+
+# Computation directory
+SCRATCHDIR=/glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA52/
+DATADIR=/glade/p/work/romaines/Data/
+
+#-------------------------------------------------------
+# QUEUEING SYSTEM PARAMETERS
+#-------------------------------------------------------
+
+CLUSTER=yellowstone
+
+# Time limit
+TLIM_ROMS=0:20
+TLIM_DART=0:20
+
+# TRITON OPTIONS
+if [ ${CLUSTER} = "triton" ] ; then
+   # Type of triton cores to use
+   # (Don't use generic -triton- for dart)
+   TYPENODE_ROMS=triton24
+   TYPENODE_DART=triton24
+
+elif [ ${CLUSTER} = "yellowstone" ] ; then
+   # YELLOWSTONE OPTIONS
+   TYPENODE_DART=yellowstone
+   PROJECT=URTG0008
+   QUEUE=regular
+   QUEUE_PREP=geyser
+fi
+
+#-------------------------------------------------------
+# DART PARAMETERS
+#-------------------------------------------------------
+
+# Number of core for analysis
+NCORES_DART=80
+
+# start analysis at cycle nstart_ana
+NSTART_ANA=184
+
+# Observation files
+OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/Serr03Terr07thinSSTerr30/
+OBS_PREF_1=obs_seq.sst_gtspp.
+OBS_PREF_2=obs_seq.sst_gtspp.
+
+# Inflation
+INF_INI=1.02
+INF_SD_INI=0.6
+
+#-------------------------------------------------------
+# ROMS PARAMETERS
+#-------------------------------------------------------
+
+# Number of core for forward
+NCORES_ROMS=80
+ITILE=10
+JTILE=8
+
+# Time step
+DT=240
+
+# SPIN-UP
+DT_SPIN=100
+NCYCLES_SPIN=3
+
+# Output step (days)
+DT_OUT=1
+
+# Filter output step (days)
+DT_FILT=1
+
+# Random parametrization
+RND_VISC_STD=0
+RND_VISC_AVG=25
+RND_DIFF_STD=0
+RND_DIFF_AVG=5
+
+# File parameters
+FORCINGDIR=/glade/scratch/dussin/romain/JRA55DO/drowned/
+FORCINGPREF=drowned_JRA55DO_
+FORCINGSUFF=_3hours_y
+
+GRIDFILE=${DATADIR}/NWA_grd_newwtypechl.nc
+NUDGCOEF=${DATADIR}/NWA_nudging_coef.nc
+INITDIR=${DATADIR}/Init/
+INITFILE=NWA_ic_1999_07_02_SODA3.3.1.nc
+
+CLMPREF=/glade/scratch/dussin/romain/SODA3/NWA_clim_SODA3.3.1_y
+BRYPREF=/glade/scratch/dussin/romain/SODA3/NWA_bdry_SODA3.3.1_y
+RUNOFFILE="/glade/scratch/dussin/romain/Runoff/runoff_NWA_DaiTrenberth_clim_y2008-2016.nc | \n               /glade/scratch/dussin/romain/Runoff/runoff_NWA_daitren_inter_annual_1948-2007.nc"
+TIDESFILE=${DATADIR}/Tides/NWA_tides_otps.nc
+SSSREFILE=${DATADIR}/SSS/sss_monthly_climato_flooded.nc
+
+MDTFILE=none
+
+#-------------------------------------------------------
+# EXECUTABLES
+#-------------------------------------------------------
+
+if [ ${CLUSTER} = "triton" ] ; then
+   SUBMIT="sbatch --reservation=dart"
+   RUN="srun --cpu_bind=rank"
+   declare -a frontnode=(node0)
+elif [ ${CLUSTER} = "yellowstone" ] ; then
+   SUBMIT=bsub
+   RUN=mpirun.lsf
+   declare -a frontnode=(yslogin1 yslogin2 yslogin3 yslogin4 yslogin5 yslogin6)
+fi
+
+

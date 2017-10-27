@@ -3,6 +3,7 @@
 # Load simulation parameters
 . ./parameters
 . ./functions.sh
+. ./globus_tools.sh
 
 YEAR=$1
 printf -v MONTH "%02d" $2
@@ -45,6 +46,8 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    mkdir -p ${rep_glob_member}
    mv ${rep_member}${SIMU}_rstana_${YEAR}${MONTH}*.nc ${rep_glob_member}
 
-
 done
+
+globus transfer -r --preserve-mtime -s checksum --label "${SIMU#*.}_${YEAR}${MONTH}" ${NCAR_ID}:${rep_globus} $POSE_ID:/Volumes/P15/DART/tmpdir_${SIMU}/Outputs_GLOBUS/${YEAR}/${MONTH}/
+
 

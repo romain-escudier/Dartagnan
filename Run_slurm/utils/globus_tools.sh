@@ -8,13 +8,14 @@
 # List of functions
 
 
+# Help!
+# Example of use:
+# > ls Logs/log_c01*.tar.gz > list_logs.txt
+# > globus_transfer_ncar2poseidon list_logs.txt /glade/scratch/romaines/dart/tmpdir_NWA-RE.REANA49/Logs/ /Volumes/P15/DART/tmpdir_NWA-RE.REANA49/Logs/ "REANA49_Logs"
+
 # Global parameters
 NCAR_ID=d33b3614-6d04-11e5-ba46-22000b92c6ec
 POSE_ID=adc7785a-290f-11e7-bc76-22000b9a448b
-
-
-
-
 
 
 #---------------------------------------------------------------------------------------------#
