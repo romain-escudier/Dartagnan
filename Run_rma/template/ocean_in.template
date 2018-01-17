@@ -352,9 +352,9 @@ LtracerSponge == F F                            ! temperature, salinity, inert
 
 ! Height (m) of atmospheric measurements for Bulk fluxes parameterization.
 
-      BLK_ZQ == 2.0d0                     ! air humidity
-      BLK_ZT == 2.0d0                     ! air temperature
-      BLK_ZW == 2.0d0                     ! winds
+      BLK_ZQ == <ACHANGER>                    ! air humidity
+      BLK_ZT == <ACHANGER>                    ! air temperature
+      BLK_ZW == <ACHANGER>                    ! winds
 
 ! Minimum depth for wetting and drying.
 
@@ -1027,8 +1027,8 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
                <FORCINGDIR>/<FORCINGPREF>Vwind<FORCINGSUFF><YYYY2>.nc  \
                <FORCINGDIR>/<FORCINGPREF>rain<FORCINGSUFF><YYYY1>.nc   |
                <FORCINGDIR>/<FORCINGPREF>rain<FORCINGSUFF><YYYY2>.nc   \
-               <FORCINGDIR>/<FORCINGPREF>lwrad<FORCINGSUFF><YYYY1>.nc  |
-               <FORCINGDIR>/<FORCINGPREF>lwrad<FORCINGSUFF><YYYY2>.nc  \
+               <FORCINGDIR>/<FORCINGPREF>lwrad_down<FORCINGSUFF><YYYY1>.nc  |
+               <FORCINGDIR>/<FORCINGPREF>lwrad_down<FORCINGSUFF><YYYY2>.nc  \
                <FORCINGDIR>/<FORCINGPREF>Qair<FORCINGSUFF><YYYY1>.nc   |
                <FORCINGDIR>/<FORCINGPREF>Qair<FORCINGSUFF><YYYY2>.nc   \
                <FORCINGDIR>/<FORCINGPREF>swrad<FORCINGSUFF><YYYY1>.nc  |

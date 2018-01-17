@@ -34,6 +34,7 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    # First the preparation (namelist and copy of filetering files)
    cat ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_prepare_member.sub | sed -e "s;<MEMBER>;$nnn;g" \
                                                            -e "s;<NCORES>;1;g"\
+                                                           -e "s;<TYPENODE>;${TYPENODE_ROMS};g"\
                                                            -e "s;<WALLTIME>;00:10;g" \
                                                            -e "s;<CYCLE>;${cycle};g" \
                                                            -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
@@ -50,6 +51,7 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
                                                            -e "s;<DEPLIST>;${dep_id};g" \
                                                            -e "s;<DISPCYCLE>;${disp_cycle};g" \
                                                            -e "s;<NCORES>;${NCORES_ROMS};g"\
+                                                           -e "s;<TYPENODE>;${TYPENODE_ROMS};g"\
                                                            -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
                                                            -e "s;<WALLTIME>;${TLIM_ROMS};g" \
                                                            -e "s;<JOBNAME>;roms_${nnn}_c${disp_cycle}_${SIMU};g" \
@@ -64,6 +66,7 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    cat ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_post_member.sub | sed -e "s;<MEMBER>;$nnn;g" \
                                                         -e "s;<DEPLIST>;${dep_id};g" \
                                                         -e "s;<NCORES>;1;g"\
+                                                        -e "s;<TYPENODE>;${TYPENODE_ROMS};g"\
                                                         -e "s;<WALLTIME>;00:20;g" \
                                                         -e "s;<CYCLE>;${cycle};g" \
                                                         -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
@@ -88,8 +91,8 @@ done
 cat ${SCRATCHDIR}/Jobfiles/${SIMU}_analysis.sub | sed -e "s;<DEPLIST>;"$listjobids";g" \
                                              -e "s;<CYCLE>;${cycle};g" \
                                              -e "s;<DISPCYCLE>;${disp_cycle};g" \
-                                             -e "s;<TYPENODE>;${TYPENODE_DART};g"\
                                              -e "s;<NCORES>;${NCORES_DART};g"\
+                                             -e "s;<TYPENODE>;${TYPENODE_DART};g"\
                                              -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
                                              -e "s;<WALLTIME>;${TLIM_DART};g" \
                                              -e "s;<JOBNAME>;ana_c${disp_cycle}_${SIMU};g" \
@@ -105,8 +108,8 @@ dep_id=$(./get_id_dependency.sh "$output" "" $CLUSTER)
 cat ${SCRATCHDIR}/Jobfiles/${SIMU}_submit_next.sub | sed -e "s;<DEPLIST>;"$dep_id";g" \
                                                 -e "s;<CYCLE>;${cycle};g" \
                                                 -e "s;<DISPCYCLE>;${disp_cycle};g" \
-                                                -e "s;<TYPENODE>;${TYPENODE_DART};g"\
                                                 -e "s;<NCORES>;1;g"\
+                                                -e "s;<TYPENODE>;${TYPENODE_DART};g"\
                                                 -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
                                                 -e "s;<WALLTIME>;00:05;g" \
                                                 -e "s;<JOBNAME>;subnext_c${disp_cycle}_${SIMU};g" \

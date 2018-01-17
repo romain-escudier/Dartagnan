@@ -53,6 +53,7 @@ cp ${DARTMNGDIR}/src/*.sh ${SCRATCHDIR}/
 
 # Get useful functions
 cp ${DARTMNGDIR}/utils/functions.sh ${SCRATCHDIR}/
+cp ${DARTMNGDIR}/utils/globus_tools.sh ${SCRATCHDIR}/
 cp ${DARTMNGDIR}/utils/extensions.bc ${SCRATCHDIR}/
 
 # Get scripts to be submitted with header corresponding to cluster

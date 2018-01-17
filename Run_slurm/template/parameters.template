@@ -27,6 +27,9 @@ NCYCLES=10
 SCRATCHDIR=<SCRATCHDIR>
 DATADIR=/glade/p/work/romaines/Data/
 
+# Do an on-the-job cleanup
+CLEANUP=true
+
 #-------------------------------------------------------
 # QUEUEING SYSTEM PARAMETERS
 #-------------------------------------------------------
@@ -43,13 +46,22 @@ if [ ${CLUSTER} = "triton" ] ; then
    # (Don't use generic -triton- for dart)
    TYPENODE_ROMS=triton24
    TYPENODE_DART=triton24
+   NCORESPERNODE=24
 
 elif [ ${CLUSTER} = "yellowstone" ] ; then
    # YELLOWSTONE OPTIONS
-   TYPENODE_DART=yellowstone
    PROJECT=URTG0008
    QUEUE=regular
    QUEUE_PREP=geyser
+   NCORESPERNODE=16
+
+elif [ ${CLUSTER} = "cheyenne" ] ; then
+   # CHEYENNE OPTIONS
+   PROJECT=URTG0011
+   QUEUE=regular
+   QUEUE_PREP=geyser
+   NCORESPERNODE=36
+
 fi
 
 #-------------------------------------------------------

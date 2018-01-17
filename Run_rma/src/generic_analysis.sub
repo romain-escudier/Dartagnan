@@ -20,21 +20,6 @@ cd ${SCRATCHDIR}
 if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 
 #------------------------------------------------------------------------------------
-# Number of nodes per core
-#------------------------------------------------------------------------------------
-
-   # Number of processor per node
-   if   [ '<TYPENODE>' == 'triton16' ] ; then
-       taskpernode=16
-   elif [ '<TYPENODE>' == 'triton24' ] ; then
-       taskpernode=24
-   elif [ '<TYPENODE>' == 'yellowstone' ] ; then
-       taskpernode=16
-   else
-       echo "Machine not supported"; exit 1
-   fi
-   
-#------------------------------------------------------------------------------------
 # Load the appropriate modules (from module-used)
 #------------------------------------------------------------------------------------
 
@@ -45,7 +30,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
        module load $mod
    done
    rm ${SCRATCHDIR}/Tempfiles/modules.dat
-   module load parallel
+   module load parallel nco
 
 #------------------------------------------------------------------------------------
 # Prepare the namelists
@@ -56,6 +41,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    date_cycle=$(get_date_from_cycle $(( ${this_cycle} -1 )) $STARTDATE $DT_ANA)
    # For next cycle
    date_cycle_next=$(get_date_from_cycle ${this_cycle} $STARTDATE $DT_ANA)
+   date_cycle_next_std=$(print_time_dart $date_cycle_next)
    # For previous cycle
    date_cycle_prev=$(get_date_from_cycle $(( ${this_cycle} -2 )) $STARTDATE $DT_ANA)
 
@@ -79,10 +65,11 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    obs_seq_out=${SCRATCHDIR}/Outputs/ObsOut/${OBS_PREF}final.${date_cycle_next}
 
    ### Other options
+   # read grid info
+   roms_restart_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc
    # list of restart files
    roms_list_priors=${SCRATCHDIR}/Tempfiles/list_priors_${date_cycle}.txt
    ls ${SCRATCHDIR}/Outputs/Prior/m*/${SIMU}_rst_${date_cycle}.nc > ${roms_list_priors}
-   roms_rst_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc
    # list of analysis files
    roms_list_ana=${SCRATCHDIR}/Tempfiles/list_analysis_${date_cycle}.txt
    cat ${roms_list_priors} | sed -e "s;Prior;Reanalysis;g" \
@@ -206,12 +193,36 @@ fi
 #------------------------------------------------------------------------------------
 
 if [ "$success" = true ] ; then
+
+   # Do some cleanup
+   if ((${this_cycle}>4)) && [ "$CLEANUP" = "true" ]; then
+      cleandate=$(get_date_from_cycle $(( ${this_cycle}-4 )) $STARTDATE 1)
+      next_date=$(get_date_from_cycle $(( ${this_cycle}-3 )) $STARTDATE 1)
+      dday=$(str2num ${next_date:6:2})
+      if (( dday == 1 )); then
+         echo "No cleaning on last day of month: ${cleandate}"
+      else
+         echo "Cleaning up N-3 files. Cleaning day: ${cleandate}"
+         # Directories
+         dir_prior=${SCRATCHDIR}/Outputs/Prior/
+         dir_analy=${SCRATCHDIR}/Outputs/Reanalysis/
+         dir_filts=${SCRATCHDIR}/Outputs/Filtfiles/
+         # Prefixes
+         prefix_prior=${SIMU}_rst_
+         prefix_analy=${SIMU}_rstana_
+         # Loop on members
+         if [ -f ${dir_analy}/m030/${prefix_analy}${cleandate}.nc ]; then
+            seq -f %03g 1 $NMEMBERS | parallel "rm ${dir_prior}/m{}/${prefix_prior}${cleandate}.nc"
+            seq -f %03g 1 $NMEMBERS | parallel "rm ${dir_analy}/m{}/${prefix_analy}${cleandate}.nc"
+            seq -f %03g 1 $NMEMBERS | parallel "rm ${dir_filts}/m{}/ocean_fil*_01_${cleandate}.nc"
+        fi
+      fi
+   fi
    echo "Assimilation cycle # $this_cycle successful"
    exit 0
 else
    echo "Assimilation cycle # $this_cycle failed"
    exit 1
 fi
-
 
 

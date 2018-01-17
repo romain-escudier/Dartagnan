@@ -1,0 +1,147 @@
+#!/bin/ksh
+
+# Directories
+WORKINGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_rma/user/romain/NWA-RE.REANA54/
+DARTMNGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_rma/
+
+# Number of ensemble members to run
+NMEMBERS=30
+
+# Starting date
+REFDATE=19000101
+STARTDATE=20100701
+
+# Analysis step (days)
+DT_ANA=1
+DT_OBS=1
+
+# Simulation name
+SIMU=NWA-RE.REANA54
+
+# start at cycle nstart
+NSTART=1
+# end at cycle ncycles
+NCYCLES=500
+
+# Computation directory
+SCRATCHDIR=/glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA54/
+DATADIR=/glade/p/work/romaines/Data/
+
+# Do an on-the-job cleanup
+CLEANUP=false
+
+#-------------------------------------------------------
+# QUEUEING SYSTEM PARAMETERS
+#-------------------------------------------------------
+
+CLUSTER=cheyenne
+
+# Time limit
+TLIM_ROMS=0:20
+TLIM_DART=0:20
+
+# TRITON OPTIONS
+if [ ${CLUSTER} = "triton" ] ; then
+   # Type of triton cores to use
+   # (Don't use generic -triton- for dart)
+   TYPENODE_ROMS=triton24
+   TYPENODE_DART=triton24
+   NCORESPERNODE=24
+
+elif [ ${CLUSTER} = "yellowstone" ] ; then
+   # YELLOWSTONE OPTIONS
+   PROJECT=URTG0008
+   QUEUE=regular
+   QUEUE_PREP=geyser
+   NCORESPERNODE=16
+
+elif [ ${CLUSTER} = "cheyenne" ] ; then
+   # CHEYENNE OPTIONS
+   PROJECT=URTG0011
+   QUEUE=regular
+   QUEUE_PREP=geyser
+   NCORESPERNODE=36
+
+fi
+
+#-------------------------------------------------------
+# DART PARAMETERS
+#-------------------------------------------------------
+
+# Number of core for analysis
+NCORES_DART=108
+
+# start analysis at cycle nstart_ana
+NSTART_ANA=185
+
+# Observation files
+OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/Serr03Terr07thinSSTerr02/
+OBS_PREF_1=obs_seq.sst_gtspp.
+OBS_PREF_2=obs_seq.sst_gtspp.
+
+# Inflation
+INFLATION=false
+INF_INI=1.02
+INF_SD_INI=0.6
+
+#-------------------------------------------------------
+# ROMS PARAMETERS
+#-------------------------------------------------------
+
+# Vertical parametrization
+vert_transform=2
+
+# Number of core for forward
+NCORES_ROMS=108
+ITILE=12
+JTILE=9
+
+# Time step
+DT=300
+
+# SPIN-UP
+DT_SPIN=100
+NCYCLES_SPIN=3
+
+# Output step (days)
+DT_OUT=1
+
+# Filter output step (days)
+DT_FILT=1
+
+# Random parametrization
+RND_VISC_STD=0
+RND_VISC_AVG=25
+RND_DIFF_STD=0
+RND_DIFF_AVG=5
+
+# File parameters
+FORCINGDIR=${DATADIR}/Forcings/
+FORCINGPREF=drowned_MERRA_
+FORCINGSUFF=_3hours_
+
+GRIDFILE=${DATADIR}/NWA_grd_newwtypechl.nc
+NUDGCOEF=${DATADIR}/NWA_nudging_coef.nc
+INITDIR=${DATADIR}/Init/
+INITFILE=HYCOM_GLBa0.08_2010_182_ic_NWA.nc
+
+CLMPREF=${DATADIR}/Clim/HYCOM_GLBa0.08_monthly_clim_NWA_
+BRYPREF=${DATADIR}/OBC/HYCOM_GLBa0.08_bdry_NWA_
+RUNOFFILE=${DATADIR}/Runoff/runoff_NWA_daitren_clim.nc
+TIDESFILE=${DATADIR}/Tides/NWA_tides_otps.nc
+SSSREFILE=${DATADIR}/SSS/sss_monthly_climato_flooded.nc
+
+
+#-------------------------------------------------------
+# EXECUTABLES
+#-------------------------------------------------------
+
+if [ ${CLUSTER} = "triton" ] ; then
+   SUBMIT="sbatch --reservation=dart"
+   RUN="srun --cpu_bind=rank"
+   declare -a frontnode=(node0)
+elif [ ${CLUSTER} = "yellowstone" ] ; then
+   SUBMIT=bsub
+   RUN=mpirun.lsf
+   declare -a frontnode=(yslogin1 yslogin2 yslogin3 yslogin4 yslogin5 yslogin6)
+fi

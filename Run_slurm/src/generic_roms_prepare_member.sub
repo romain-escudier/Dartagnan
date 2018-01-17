@@ -132,7 +132,7 @@ cd ${SCRATCHDIR}/Tempfiles/m${this_member}/
 if (( ${this_cycle}  > 1 )) ; then # No filter files on cycle 1
    file_filt_tmp=${SCRATCHDIR}/Outputs/Filtfiles/m${this_member}/ocean_filw_01_${date_prev_cycle}.nc
    if [ "$( comp_files_md5sum ${file_filt_tmp} ocean_filt_01.nc )" == "true" ] ; then
-      echo "Filtering files already copied. No new copy started."
+      echo "Filtering files already in scratch. No copy started."
    else
       for file_filt in ${SCRATCHDIR}/Outputs/Filtfiles/m${this_member}/ocean_fil*${date_prev_cycle}.nc ; do
          file_filt_short=$(basename ${file_filt})

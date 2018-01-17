@@ -20,21 +20,6 @@ cd ${SCRATCHDIR}
 if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 
 #------------------------------------------------------------------------------------
-# Number of nodes per core
-#------------------------------------------------------------------------------------
-
-   # Number of processor per node
-   if   [ '<TYPENODE>' == 'triton16' ] ; then
-       taskpernode=16
-   elif [ '<TYPENODE>' == 'triton24' ] ; then
-       taskpernode=24
-   elif [ '<TYPENODE>' == 'yellowstone' ] ; then
-       taskpernode=16
-   else
-       echo "Machine not supported"; exit 1
-   fi
-   
-#------------------------------------------------------------------------------------
 # Load the appropriate modules (from module-used)
 #------------------------------------------------------------------------------------
 
@@ -104,7 +89,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
                                               -e "s;<NMEMBERS>;${NMEMBERS};g" \
                                               -e "s;<OBSINFILE>;${obs_seq_in};g" \
                                               -e "s;<OBSOUTFILE>;${obs_seq_out};g" \
-                                              -e "s;<TASKPERNODE>;${taskpernode};g" \
+                                              -e "s;<TASKPERNODE>;${NCORESPERNODE};g" \
                                               -e "s;<DARTRSTIN>;${restart_in};g" \
                                               -e "s;<DARTRSTOUT>;${restart_out};g" \
                                               -e "s;<FIRSTOBSDAY>;$(($jday-$semi_period));g" \
@@ -116,9 +101,6 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
                                               -e "s;<INF_INI>;$INF_INI;g" \
                                               -e "s;<INF_SD_INI>;$INF_SD_INI;g" \
    > ${SCRATCHDIR}/input.nml.temp
-
-
-
 
 #------------------------------------------------------------------------------------
 # Convert all members ROMS files to DART files
@@ -238,7 +220,7 @@ fi
 if [ "$success" = true ] ; then
 
    # Do some cleanup
-   if ((${this_cycle}>4)); then
+   if ((${this_cycle}>4)) && [ "$CLEANUP" = "true" ]; then
       cleandate=$(get_date_from_cycle $(( ${this_cycle}-4 )) $STARTDATE 1)
       next_date=$(get_date_from_cycle $(( ${this_cycle}-3 )) $STARTDATE 1)
       dday=$(str2num ${next_date:6:2})
