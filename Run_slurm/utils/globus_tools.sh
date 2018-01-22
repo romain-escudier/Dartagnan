@@ -17,7 +17,6 @@
 NCAR_ID=d33b3614-6d04-11e5-ba46-22000b92c6ec
 POSE_ID=adc7785a-290f-11e7-bc76-22000b9a448b
 
-
 #---------------------------------------------------------------------------------------------#
 # Create file for GLOBUS batch transfer
 
@@ -38,7 +37,7 @@ globus_transfer_ncar2poseidon() { FILENAME=$1 ; SOURCE_PATH=$2 ; DEST_PATH=$3 ; 
 
    # Create batch file
    globus_create_transfer_file ${FILENAME} ${SOURCE_PATH} ${DEST_PATH}
-
+   
    # Do the transfer
    cat ${FILENAME}.transfer | globus transfer --batch --preserve-mtime --label "$LABEL" $NCAR_ID $POSE_ID
 
@@ -57,6 +56,5 @@ globus_transfer_poseidon2ncar() { FILENAME=$1 ; SOURCE_PATH=$2 ; DEST_PATH=$3 ; 
    cat ${FILENAME}.transfer | globus transfer --batch --preserve-mtime --label "$LABEL" $POSE_ID $NCAR_ID
 
 }
-
 
 
