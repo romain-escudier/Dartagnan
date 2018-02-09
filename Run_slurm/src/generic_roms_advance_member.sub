@@ -27,7 +27,7 @@ cd ${SCRATCHDIR}/Tempfiles/m${this_member}/
 # reload modules used when compiling
 #------------------------------------------------------------------------------------
 
-sed '1d' <CURRENTDIR>/modules-used > ${SCRATCHDIR}/Tempfiles/m${this_member}/modules.dat
+sed '/Currently/d' <CURRENTDIR>/modules-used > ${SCRATCHDIR}/Tempfiles/m${this_member}/modules.dat
 list=$( cat ${SCRATCHDIR}/Tempfiles/m${this_member}/modules.dat | sed -e "s/[0-9])//g" )
 
 module purge

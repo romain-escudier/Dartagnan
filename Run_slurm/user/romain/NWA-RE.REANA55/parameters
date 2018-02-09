@@ -35,6 +35,7 @@ CLEANUP=false
 #-------------------------------------------------------
 
 CLUSTER=cheyenne
+CLUSTER_PREP=geyser
 
 # Time limit
 TLIM_ROMS=0:20
@@ -59,7 +60,6 @@ elif [ ${CLUSTER} = "cheyenne" ] ; then
    # CHEYENNE OPTIONS
    PROJECT=URTG0011
    QUEUE=regular
-   QUEUE_PREP=geyser
    NCORESPERNODE=36
 
 fi
@@ -70,6 +70,7 @@ fi
 
 # Number of core for analysis
 NCORES_DART=108
+NNODES_DART=$(( ${NCORES_DART} / ${NCORESPERNODE} ))
 
 # start analysis at cycle nstart_ana
 NSTART_ANA=185
@@ -89,6 +90,7 @@ INF_SD_INI=0.6
 
 # Number of core for forward
 NCORES_ROMS=108
+NNODES_ROMS=$(( ${NCORES_ROMS} / ${NCORESPERNODE} ))
 ITILE=12
 JTILE=9
 
@@ -140,5 +142,24 @@ if [ ${CLUSTER} = "triton" ] ; then
 elif [ ${CLUSTER} = "yellowstone" ] ; then
    SUBMIT=bsub
    RUN=mpirun.lsf
-   declare -a frontnode=(yslogin1 yslogin2 yslogin3 yslogin4 yslogin5 yslogin6)
+elif [ ${CLUSTER} = "cheyenne" ] ; then
+   SUBMIT=qsub
+   RUN=mpirun
 fi
+
+if [ ${CLUSTER_PREP} = "triton" ] ; then
+   SUBMIT_PREP="sbatch --reservation=dart"
+elif [ ${CLUSTER_PREP} = "geyser" ] ; then
+   SUBMIT_PREP=sbatch
+elif [ ${CLUSTER_PREP} = "yellowstone" ] ; then
+   SUBMIT_PREP=bsub
+elif [ ${CLUSTER_PREP} = "cheyenne" ] ; then
+   SUBMIT_PREP=qsub
+fi
+
+
+
+
+
+
+

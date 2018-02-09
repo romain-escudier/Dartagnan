@@ -44,13 +44,14 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
                                                            -e "s;<PROJECTCODE>;${PROJECT};g" \
    > ${SCRATCHDIR}/Tempfiles/roms_prepare_member_${nnn}.sub
    output=$( ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/roms_prepare_member_${nnn}.sub )
-   dep_id=$(./get_id_dependency.sh "$output" "" $CLUSTER)
+   dep_id=$(./get_id_dependency.sh "$output" "" $CLUSTER_PREP)
 
    # Run the ROMS code   
    cat ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_advance_member.sub | sed -e "s;<MEMBER>;$nnn;g" \
                                                            -e "s;<DEPLIST>;${dep_id};g" \
                                                            -e "s;<DISPCYCLE>;${disp_cycle};g" \
                                                            -e "s;<NCORES>;${NCORES_ROMS};g"\
+                                                           -e "s;<NNODES>;${NNODES_ROMS};g"\
                                                            -e "s;<TYPENODE>;${TYPENODE_ROMS};g"\
                                                            -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
                                                            -e "s;<WALLTIME>;${TLIM_ROMS};g" \
@@ -77,7 +78,7 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
    > ${SCRATCHDIR}/Tempfiles/roms_post_member_${nnn}.sub
    # Get the id of the job and keep it in listjobids (for the dependency of the analysis)
    output=$( ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/roms_post_member_${nnn}.sub )
-   listjobids=$(./get_id_dependency.sh "$output" "$listjobids" $CLUSTER)
+   listjobids=$(./get_id_dependency.sh "$output" "$listjobids" $CLUSTER_PREP)
    if ! (( $? == 0 )); then
       echo $listjobids
       exit 1 
@@ -92,6 +93,7 @@ cat ${SCRATCHDIR}/Jobfiles/${SIMU}_analysis.sub | sed -e "s;<DEPLIST>;"$listjobi
                                              -e "s;<CYCLE>;${cycle};g" \
                                              -e "s;<DISPCYCLE>;${disp_cycle};g" \
                                              -e "s;<NCORES>;${NCORES_DART};g"\
+                                             -e "s;<NNODES>;${NNODES_DART};g"\
                                              -e "s;<TYPENODE>;${TYPENODE_DART};g"\
                                              -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
                                              -e "s;<WALLTIME>;${TLIM_DART};g" \

@@ -142,7 +142,7 @@ export     MY_PROJECT_DIR=${PWD}
 #export              FORT=gfortran
 #export              FORT=pgi
 
-# export         USE_DEBUG=on            # use Fortran debugging flags
+ export         USE_DEBUG=on            # use Fortran debugging flags
  export         USE_LARGE=on            # activate 64-bit compilation
  export       USE_NETCDF4=on            # compile with NetCDF-4 library
 #export   USE_PARALLEL_IO=on            # Parallel I/O with Netcdf-4/HDF5
