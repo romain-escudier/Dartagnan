@@ -4,7 +4,7 @@ OUTPUTS=$1
 LISTJOB=$2
 CLUSTER=$3
 
-if [ ${CLUSTER} = "triton" ] || [ ${CLUSTER} = "cheyenne" ] ; then
+if [ ${CLUSTER} = "triton" ] || [ ${CLUSTER} = "cheyenne" ] || [ ${CLUSTER} = "geyser" ]; then
    id=$( echo $OUTPUTS | awk '{ print $NF }' )
    LISTJOB="$LISTJOB:$id"
 elif [ ${CLUSTER} = "yellowstone" ] ; then

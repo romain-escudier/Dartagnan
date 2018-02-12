@@ -35,7 +35,7 @@ CLEANUP=false
 #-------------------------------------------------------
 
 CLUSTER=cheyenne
-CLUSTER_PREP=geyser
+CLUSTER_PREP=cheyenne
 
 # Time limit
 TLIM_ROMS=0:20
@@ -60,6 +60,7 @@ elif [ ${CLUSTER} = "cheyenne" ] ; then
    # CHEYENNE OPTIONS
    PROJECT=URTG0011
    QUEUE=regular
+   QUEUE_PREP=regular
    NCORESPERNODE=36
 
 fi
