@@ -14,6 +14,7 @@ cat ${SCRATCHDIR}/Jobfiles/${SIMU}_analysis.sub | sed -e "/<DEPLIST>/d"\
                                              -e "s;<CYCLE>;${cycle};g" \
                                              -e "s;<DISPCYCLE>;${disp_cycle};g" \
                                              -e "s;<NCORES>;${NCORES_DART};g"\
+                                             -e "s;<NNODES>;${NNODES_DART};g"\
                                              -e "s;<TYPENODE>;${TYPENODE_DART};g"\
                                              -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
                                              -e "s;<WALLTIME>;${TLIM_DART};g" \

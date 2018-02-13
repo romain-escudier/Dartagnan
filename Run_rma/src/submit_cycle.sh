@@ -43,8 +43,8 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
                                                            -e "s;<QUEUE>;${QUEUE_PREP};g" \
                                                            -e "s;<PROJECTCODE>;${PROJECT};g" \
    > ${SCRATCHDIR}/Tempfiles/roms_prepare_member_${nnn}.sub
-   output=$( ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/roms_prepare_member_${nnn}.sub )
-   dep_id=$(./get_id_dependency.sh "$output" "" $CLUSTER)
+   output=$( ${SUBMIT_PREP} < ${SCRATCHDIR}/Tempfiles/roms_prepare_member_${nnn}.sub )
+   dep_id=$(./get_id_dependency.sh "$output" "" $CLUSTER_PREP)
 
    # Run the ROMS code   
    cat ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_advance_member.sub | sed -e "s;<MEMBER>;$nnn;g" \
@@ -76,8 +76,8 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
                                                         -e "s;<PROJECTCODE>;${PROJECT};g" \
    > ${SCRATCHDIR}/Tempfiles/roms_post_member_${nnn}.sub
    # Get the id of the job and keep it in listjobids (for the dependency of the analysis)
-   output=$( ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/roms_post_member_${nnn}.sub )
-   listjobids=$(./get_id_dependency.sh "$output" "$listjobids" $CLUSTER)
+   output=$( ${SUBMIT_PREP} < ${SCRATCHDIR}/Tempfiles/roms_post_member_${nnn}.sub )
+   listjobids=$(./get_id_dependency.sh "$output" "$listjobids" $CLUSTER_PREP)
    if ! (( $? == 0 )); then
       echo $listjobids
       exit 1 

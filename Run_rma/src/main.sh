@@ -60,16 +60,25 @@ cp ${DARTMNGDIR}/utils/extensions.bc ${SCRATCHDIR}/
 cd ${DARTMNGDIR}/src/
 ### FORWARD MODEL
 # Also remove the dependency list and the mailing option for the forward script
-sed "/<HEADER>/r header.${CLUSTER}" generic_roms_prepare_member.sub \
-        | sed -e "/<HEADER>/d" -e "/<DEPLIST>/d" -e "/BSUB -N/d" \
-        | sed -e "/ptile=/d" \
+sed "/<HEADER>/r header.${CLUSTER_PREP}" generic_roms_prepare_member.sub \
+        | sed -e "/<HEADER>/d" \
+              -e "/<DEPLIST>/d" \
+              -e "/BSUB -N/d" \
+              -e "/ptile=/d" \
+              -e "s/select=<NNODES>:ncpus=36:mpiprocs=36/select=1:ncpus=1:mpiprocs=1/" \
+              -e "/PBS -m/d" \
 > ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_prepare_member.sub 
 sed "/<HEADER>/r header.${CLUSTER}" generic_roms_advance_member.sub \
-        | sed -e "/<HEADER>/d" -e "/BSUB -N/d" \
+        | sed -e "/<HEADER>/d" \
+              -e "/BSUB -N/d" \
+              -e "/PBS -m/d" \
 > ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_advance_member.sub 
-sed "/<HEADER>/r header.${CLUSTER}" generic_roms_post_member.sub \
-        | sed -e "/<HEADER>/d" -e "/BSUB -N/d" \
-        | sed -e "/ptile=/d" \
+sed "/<HEADER>/r header.${CLUSTER_PREP}" generic_roms_post_member.sub \
+        | sed -e "/<HEADER>/d" \
+              -e "/BSUB -N/d" \
+              -e "/ptile=/d" \
+              -e "s/select=<NNODES>:ncpus=36:mpiprocs=36/select=1:ncpus=1:mpiprocs=1/" \
+              -e "/PBS -m/d" \
 > ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_post_member.sub
 ### ANALYSIS
 sed "/<HEADER>/r header.${CLUSTER}" generic_analysis.sub \
@@ -78,8 +87,10 @@ sed "/<HEADER>/r header.${CLUSTER}" generic_analysis.sub \
 ### SUBMIT SCRIPT
 # Also remove the mailing option for next submission script
 sed "/<HEADER>/r header.${CLUSTER}" generic_submit_next.sub \
-        | sed -e "/<HEADER>/d" -e "/BSUB -N/d" \
-        | sed -e "s;ptile=16;ptile=1;g" \
+        | sed -e "/<HEADER>/d" \
+              -e "/BSUB -N/d" \
+              -e "s/select=<NNODES>:ncpus=36:mpiprocs=36/select=1:ncpus=1:mpiprocs=1/" \
+              -e "/PBS -m/d" \
 > ${SCRATCHDIR}/Jobfiles/${SIMU}_submit_next.sub
 ### STORING and POSTPROCESSING
 cp roms2hpss.sub ${SCRATCHDIR}/Jobfiles/

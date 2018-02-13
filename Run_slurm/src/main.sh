@@ -87,7 +87,7 @@ sed "/<HEADER>/r header.${CLUSTER}" generic_analysis.sub \
 > ${SCRATCHDIR}/Jobfiles/${SIMU}_analysis.sub
 ### SUBMIT SCRIPT
 # Also remove the mailing option for next submission script
-sed "/<HEADER>/r header.${CLUSTER_PREP}" generic_submit_next.sub \
+sed "/<HEADER>/r header.${CLUSTER}" generic_submit_next.sub \
         | sed -e "/<HEADER>/d" \
               -e "/BSUB -N/d" \
               -e "s/select=<NNODES>:ncpus=36:mpiprocs=36/select=1:ncpus=1:mpiprocs=1/" \
