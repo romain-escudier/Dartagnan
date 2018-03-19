@@ -18,6 +18,7 @@ mkdir -p ${SCRATCHDIR}/Outputs/Average/
 mkdir -p ${SCRATCHDIR}/Outputs/History/
 mkdir -p ${SCRATCHDIR}/Outputs/Prior/
 mkdir -p ${SCRATCHDIR}/Outputs/Reanalysis/Inflation/
+mkdir -p ${SCRATCHDIR}/Outputs/Tmpdir/
 mkdir -p ${SCRATCHDIR}/Outputs/Filtfiles/
 mkdir -p ${SCRATCHDIR}/Outputs/ObsOut/
 mkdir -p ${SCRATCHDIR}/Outputs/Diags/
@@ -95,7 +96,6 @@ sed "/<HEADER>/r header.${CLUSTER}" generic_submit_next.sub \
 ### STORING and POSTPROCESSING
 cp roms2hpss.sub ${SCRATCHDIR}/Jobfiles/
 cp Compute_spread_timeserie.sub ${SCRATCHDIR}/Jobfiles/
-cp Make_nc4_diags.sub ${SCRATCHDIR}/Jobfiles/
 
 cd ${SCRATCHDIR}
 echo "Creating working directory : $(pwd)"

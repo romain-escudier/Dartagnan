@@ -1,8 +1,8 @@
 #!/bin/ksh
 
 # Directories
-WORKINGDIR=<WORKINGDIR>
-DARTMNGDIR=<DARTMNGDIR>
+WORKINGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/user/romain/NWA-RE.REANA56/
+DARTMNGDIR=/glade/u/home/romaines/Projects/dartagnan/Run_slurm/
 
 # Number of ensemble members to run
 NMEMBERS=30
@@ -16,19 +16,19 @@ DT_ANA=1
 DT_OBS=1
 
 # Simulation name
-SIMU=<SIMUNAME>
+SIMU=NWA-RE.REANA56
 
 # start at cycle nstart
 NSTART=1
 # end at cycle ncycles
-NCYCLES=10
+NCYCLES=500
 
 # Computation directory
-SCRATCHDIR=<SCRATCHDIR>
+SCRATCHDIR=/glade/scratch/romaines//dart/tmpdir_NWA-RE.REANA56/
 DATADIR=/glade/p/work/romaines/Data/
 
 # Do an on-the-job cleanup
-CLEANUP=true
+CLEANUP=false
 
 #-------------------------------------------------------
 # QUEUEING SYSTEM PARAMETERS
@@ -70,19 +70,18 @@ fi
 #-------------------------------------------------------
 
 # Number of core for analysis
-NCORES_DART=80
+NCORES_DART=108
 NNODES_DART=$(( ${NCORES_DART} / ${NCORESPERNODE} ))
 
 # start analysis at cycle nstart_ana
 NSTART_ANA=185
 
 # Observation files
-OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/
+OBS_DIR=${DATADIR}/ObsData/SST_GTSPP/obsSEQ/Serr03Terr07thinSSTerr30/
 OBS_PREF_1=obs_seq.sst_gtspp.
 OBS_PREF_2=obs_seq.sst_gtspp.
 
 # Inflation
-INFLATION=false
 INF_INI=1.02
 INF_SD_INI=0.6
 
@@ -90,17 +89,14 @@ INF_SD_INI=0.6
 # ROMS PARAMETERS
 #-------------------------------------------------------
 
-# Vertical parametrization
-vert_transform=2
-
 # Number of core for forward
-NCORES_ROMS=80
+NCORES_ROMS=108
 NNODES_ROMS=$(( ${NCORES_ROMS} / ${NCORESPERNODE} ))
-ITILE=10
-JTILE=8
+ITILE=12
+JTILE=9
 
 # Time step
-DT=240
+DT=300
 
 # SPIN-UP
 DT_SPIN=100
@@ -134,6 +130,7 @@ RUNOFFILE=${DATADIR}/Runoff/runoff_NWA_daitren_clim.nc
 TIDESFILE=${DATADIR}/Tides/NWA_tides_otps.nc
 SSSREFILE=${DATADIR}/SSS/sss_monthly_climato_flooded.nc
 
+MDTFILE=none
 
 #-------------------------------------------------------
 # EXECUTABLES
@@ -148,7 +145,8 @@ elif [ ${CLUSTER} = "yellowstone" ] ; then
    RUN=mpirun.lsf
 elif [ ${CLUSTER} = "cheyenne" ] ; then
    SUBMIT=qsub
-   RUN=mpirun
+   RUN="mpiexec_mpt omplace"
+   #RUN=mpirun
 fi
 
 if [ ${CLUSTER_PREP} = "triton" ] ; then

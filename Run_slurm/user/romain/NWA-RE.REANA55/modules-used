@@ -1,6 +1,7 @@
 
 Currently Loaded Modules:
-  1) ncarenv/1.2   2) intel/17.0.1   3) ncarcompilers/0.4.1   4) netcdf/4.4.1.1   5) my_tools/default   6) openmpi/3.0.0   7) fftw/3.3.7
+  1) ncarenv/1.2    3) ncarcompilers/0.4.1   5) mpt/2.15f    7) my_tools/default
+  2) intel/17.0.1   4) netcdf/4.4.1.1        6) fftw/3.3.7
 
  
 

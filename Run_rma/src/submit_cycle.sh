@@ -51,6 +51,7 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
                                                            -e "s;<DEPLIST>;${dep_id};g" \
                                                            -e "s;<DISPCYCLE>;${disp_cycle};g" \
                                                            -e "s;<NCORES>;${NCORES_ROMS};g"\
+                                                           -e "s;<NNODES>;${NNODES_ROMS};g"\
                                                            -e "s;<TYPENODE>;${TYPENODE_ROMS};g"\
                                                            -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
                                                            -e "s;<WALLTIME>;${TLIM_ROMS};g" \
@@ -92,6 +93,7 @@ cat ${SCRATCHDIR}/Jobfiles/${SIMU}_analysis.sub | sed -e "s;<DEPLIST>;"$listjobi
                                              -e "s;<CYCLE>;${cycle};g" \
                                              -e "s;<DISPCYCLE>;${disp_cycle};g" \
                                              -e "s;<NCORES>;${NCORES_DART};g"\
+                                             -e "s;<NNODES>;${NNODES_DART};g"\
                                              -e "s;<TYPENODE>;${TYPENODE_DART};g"\
                                              -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
                                              -e "s;<WALLTIME>;${TLIM_DART};g" \

@@ -66,7 +66,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
 
    ### Other options
    # read grid info
-   roms_restart_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc
+   roms_rst_file=${SCRATCHDIR}/Outputs/Prior/m001/${SIMU}_rst_${date_cycle}.nc
    # list of restart files
    roms_list_priors=${SCRATCHDIR}/Tempfiles/list_priors_${date_cycle}.txt
    ls ${SCRATCHDIR}/Outputs/Prior/m*/${SIMU}_rst_${date_cycle}.nc > ${roms_list_priors}
@@ -85,7 +85,7 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
                                               -e "s;<NMEMBERS>;${NMEMBERS};g" \
                                               -e "s;<OBSINFILE>;${obs_seq_in};g" \
                                               -e "s;<OBSOUTFILE>;${obs_seq_out};g" \
-                                              -e "s;<TASKPERNODE>;${taskpernode};g" \
+                                              -e "s;<TASKPERNODE>;${NCORESPERNODE};g" \
                                               -e "s;<FIRSTOBSDAY>;$(($jday-$semi_period));g" \
                                               -e "s;<LASTOBSDAY>;$(($jday+$semi_period));g" \
                                               -e "s;<DARTINITDAYS>;$jday;g" \

@@ -151,8 +151,8 @@ if (( ${this_cycle} > $((${NSTART_ANA}-1)) )) ; then
    if [ -f ${Temp_dir}/dart.restart.0001 ]; then
       success=true
       # Copy and convert to nc4 (for storage) the diag outputs
-      ncks -4 -L 1 ${SCRATCHDIR}/Prior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Prior_Diag_${date_cycle}.nc4
-      ncks -4 -L 1 ${SCRATCHDIR}/Posterior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Posterior_Diag_${date_cycle}.nc4
+      ncks -O -4 -L 1 ${SCRATCHDIR}/Prior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Prior_Diag_${date_cycle}.nc4
+      ncks -O -4 -L 1 ${SCRATCHDIR}/Posterior_Diag.nc ${SCRATCHDIR}/Outputs/Diags/Posterior_Diag_${date_cycle}.nc4
    else
       success=false
    fi 

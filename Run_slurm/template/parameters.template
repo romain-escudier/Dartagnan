@@ -145,7 +145,8 @@ elif [ ${CLUSTER} = "yellowstone" ] ; then
    RUN=mpirun.lsf
 elif [ ${CLUSTER} = "cheyenne" ] ; then
    SUBMIT=qsub
-   RUN=mpirun
+   RUN="mpiexec_mpt omplace"
+   # RUN=mpirun
 fi
 
 if [ ${CLUSTER_PREP} = "triton" ] ; then
@@ -157,12 +158,6 @@ elif [ ${CLUSTER_PREP} = "yellowstone" ] ; then
 elif [ ${CLUSTER_PREP} = "cheyenne" ] ; then
    SUBMIT_PREP=qsub
 fi
-
-
-
-
-
-
 
 
 

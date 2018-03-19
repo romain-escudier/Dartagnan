@@ -44,8 +44,8 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
                                                         -e "s;<PROJECTCODE>;${PROJECT};g" \
    > ${SCRATCHDIR}/Tempfiles/roms_post_member_${nnn}.sub
    # Get the id of the job and keep it in listjobids (for the dependency of the analysis)
-   output=$( ${SUBMIT} < ${SCRATCHDIR}/Tempfiles/roms_post_member_${nnn}.sub )
-   listjobids=$(./get_id_dependency.sh "$output" "$listjobids" $CLUSTER)
+   output=$( ${SUBMIT_PREP} < ${SCRATCHDIR}/Tempfiles/roms_post_member_${nnn}.sub )
+   listjobids=$(./get_id_dependency.sh "$output" "$listjobids" $CLUSTER_PREP)
    if ! (( $? == 0 )); then
       echo $listjobids
       exit 1 
@@ -60,6 +60,7 @@ cat ${SCRATCHDIR}/Jobfiles/${SIMU}_analysis.sub | sed -e "s;<DEPLIST>;"$listjobi
                                              -e "s;<CYCLE>;${cycle};g" \
                                              -e "s;<DISPCYCLE>;${disp_cycle};g" \
                                              -e "s;<NCORES>;${NCORES_DART};g"\
+                                             -e "s;<NNODES>;${NNODES_DART};g"\
                                              -e "s;<TYPENODE>;${TYPENODE_DART};g"\
                                              -e "s;<CURRENTDIR>;${SCRATCHDIR};g" \
                                              -e "s;<WALLTIME>;${TLIM_DART};g" \
