@@ -17,8 +17,8 @@ CURRENTDIR=$(pwd)/
 mkdir -p ${DIRRUNS}
 
 # Copy setup files
-cp ${CURRENTDIR}/Run_lanai/src/setup_simu.sh ${DIRRUNS}/
-cat ${CURRENTDIR}/Run_lanai/template/setup_parameters \
+cp ${CURRENTDIR}/Common_files/src/setup_simu.sh ${DIRRUNS}/
+cat ${CURRENTDIR}/Common_files/template/setup_parameters \
 	| sed -e "s;<DARTMNGDIR>;${CURRENTDIR};" \
 > ${DIRRUNS}/setup_parameters
 
