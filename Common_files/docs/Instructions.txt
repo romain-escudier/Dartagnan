@@ -1,0 +1,124 @@
+*******************************************************************
+                HOW TO RUN ROMS/DART WITH dartagnan
+*******************************************************************
+
+
+-----------------------------------------
+Create new user (user1):
+-----------------------------------------
+$ cd users/
+$ mkdir user1
+
+Copy the content of template directory
+$ cp template/* user1/
+
+-----------------------------------------
+Create new simulation :
+-----------------------------------------
+$ cd user1/
+$ vi setup_parameters
+Here you need to fill :
+   ROMSAPP : The name of the ROMS application (region)
+   USERINI : Intials of the user
+   SIMUSUFF : The specific name of the simulation
+   APPLONG : The long name of the application
+   ROMSDIR : Directory of the ROMS code
+   DARTDIR : Directory of the DART code
+Your simulation will be called SIMUNAME=ROMSAPP-USERINI.SIMUSUFF
+
+$ ./setup_simu.sh
+This will create a directory for the new simulation in the user1/ directory
+In this directory, you have :
+   parameters        -> parameters for the simulation to fill
+   varinfo.dat       -> varinfo.dat to modify for the ROMS model
+   src/              -> directory for the headers for the ROMS code
+   build_roms.bash   -> script to compile the ROMS code
+   build_dart.bash   -> script to compile the DART code
+   main.ksh          -> main script to launch the simulation
+   clean.sh          -> script to clean the scratch directory
+   ocean_SIMUNAME.in  -> ROMS namelist
+   input_SIMUNAME.nml -> DART namelist
+
+
+-----------------------------------------
+Compile the ROMS code :
+-----------------------------------------
+$ cd SIMUNAME/
+First you need to put in src/, the appropriate headers (e.g. nwa.h, ana_nudgcoef.h)
+$ cp headers_source/*.h src/
+Then load the appropriate modules
+$ module load netcdf/4.3.0-gcc4.4.7 openmpi/1.8.5_gcc4.4.7
+$ ./build_roms.bash -j 4
+
+
+-----------------------------------------
+Compile the DART code :
+-----------------------------------------
+$ ./build_dart.bash
+(will call the quickbuild.csh of the DART code)
+
+
+-----------------------------------------
+Put the run parameter values :
+-----------------------------------------
+$ vi parameters
+Fill with the desired values for this simulation 
+
+
+-----------------------------------------
+Check the ROMS namelist :
+-----------------------------------------
+$ vi ocean_SIMUNAME.in
+Put the desired parameters for the ROMS model
+(parameters between <> are automatically filled by the script)
+
+
+-----------------------------------------
+Check the DART namelist :
+-----------------------------------------
+$ vi input_SIMUNAME.nml
+Put the desired parameters for the DART assimilation
+(parameters between <> are automatically filled by the script)
+
+
+-----------------------------------------
+Launch the simulation :
+-----------------------------------------
+$ ./main.sh
+
+-----------------------------------------
+Look at results :
+-----------------------------------------
+The outputs/logs are stored in the scratch directory:
+it is ${SCRATCH}/dart/tmp_SIMUNAME/
+$ cd ${SCRATCH}/dart/tmp_SIMUNAME/
+
+The output files are in Outputs/ :
+   Average/    -> directory for average files
+   History/    -> directory for history files
+   Prior/      -> directory for prior restart files (before assimilation)
+   Reanalysis/ -> directory for reanalysis restart files (after assimilation)
+   Filtfiles/  -> directory where filtering files are saved every month (for tides)
+Each of these directories have a sub-directory for each member
+
+In Outputs, we also have :
+   ObsOut/     -> directory for output observation files
+   Diags/      -> directory for diagnostic files
+   Tmpdir/     -> directory for temporary dart files
+
+The logs are in Logs/
+   ROMS/ -> ROMS log outputs
+   DART/ -> DART log outputs
+
+Executables are in Exe/
+
+Build files for ROMS are in Build/
+
+
+
+
+
+
+
+
+
