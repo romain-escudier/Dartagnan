@@ -64,7 +64,7 @@ cp ${DARTMNGDIR}/Common_files/template/globus_parameters ${SCRATCHDIR}/
 # Get scripts to be submitted with header corresponding to cluster
 ### FORWARD MODEL
 # Also remove the dependency list and the mailing option for the forward script
-sed "/<HEADER>/r header.${CLUSTER_PREP}" ${DARTMNGDIR}/Common_files/src/generic_roms_prepare_member.sub \
+sed "/<HEADER>/r ${DARTMNGDIR}/Common_files/headers/header.${CLUSTER_PREP}" ${DARTMNGDIR}/Common_files/src/generic_roms_prepare_member.sub \
         | sed -e "/<HEADER>/d" \
               -e "/<DEPLIST>/d" \
               -e "/BSUB -N/d" \
@@ -72,12 +72,12 @@ sed "/<HEADER>/r header.${CLUSTER_PREP}" ${DARTMNGDIR}/Common_files/src/generic_
               -e "s/select=<NNODES>:ncpus=36:mpiprocs=36/select=1:ncpus=1:mpiprocs=1/" \
               -e "/PBS -m/d" \
 > ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_prepare_member.sub 
-sed "/<HEADER>/r header.${CLUSTER}" ${DARTMNGDIR}/Common_files/src/generic_roms_advance_member.sub \
+sed "/<HEADER>/r ${DARTMNGDIR}/Common_files/headers/header.${CLUSTER}" ${DARTMNGDIR}/Common_files/src/generic_roms_advance_member.sub \
         | sed -e "/<HEADER>/d" \
               -e "/BSUB -N/d" \
               -e "/PBS -m/d" \
 > ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_advance_member.sub 
-sed "/<HEADER>/r header.${CLUSTER_PREP}" ${DARTMNGDIR}/Common_files/src/generic_roms_post_member.sub \
+sed "/<HEADER>/r ${DARTMNGDIR}/Common_files/headers/header.${CLUSTER_PREP}" ${DARTMNGDIR}/Common_files/src/generic_roms_post_member.sub \
         | sed -e "/<HEADER>/d" \
               -e "/BSUB -N/d" \
               -e "/ptile=/d" \
@@ -85,12 +85,12 @@ sed "/<HEADER>/r header.${CLUSTER_PREP}" ${DARTMNGDIR}/Common_files/src/generic_
               -e "/PBS -m/d" \
 > ${SCRATCHDIR}/Jobfiles/${SIMU}_roms_post_member.sub
 ### ANALYSIS
-sed "/<HEADER>/r header.${CLUSTER}" ${DARTMNGDIR}/Run_${DARTVERSION}/src/generic_analysis.sub \
+sed "/<HEADER>/r ${DARTMNGDIR}/Common_files/headers/header.${CLUSTER}" ${DARTMNGDIR}/Run_${DARTVERSION}/src/generic_analysis.sub \
         | sed -e "/<HEADER>/d" \
 > ${SCRATCHDIR}/Jobfiles/${SIMU}_analysis.sub
 ### SUBMIT SCRIPT
 # Also remove the mailing option for next submission script
-sed "/<HEADER>/r header.${CLUSTER}" ${DARTMNGDIR}/Common_files/src/generic_submit_next.sub \
+sed "/<HEADER>/r ${DARTMNGDIR}/Common_files/headers/header.${CLUSTER}" ${DARTMNGDIR}/Common_files/src/generic_submit_next.sub \
         | sed -e "/<HEADER>/d" \
               -e "/BSUB -N/d" \
               -e "s/select=<NNODES>:ncpus=36:mpiprocs=36/select=1:ncpus=1:mpiprocs=1/" \
