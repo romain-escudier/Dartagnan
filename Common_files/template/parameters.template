@@ -8,38 +8,43 @@ DARTMNGDIR=<DARTMNGDIR>
 NMEMBERS=30
 
 # Starting date
-REFDATE=19000101
-STARTDATE=20100701
+REFDATE=19000101	# Reference date for ROMS
+STARTDATE=20100701	# Starting date of your simulation
 
 # Analysis step (days)
-DT_ANA=1
-DT_OBS=1
+DT_ANA=1		# frequency of assimilation
+DT_OBS=1		# observation window
 
 # Simulation name
 SIMU=<SIMUNAME>
 
-# start at cycle nstart
-NSTART=1
-# end at cycle ncycles
-NCYCLES=10
+# Cyle start and end
+NSTART=1 		# start at cycle nstart
+NCYCLES=500             # end at cycle ncycles
 
 # Computation directory
 SCRATCHDIR=<SCRATCHDIR>
+# Directory where to find OBC, rivers, tides, atm,...
 DATADIR=/glade/p/work/romaines/Data/
 
-# Do an on-the-job cleanup
+# Do an on-the-job cleanup (remove filter files and
+# restarts that are more than 3 days old but keeps the
+# last day of each month)
 CLEANUP=true
 
 #-------------------------------------------------------
 # QUEUEING SYSTEM PARAMETERS
 #-------------------------------------------------------
 
-CLUSTER=cheyenne
-CLUSTER_PREP=cheyenne
+# Select which cluster you want to use
+# currently supporting triton (Rutgers)
+#		       yellowstone, cheyenne (NCAR)
+CLUSTER=cheyenne	# For the forward model and analysis
+CLUSTER_PREP=cheyenne	# For the file transfer and preparation
 
 # Time limit
-TLIM_ROMS=0:20
-TLIM_DART=0:20
+TLIM_ROMS=0:20 		# For ROMS forward model
+TLIM_DART=0:20		# For the DART analysis
 
 # CLUSTER OPTIONS
 if [ ${CLUSTER} = "triton" ] ; then
@@ -47,21 +52,21 @@ if [ ${CLUSTER} = "triton" ] ; then
    # (Don't use generic -triton- for dart)
    TYPENODE_ROMS=triton24
    TYPENODE_DART=triton24
-   NCORESPERNODE=24
+   NCORESPERNODE=24	# Number of nodes per core
 
 elif [ ${CLUSTER} = "yellowstone" ] ; then
    # YELLOWSTONE OPTIONS
    PROJECT=URTG0008
    QUEUE=regular
    QUEUE_PREP=geyser
-   NCORESPERNODE=16
+   NCORESPERNODE=16	# Number of nodes per core
 
 elif [ ${CLUSTER} = "cheyenne" ] ; then
    # CHEYENNE OPTIONS
    PROJECT=URTG0011
    QUEUE=regular
    QUEUE_PREP=regular
-   NCORESPERNODE=36
+   NCORESPERNODE=36	# Number of nodes per core
 
 fi
 
@@ -73,7 +78,7 @@ fi
 NCORES_DART=80
 NNODES_DART=$(( ${NCORES_DART} / ${NCORESPERNODE} ))
 
-# start analysis at cycle nstart_ana
+# start analysis at cycle NSTART_ANA
 NSTART_ANA=185
 
 # Observation files
@@ -83,17 +88,20 @@ OBS_PREF_2=obs_seq.sst_gtspp.
 
 # Inflation
 INFLATION=false
-INF_INI=1.02
-INF_SD_INI=0.6
+INF_INI=1.02		# Initial value of inflation
+INF_SD_INI=0.6		# Initial value of std of inflation
+
+# Mean dynamic topography (for the assimilation of sla)
+MDTFILE=none
 
 #-------------------------------------------------------
 # ROMS PARAMETERS
 #-------------------------------------------------------
 
 # Vertical parametrization
-vert_transform=2
+vert_transform=2	# Type of ROMS vertical coordinate 
 
-# Number of core for forward
+# Number of core for forward model
 NCORES_ROMS=80
 NNODES_ROMS=$(( ${NCORES_ROMS} / ${NCORESPERNODE} ))
 ITILE=10
@@ -102,7 +110,9 @@ JTILE=8
 # Time step
 DT=240
 
-# SPIN-UP
+# SPIN-UP:
+# Lower time step for a few days of spin-up
+# Can avoid early blow-up due to the model adjustment
 DT_SPIN=100
 NCYCLES_SPIN=3
 
@@ -112,29 +122,32 @@ DT_OUT=1
 # Filter output step (days)
 DT_FILT=1
 
-# Random parametrization
+# Random parametrization of viscosity/diffusion
+# If std value is 0, no random parametrization and takes avg value
+# Otherwise, gaussian random value around avg value
 RND_VISC_STD=0
 RND_VISC_AVG=25
 RND_DIFF_STD=0
 RND_DIFF_AVG=5
 
-# File parameters
+# File parameters:
+#  - Forcing files
 FORCINGDIR=${DATADIR}/Forcings/
 FORCINGPREF=drowned_MERRA_
 FORCINGSUFF=_3hours_
 
+#  - Initial and grid files
 GRIDFILE=${DATADIR}/NWA_grd_newwtypechl.nc
 NUDGCOEF=${DATADIR}/NWA_nudging_coef.nc
 INITDIR=${DATADIR}/Init/
 INITFILE=HYCOM_GLBa0.08_2010_182_ic_NWA.nc
 
+#  - Other
 CLMPREF=${DATADIR}/Clim/HYCOM_GLBa0.08_monthly_clim_NWA_
 BRYPREF=${DATADIR}/OBC/HYCOM_GLBa0.08_bdry_NWA_
 RUNOFFILE=${DATADIR}/Runoff/runoff_NWA_daitren_clim.nc
 TIDESFILE=${DATADIR}/Tides/NWA_tides_otps.nc
 SSSREFILE=${DATADIR}/SSS/sss_monthly_climato_flooded.nc
-
-MDTFILE=none
 
 #-------------------------------------------------------
 # EXECUTABLES

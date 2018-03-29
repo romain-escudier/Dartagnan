@@ -1,0 +1,15 @@
+
+# Id of different computers
+NCAR_ID=d33b3614-6d04-11e5-ba46-22000b92c6ec	# NCAR glade system
+POSE_ID=adc7785a-290f-11e7-bc76-22000b9a448b	# Poseidon at Rutgers
+
+# Directory at remote location (poseidon for example)
+GLOBUS_REMOTEDIR=/Volumes/P15/DART/
+
+
+
+
+
+
+
+

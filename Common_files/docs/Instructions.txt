@@ -4,20 +4,20 @@
 
 
 -----------------------------------------
-Create new user (user1):
+Create directory of your runs
 -----------------------------------------
-$ cd users/
-$ mkdir user1
-
-Copy the content of template directory
-$ cp template/* user1/
+$ ./create_rundir.sh <your_runs_dir>
 
 -----------------------------------------
 Create new simulation :
 -----------------------------------------
-$ cd user1/
+$ cd <your_runs_dir>
 $ vi setup_parameters
 Here you need to fill :
+   DARTMNGDIR : The path of the DART manager (dartagnan) 
+	It should already be filled with the right path
+   DARTVERSION : The version of DART you are using 
+	(currently supporting lanai and rma)
    ROMSAPP : The name of the ROMS application (region)
    USERINI : Intials of the user
    SIMUSUFF : The specific name of the simulation
@@ -25,45 +25,45 @@ Here you need to fill :
    ROMSDIR : Directory of the ROMS code
    DARTDIR : Directory of the DART code
 Your simulation will be called SIMUNAME=ROMSAPP-USERINI.SIMUSUFF
-
 $ ./setup_simu.sh
-This will create a directory for the new simulation in the user1/ directory
+This will create a directory for the new simulation in <your_runs_dir>
 In this directory, you have :
    parameters        -> parameters for the simulation to fill
    varinfo.dat       -> varinfo.dat to modify for the ROMS model
    src/              -> directory for the headers for the ROMS code
    build_roms.bash   -> script to compile the ROMS code
    build_dart.bash   -> script to compile the DART code
-   main.ksh          -> main script to launch the simulation
+   main.sh           -> main script to launch the simulation
    clean.sh          -> script to clean the scratch directory
    ocean_SIMUNAME.in  -> ROMS namelist
    input_SIMUNAME.nml -> DART namelist
-
+We will explain below what you have to do with these
 
 -----------------------------------------
 Compile the ROMS code :
 -----------------------------------------
 $ cd SIMUNAME/
 First you need to put in src/, the appropriate headers (e.g. nwa.h, ana_nudgcoef.h)
-$ cp headers_source/*.h src/
+$ cp <your_header_sources>/*.h src/
 Then load the appropriate modules
-$ module load netcdf/4.3.0-gcc4.4.7 openmpi/1.8.5_gcc4.4.7
+$ module load <your_modules>
+	(usually netcdf openmpi fftw)
+Launch the compilation
 $ ./build_roms.bash -j 4
-
 
 -----------------------------------------
 Compile the DART code :
 -----------------------------------------
+You just have to launch the compilation 
+	(if you defined well the location of DART in setup_parameters)
 $ ./build_dart.bash
 (will call the quickbuild.csh of the DART code)
 
-
 -----------------------------------------
-Put the run parameter values :
+Fill in run parameter values :
 -----------------------------------------
 $ vi parameters
-Fill with the desired values for this simulation 
-
+Fill with the desired parameters values for this simulation 
 
 -----------------------------------------
 Check the ROMS namelist :
@@ -72,7 +72,6 @@ $ vi ocean_SIMUNAME.in
 Put the desired parameters for the ROMS model
 (parameters between <> are automatically filled by the script)
 
-
 -----------------------------------------
 Check the DART namelist :
 -----------------------------------------
@@ -80,11 +79,37 @@ $ vi input_SIMUNAME.nml
 Put the desired parameters for the DART assimilation
 (parameters between <> are automatically filled by the script)
 
-
 -----------------------------------------
 Launch the simulation :
 -----------------------------------------
 $ ./main.sh
+If you don't want to launch directly the simulation,
+you can comment the last line of this script
+(actually the default behavior now)
+
+-----------------------------------------
+Launch the simulation (bis) :
+-----------------------------------------
+If you commented the last line of main.sh, the simulation 
+won't have launched already. You will want to do the following
+(with <current_cycle>=$NSTART)
+Also, if you want to relaunch a stopped simulation.
+$ cd ${SCRATCH}/dart/tmp_SIMUNAME/
+$ ./submit_cycle.sh <current_cycle> >> Logs/submit.log
+
+-----------------------------------------
+Launch the simulation (ter) :
+-----------------------------------------
+If you only want to launch the analysis (all ROMS members have
+already been computed)
+$ ./submit_ana.sh <current_cycle>
+If you only want to launch some of the members (the ones that 
+failed for example or blowed up). The arguments are all the members
+you want to launch.
+$ ./submit_members.sh <the_members_you_want>
+If you only want to launch the post processing of all the members 
+(the step before the analysis)
+$ ./submit_post.sh <current_cycle>
 
 -----------------------------------------
 Look at results :
@@ -113,6 +138,48 @@ The logs are in Logs/
 Executables are in Exe/
 
 Build files for ROMS are in Build/
+
+Job files are in Jobfiles/
+
+Temporary files: filled job files, temporary filter files,...
+are in Tempfiles/
+
+
+-----------------------------------------
+How it works :
+-----------------------------------------
+In Jobfiles, you have the templates for the jobs scripts.
+They are going to be filled by the submit_cycle script and copied into Tempfiles/
+There, they will be submitted to the queue system.
+For each member, there is 
+ - roms_prepare_member : create the proper ROMS namelist and get the filtering files
+	will be run on $CLUSTER_PREP
+ - roms_advance_member : actually run the ROMS model for this member
+	will be run on $CLUSTER
+ - roms_post_member   : save outputs in netcdf4 compressed format and copy the filter files
+	will be run on $CLUSTER_PREP
+The we have the following scripts
+ - analysis : run the DART analysis
+	will be run on $CLUSTER
+ - submit_next : save logs and launch the next cycle
+
+-----------------------------------------
+GLOBUS transfer :
+-----------------------------------------
+When you have a month of simulation, you can transfer the outputs with GLOBUS
+For this you only have to do:
+$ vi globus_parameters
+In this file, change GLOBUS_REMOTEDIR for the directory of your run at the remote location
+and the ID of the computers you want to use
+$ ./store_globus <current_year> <current_month>
+It will create a directory Outputs_GLOBUS/<current_year>/<current_month> with 
+Average, Diags, Filtfiles, ObsOut and Reanalysis files.
+It will also launch the GLOBUS transfer of this directory
+
+
+
+
+
 
 
 

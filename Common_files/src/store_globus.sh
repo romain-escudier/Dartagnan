@@ -2,6 +2,7 @@
 
 # Load simulation parameters
 . ./parameters
+. ./globus_parameters
 . ./functions.sh
 . ./globus_tools.sh
 
@@ -10,6 +11,7 @@ printf -v MONTH "%02d" $2
 
 echo "Year: $YEAR, month: $MONTH"
 
+rep_remote=${GLOBUS_REMOTEDIR}/tmpdir_${SIMU}/Outputs_GLOBUS/${YEAR}/${MONTH}/
 rep_globus=${SCRATCHDIR}/Outputs_GLOBUS/${YEAR}/${MONTH}/
 
 # DART Diagnostics
@@ -48,6 +50,6 @@ for kmem in $( seq 1 $NMEMBERS ) ; do
 
 done
 
-globus transfer -r --preserve-mtime -s checksum --label "${SIMU#*.}_${YEAR}${MONTH}" ${NCAR_ID}:${rep_globus} $POSE_ID:/Volumes/P15/DART/tmpdir_${SIMU}/Outputs_GLOBUS/${YEAR}/${MONTH}/
+globus transfer -r --preserve-mtime -s checksum --label "${SIMU#*.}_${YEAR}${MONTH}" ${NCAR_ID}:${rep_globus} $POSE_ID:${rep_remote}
 
 

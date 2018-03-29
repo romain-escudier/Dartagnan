@@ -57,6 +57,10 @@ cp ${DARTMNGDIR}/Common_files/utils/functions.sh ${SCRATCHDIR}/
 cp ${DARTMNGDIR}/Common_files/utils/globus_tools.sh ${SCRATCHDIR}/
 cp ${DARTMNGDIR}/Common_files/utils/extensions.bc ${SCRATCHDIR}/
 
+# Get globus parameters
+cp ${DARTMNGDIR}/Common_files/template/globus_parameters ${SCRATCHDIR}/
+
+
 # Get scripts to be submitted with header corresponding to cluster
 ### FORWARD MODEL
 # Also remove the dependency list and the mailing option for the forward script
