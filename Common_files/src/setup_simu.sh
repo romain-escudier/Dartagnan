@@ -37,6 +37,7 @@ cat ${DARTMNGDIR}/Common_files/template/parameters.template \
                       -e "s;<SCRATCHDIR>;${SCRATCHDIR};g" \
                       -e "s;<WORKINGDIR>;${SIMUDIR};g" \
                       -e "s;<DARTMNGDIR>;${DARTMNGDIR};g" \
+                      -e "s;<DARTVERSION>;${DARTVERSION};g" \
 > ${SIMUDIR}/parameters
 
 ##########################################################################

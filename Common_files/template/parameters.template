@@ -74,6 +74,9 @@ fi
 # DART PARAMETERS
 #-------------------------------------------------------
 
+# Version of DART
+DARTVERSION=<DARTVERSION>
+
 # Number of core for analysis
 NCORES_DART=80
 NNODES_DART=$(( ${NCORES_DART} / ${NCORESPERNODE} ))
